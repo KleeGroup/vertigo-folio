@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>io.vertigo</groupId>
+		<artifactId>vertigo-folio-reactor</artifactId>
+		<version>0.9.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>vertigo-folio-impl</artifactId>
+	<packaging>jar</packaging>
+	<name>vertigo-folio-impl</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.vertigo</groupId>
+			<artifactId>vertigo-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vertigo</groupId>
+			<artifactId>vertigo-core</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vertigo</groupId>
+			<artifactId>vertigo-folio-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>io.vertigo</groupId> <artifactId>vertigo-dynamo-api</artifactId> 
+			<version>${project.version}</version> </dependency> -->
+
+		<dependency>
+			<groupId>io.vertigo</groupId>
+			<artifactId>vertigo-dynamo-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.apache.directory.api</groupId> <artifactId>api-ldap-model</artifactId> 
+			<version>1.0.0-M31</version> </dependency> -->
+
+		<!-- begin:Document-metadatas -->
+		<!-- tika-parsers est la librairie de référence qui tire toutes les librairies -->
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers</artifactId>
+			<version>1.11</version>
+			<!-- <exclusions> <exclusion> <groupId>rome</groupId> <artifactId>rome</artifactId> 
+				</exclusion> </exclusions> -->
+		</dependency>
+
+		<!-- <dependency> <groupId>xerces</groupId> <artifactId>xercesImpl</artifactId> 
+			<version>2.9.1</version> tika 1.4 pointe sur la 2.8.1, on unifie sur la 2.9.1 
+			venant d'odfdom 0.7 </dependency> -->
+		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId> 
+			<version>1.6.6</version> tika 1.4 pointe sur la 1.5.6 qui est incompatible 
+			(à l'exec) avec la 1.6.x présente dans d'autres modules </dependency> -->
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>preflight</artifactId> <!-- preflight permet la validation des PDF/A : tika 1.4 contient pdfbox 
+				1.8.1 -->
+			<version>2.0.0-RC1</version>
+		</dependency>
+		<!-- end:Document-metadatas -->
+
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.directory.api</groupId>
+			<artifactId>api-all</artifactId>
+			<version>1.0.0-M28</version>
+		</dependency>
+
+	</dependencies>
+</project>
