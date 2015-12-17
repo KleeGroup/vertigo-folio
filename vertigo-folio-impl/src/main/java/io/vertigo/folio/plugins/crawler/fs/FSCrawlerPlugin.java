@@ -242,7 +242,7 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 				mdcBuilder.withMetaData(metaData, mdc.getValue(metaData));
 			}
 		}
-		documentBuilder.withExtractedMetaDataContainer(mdcBuilder.build());
+		documentBuilder.withSourceMetaDataContainer(mdcBuilder.build());
 	}
 
 	private static DocumentCategory extractCategory(final DocumentVersion documentVersion) {

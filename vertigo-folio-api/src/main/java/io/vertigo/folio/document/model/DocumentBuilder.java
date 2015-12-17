@@ -19,11 +19,11 @@ public final class DocumentBuilder implements Builder<Document> {
 	private String myContent;
 	private String myType;
 	private DocumentCategory myCategory;
-	private MetaDataContainer myExtractedMetaDataContainer;
+	private MetaDataContainer mySourceMetaDataContainer;
 	//Processed
 	private MetaDataContainer myEnhancedMetaDataContainer;
-	//UserDefinedMetaData
-	private MetaDataContainer myUserDefinedMetaDataContainer;
+	//AddedMetaData
+	private MetaDataContainer myAddedMetaDataContainer;
 
 	private DocumentStatus myDocumentStatus;
 
@@ -91,10 +91,10 @@ public final class DocumentBuilder implements Builder<Document> {
 		return this;
 	}
 
-	public DocumentBuilder withExtractedMetaDataContainer(final MetaDataContainer extractedMetaDataContainer) {
-		Assertion.checkNotNull(extractedMetaDataContainer);
+	public DocumentBuilder withSourceMetaDataContainer(final MetaDataContainer sourceMetaDataContainer) {
+		Assertion.checkNotNull(sourceMetaDataContainer);
 		//-----
-		myExtractedMetaDataContainer = extractedMetaDataContainer;
+		mySourceMetaDataContainer = sourceMetaDataContainer;
 		setDirtyFlag();
 		return this;
 	}
@@ -108,10 +108,10 @@ public final class DocumentBuilder implements Builder<Document> {
 		return this;
 	}
 
-	public DocumentBuilder withUserDefinedMetaDataContainer(final MetaDataContainer userDefinedMetaDataContainer) {
-		Assertion.checkNotNull(userDefinedMetaDataContainer);
+	public DocumentBuilder withAddedMetaDataContainer(final MetaDataContainer addedMetaDataContainer) {
+		Assertion.checkNotNull(addedMetaDataContainer);
 		//-----
-		myUserDefinedMetaDataContainer = userDefinedMetaDataContainer;
+		myAddedMetaDataContainer = addedMetaDataContainer;
 		setDirtyFlag();
 		return this;
 	}
@@ -129,9 +129,9 @@ public final class DocumentBuilder implements Builder<Document> {
 		if (document == null) {
 			//Pour le premier document on commence la r�vision � 0. (Pas de r�vision)
 			return new Document(documentVersion, mySize, nextRevision(), myName, myContent, myType, myCategory,
-					get(MetaDataContainer.EMPTY_META_DATA_CONTAINER, myExtractedMetaDataContainer),
+					get(MetaDataContainer.EMPTY_META_DATA_CONTAINER, mySourceMetaDataContainer),
 					get(MetaDataContainer.EMPTY_META_DATA_CONTAINER, myEnhancedMetaDataContainer),
-					get(MetaDataContainer.EMPTY_META_DATA_CONTAINER, myUserDefinedMetaDataContainer),
+					get(MetaDataContainer.EMPTY_META_DATA_CONTAINER, myAddedMetaDataContainer),
 					get(new DocumentStatus(false, true, false), myDocumentStatus));
 		}
 
@@ -140,9 +140,9 @@ public final class DocumentBuilder implements Builder<Document> {
 		final String overriddenContent = get(document.getContent(), myContent);
 		final String overriddenType = get(document.getType(), myType);
 		final DocumentCategory overriddenCategory = get(document.getCategory(), myCategory);
-		final MetaDataContainer overriddenExtractedMetaDataContainer = get(document.getExtractedMetaDataContainer(), myExtractedMetaDataContainer);
+		final MetaDataContainer overriddenSourceMetaDataContainer = get(document.getSourceMetaDataContainer(), mySourceMetaDataContainer);
 		final MetaDataContainer overriddenEnhancedMetaDataContainer = get(document.getEnhancedMetaDataContainer(), myEnhancedMetaDataContainer);
-		final MetaDataContainer overriddenUserDefinedMetaDataContainer = get(document.getUserDefinedMetaDataContainer(), myUserDefinedMetaDataContainer);
+		final MetaDataContainer overriddenAddedMetaDataContainer = get(document.getAddedMetaDataContainer(), myAddedMetaDataContainer);
 		final DocumentStatus overriddenDocumentStatus = get(document.getDocumentStatus(), myDocumentStatus);
 
 		return new Document(
@@ -153,9 +153,9 @@ public final class DocumentBuilder implements Builder<Document> {
 				overriddenContent,
 				overriddenType,
 				overriddenCategory,
-				overriddenExtractedMetaDataContainer,
+				overriddenSourceMetaDataContainer,
 				overriddenEnhancedMetaDataContainer,
-				overriddenUserDefinedMetaDataContainer,
+				overriddenAddedMetaDataContainer,
 				overriddenDocumentStatus);
 	}
 

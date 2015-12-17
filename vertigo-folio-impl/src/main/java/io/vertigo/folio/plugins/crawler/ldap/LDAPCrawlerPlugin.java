@@ -153,7 +153,7 @@ public class LDAPCrawlerPlugin implements CrawlerPlugin {
 				.withType("LDAP")
 				.withName(samAccountName)
 				.withSize(entry.size())
-				.withExtractedMetaDataContainer(mdc)
+				.withSourceMetaDataContainer(mdc)
 				.build();
 	}
 

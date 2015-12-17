@@ -95,7 +95,7 @@ public final class DocumentManagerImpl implements DocumentManager {
 				mdcBuilder.withMetaData(metaData, mdc.getValue(metaData));
 			}
 		}
-		documentBuilder.withExtractedMetaDataContainer(mdcBuilder.build());
+		documentBuilder.withSourceMetaDataContainer(mdcBuilder.build());
 	}
 	//
 	//	/** {@inheritDoc} */

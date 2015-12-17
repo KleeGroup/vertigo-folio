@@ -54,9 +54,9 @@ public final class KnockCrawler {
 			try {
 				final Document document = crawlerManager.readDocument(documentVersion);
 				System.out.println("   +--- name : " + document.getName());
-				System.out.println("   +--- extracted");
-				for (final MetaData metaData : document.getExtractedMetaDataContainer().getMetaDataSet()) {
-					System.out.println("   +------ " + metaData + " : " + document.getExtractedMetaDataContainer().getValue(metaData));
+				System.out.println("   +--- source");
+				for (final MetaData metaData : document.getSourceMetaDataContainer().getMetaDataSet()) {
+					System.out.println("   +------ " + metaData + " : " + document.getSourceMetaDataContainer().getValue(metaData));
 				}
 			} catch (final Throwable e) {
 				System.out.println("   +---: failed to read");

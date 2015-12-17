@@ -31,13 +31,14 @@ public final class Document implements Serializable {
 	private final String content;
 	private final String type;
 	private final DocumentCategory category;
-	private final MetaDataContainer extractedMetaDataContainer;
+
+	private final MetaDataContainer sourceMetaDataContainer;
 
 	//ProcessedMetaData
 	private final MetaDataContainer enhancedMetaDataContainer;
 
-	//UserDefinedMetaData
-	private final MetaDataContainer userDefinedMetaDataContainer;
+	//AddedDefinedMetaData
+	private final MetaDataContainer addedMetaDataContainer;
 
 	/**
 	 * Constructeur.
@@ -47,12 +48,12 @@ public final class Document implements Serializable {
 	 * @param name Nom du document (not null)
 	 * @param content Contenu extrait du document
 	 * @param type Type de document
-	 * @param extractedMetaDataContainer Meta-donn�es extraitent du document (not null)
+	 * @param sourceMetaDataContainer 	metadata stored in the files (exif, id3...)
 	 * @param enhancedMetaDataContainer Meta-donn�es ajout�es (process) du document (not null)
-	 * @param userDefinedMetaDataContainer Meta-donn�es ajout�es (utilisateur) du document (not null)
+	 * @param addedMetaDataContainer metadata added by a person
 	 * @param category Category
 	 */
-	Document(final DocumentVersion documentVersion, final long size, final UUID revision, final String name, final String content, final String type, final DocumentCategory category, final MetaDataContainer extractedMetaDataContainer, final MetaDataContainer enhancedMetaDataContainer, final MetaDataContainer userDefinedMetaDataContainer, final DocumentStatus documentStatus) {
+	Document(final DocumentVersion documentVersion, final long size, final UUID revision, final String name, final String content, final String type, final DocumentCategory category, final MetaDataContainer sourceMetaDataContainer, final MetaDataContainer enhancedMetaDataContainer, final MetaDataContainer addedMetaDataContainer, final DocumentStatus documentStatus) {
 		Assertion.checkNotNull(documentVersion);
 		Assertion.checkArgument(size >= 0, "size doit �tre >=0");
 		Assertion.checkNotNull(revision);
@@ -60,9 +61,9 @@ public final class Document implements Serializable {
 		Assertion.checkNotNull(content); //peut �tre vide
 		Assertion.checkNotNull(type); //peut �tre vide
 		Assertion.checkNotNull(category);
-		Assertion.checkNotNull(extractedMetaDataContainer);
+		Assertion.checkNotNull(sourceMetaDataContainer);
 		Assertion.checkNotNull(enhancedMetaDataContainer);
-		Assertion.checkNotNull(userDefinedMetaDataContainer);
+		Assertion.checkNotNull(addedMetaDataContainer);
 		Assertion.checkNotNull(documentStatus);
 		//--------------------------------------------------------------------
 		this.documentVersion = documentVersion;
@@ -72,10 +73,10 @@ public final class Document implements Serializable {
 		this.content = content;
 		this.type = type;
 		this.category = category;
-		this.extractedMetaDataContainer = extractedMetaDataContainer;
+		this.sourceMetaDataContainer = sourceMetaDataContainer;
 		//--------------------------------------------------------------------
 		this.enhancedMetaDataContainer = enhancedMetaDataContainer;
-		this.userDefinedMetaDataContainer = userDefinedMetaDataContainer;
+		this.addedMetaDataContainer = addedMetaDataContainer;
 		this.documentStatus = documentStatus;
 	}
 
@@ -114,8 +115,18 @@ public final class Document implements Serializable {
 		return category;
 	}
 
-	public MetaDataContainer getExtractedMetaDataContainer() {
-		return extractedMetaDataContainer;
+	/**
+	 * Returns metadata stored in the source file
+	 * examples :
+	 *  - exif
+	 *  - date
+	 *  - GPS data
+	 *  - author, producer...
+	 *   
+	 * @return metadata stored in the source file
+	 */
+	public MetaDataContainer getSourceMetaDataContainer() {
+		return sourceMetaDataContainer;
 	}
 
 	//-------------------------------------------------------------------------
@@ -125,11 +136,19 @@ public final class Document implements Serializable {
 		return enhancedMetaDataContainer;
 	}
 
-	//-------------------------------------------------------------------------
-	// UserDefinedMetaData
-	//-------------------------------------------------------------------------
-	public MetaDataContainer getUserDefinedMetaDataContainer() {
-		return userDefinedMetaDataContainer;
+	/**
+	 * Returns added metadata.
+	 * This metadata are added by a person
+	 * examples : 
+	 *  - keywords
+	 *  - comments
+	 *  - like
+	 *  - tags
+	 *  
+	 * @return added metadata
+	 */
+	public MetaDataContainer getAddedMetaDataContainer() {
+		return addedMetaDataContainer;
 	}
 
 	//-------------------------------------------------------------------------
@@ -140,14 +159,13 @@ public final class Document implements Serializable {
 		//@TODO si beaucoup utilis� alors construire au d�marrage.
 		//L'ordre est important les MetaDonn�es utilisateurs peuvent donc surcharg�es des Metadonn�es "techniques"
 		return new MetaDataContainerBuilder()//
-				.withAllMetaDatas(extractedMetaDataContainer)//
+				.withAllMetaDatas(sourceMetaDataContainer)//
 				.withAllMetaDatas(enhancedMetaDataContainer)//
-				.withAllMetaDatas(userDefinedMetaDataContainer)//
+				.withAllMetaDatas(addedMetaDataContainer)//
 				.build();
 	}
 
 	public DocumentStatus getDocumentStatus() {
 		return documentStatus;
 	}
-
 }
