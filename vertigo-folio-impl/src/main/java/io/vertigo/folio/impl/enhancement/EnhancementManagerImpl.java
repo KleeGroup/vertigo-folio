@@ -27,7 +27,7 @@ public class EnhancementManagerImpl implements EnhancementManager {
 				MetaDataContainer metaDataContainer = enhancementPlugin.extract(documentToEnhance);
 				documentBuilder.withEnhancedMetaDataContainer(metaDataContainer);
 			} catch (Exception e) {
-				throw(e);
+				throw (e);
 			}
 		}
 		return documentBuilder.build();

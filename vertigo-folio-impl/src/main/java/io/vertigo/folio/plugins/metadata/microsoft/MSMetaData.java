@@ -1,5 +1,6 @@
 package io.vertigo.folio.plugins.metadata.microsoft;
 
+import static io.vertigo.folio.metadata.MetaDataType.STRING;
 import io.vertigo.folio.metadata.MetaData;
 import io.vertigo.folio.metadata.MetaDataType;
 import io.vertigo.lang.Assertion;
@@ -12,22 +13,22 @@ import io.vertigo.lang.Assertion;
  */
 public enum MSMetaData implements MetaData {
 	/** Auteur du document. */
-	AUTHOR(MetaDataType.STRING),
+	AUTHOR(STRING),
 
 	/** Titre du document. */
-	TITLE(MetaDataType.STRING),
+	TITLE(STRING),
 
 	/** Sujet du document. */
-	SUBJECT(MetaDataType.STRING),
+	SUBJECT(STRING),
 
 	/** Mots cl�s du document. */
-	KEYWORDS(MetaDataType.STRING),
+	KEYWORDS(STRING),
 
 	/** Commentaires inclus dans le document. */
-	COMMENTS(MetaDataType.STRING),
+	COMMENTS(STRING),
 
 	/** Contenu textuel du document. */
-	CONTENT(MetaDataType.STRING);
+	CONTENT(STRING);
 
 	//-------------------------------------------------------------------------
 	private final MetaDataType metaDataType;

@@ -1,5 +1,7 @@
 package io.vertigo.folio.plugins.metadata.ooxml;
 
+import static io.vertigo.folio.metadata.MetaDataType.INTEGER;
+import static io.vertigo.folio.metadata.MetaDataType.STRING;
 import io.vertigo.folio.metadata.MetaDataType;
 import io.vertigo.lang.Assertion;
 
@@ -11,57 +13,57 @@ import io.vertigo.lang.Assertion;
  */
 public enum OOXMLExtendedMetaData implements OOXMLMetaData {
 	/** Name of the application that created this document. */
-	APPLICATION(MetaDataType.STRING),
+	APPLICATION(STRING),
 
 	/** Version of the application which produced this document. */
-	APP_VERSION(MetaDataType.STRING),
+	APP_VERSION(STRING),
 
 	/** Total number of characters in a document. */
-	CHARACTERS(MetaDataType.INTEGER),
+	CHARACTERS(INTEGER),
 
 	/** Last count of the number of characters (including spaces) in this document. */
-	CHARACTERS_WITH_SPACES(MetaDataType.INTEGER),
+	CHARACTERS_WITH_SPACES(INTEGER),
 
 	/** Name of a company associated with the document. */
-	COMPANY(MetaDataType.STRING),
+	COMPANY(STRING),
 
 	/** Number of hidden slides in a presentation document. */
-	HIDDEN_SLIDES(MetaDataType.INTEGER),
+	HIDDEN_SLIDES(INTEGER),
 
 	/** Total number of lines in a document when last saved by a conforming producer if applicable. */
-	LINES(MetaDataType.INTEGER),
+	LINES(INTEGER),
 
 	/** Name of a supervisor associated with the document. */
-	MANAGER(MetaDataType.STRING),
+	MANAGER(STRING),
 
 	/** Total number of sound or video clips that are present in the document. */
-	MMCLIPS(MetaDataType.INTEGER),
+	MMCLIPS(INTEGER),
 
 	/** Number of slides in a presentation containing notes. */
-	NOTES(MetaDataType.INTEGER),
+	NOTES(INTEGER),
 
 	/** Total number of pages of a document if applicable. */
-	PAGES(MetaDataType.INTEGER),
+	PAGES(INTEGER),
 
 	/** Total number of paragraphs found in a document if applicable. */
-	PARAGRAPHS(MetaDataType.INTEGER),
+	PARAGRAPHS(INTEGER),
 
 	/** Intended format for a presentation document.
 	 * For example, a presentation intended to be shown on video will have PresentationFormat "Video". */
-	PRESENTATION_FORMAT(MetaDataType.STRING),
+	PRESENTATION_FORMAT(STRING),
 
 	/** Total number of slides in a presentation document. */
-	SLIDES(MetaDataType.INTEGER),
+	SLIDES(INTEGER),
 
 	/** Name of an external document template containing format and style information used to create the current document. */
-	TEMPLATE(MetaDataType.STRING),
+	TEMPLATE(STRING),
 
 	/** Total time that a document has been edited.
 	 * The default time unit is minutes. */
-	TOTAL_TIME(MetaDataType.INTEGER),
+	TOTAL_TIME(INTEGER),
 
 	/** Total number of words contained in a document when last saved. */
-	WORDS(MetaDataType.INTEGER);
+	WORDS(INTEGER);
 
 	//-----
 	private final MetaDataType metaDataType;

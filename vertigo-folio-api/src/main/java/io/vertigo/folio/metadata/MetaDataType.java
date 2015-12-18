@@ -5,24 +5,25 @@ import io.vertigo.lang.Assertion;
 import java.util.Date;
 
 /**
- * Type des m�tadonn�es.
+ * Type of metadata.
  *
  * @author  pchretien
  * @version $Id: MetaDataType.java,v 1.3 2013/10/22 10:58:44 pchretien Exp $
  */
 public enum MetaDataType {
-	/** M�tadonn�e textuelle. */
+	/** text. */
 	STRING(String.class),
 
-	/** Entier. */
+	/** Integer. */
 	INTEGER(Integer.class),
 
-	/** Entier Long. */
+	/** Long. */
 	LONG(Long.class),
 
-	/** M�tadonn�e repr�sentant une date et heure simple. */
+	/** Date. */
 	DATE(Date.class),
 
+	/** Boolean */
 	BOOLEAN(Boolean.class);
 
 	/** Date ou masque de date; */
@@ -38,8 +39,8 @@ public enum MetaDataType {
 	private final Class<?> javaClass;
 
 	/**
-	 * Cr�e un type de m�tadonn�e, en l'associant � une classe Java.
-	 * @param javaClass	Classe Java associ�e
+	 * Constructor.
+	 * @param javaClass	the java type of the metadata
 	 */
 	MetaDataType(final Class<?> javaClass) {
 		Assertion.checkNotNull(javaClass);
@@ -48,7 +49,7 @@ public enum MetaDataType {
 	}
 
 	/**
-	 * @return Classe java encapsul�/wrapp�e par le type
+	 * @return the type of the metadata
 	 */
 	public Class<?> getJavaClass() {
 		return javaClass;

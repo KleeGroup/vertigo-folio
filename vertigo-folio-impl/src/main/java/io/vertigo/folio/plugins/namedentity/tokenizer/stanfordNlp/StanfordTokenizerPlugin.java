@@ -7,7 +7,6 @@ import io.vertigo.lang.Assertion;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,11 +51,8 @@ public class StanfordTokenizerPlugin implements TokenizerPlugin {
 		final List<String> tokens = new ArrayList<>();
 		final List<List<HasWord>> sentences = MaxentTagger.tokenizeText(new StringReader(text));
 		for (final List<HasWord> sentence : sentences) {
-			final List<TaggedWord> taggedWords = tagger.tagSentence(sentence);
-			final Iterator<TaggedWord> wordIterator = taggedWords.iterator();
 			String bufferWord = "";
-			while (wordIterator.hasNext()) {
-				final TaggedWord currentWord = wordIterator.next();
+			for (final TaggedWord currentWord : tagger.tagSentence(sentence)) {
 				if ("NPP".equals(currentWord.tag()) || "N".equals(currentWord.tag())) {
 					bufferWord = bufferWord + currentWord.word() + " ";
 				} else if (!bufferWord.isEmpty()) {

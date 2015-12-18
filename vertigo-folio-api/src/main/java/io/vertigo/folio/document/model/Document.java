@@ -9,8 +9,14 @@ import java.util.UUID;
 
 /**
  * Document.
- * Un document poss�de n�cessairement une version.
- * @author npiedeloup
+ *    |
+ *    |--- source   metadata
+ *    |--- added    metadata
+ *    |--- enhanced metadata
+ *    |
+ *    |--- content	
+ * 
+ * @author npiedeloup, pchretien
  * @version $Id: Document.java,v 1.4 2013/04/25 11:59:53 npiedeloup Exp $
  */
 public final class Document implements Serializable {

@@ -1,5 +1,8 @@
 package io.vertigo.folio.plugins.metadata.odf;
 
+import static io.vertigo.folio.metadata.MetaDataType.DATE;
+import static io.vertigo.folio.metadata.MetaDataType.INTEGER;
+import static io.vertigo.folio.metadata.MetaDataType.STRING;
 import io.vertigo.folio.metadata.MetaDataType;
 import io.vertigo.folio.plugins.metadata.tika.TikaMetaData;
 import io.vertigo.lang.Assertion;
@@ -8,68 +11,67 @@ import io.vertigo.lang.Assertion;
  * Liste des m�tadonn�es renvoy�es par l'extracteur textuel bas� sur Tika.
  *
  * @author epaumier
- * @version $Id: ODFMetaData.java,v 1.3 2013/10/22 10:53:28 pchretien Exp $
  */
 public enum ODFMetaData implements TikaMetaData {
 	/** Contenu textuel du fichier. */
-	CONTENT(MetaDataType.STRING),
+	CONTENT(STRING),
 
 	/** Title of the document. */
-	TITLE(MetaDataType.STRING),
+	TITLE(STRING),
 
 	/** Brief description of the document. */
-	DESCRIPTION(MetaDataType.STRING),
+	DESCRIPTION(STRING),
 
 	/** Subject of the document. */
-	SUBJECT(MetaDataType.STRING),
+	SUBJECT(STRING),
 
 	/** Keyword pertaining to the document. */
-	KEYWORD(MetaDataType.STRING),
+	KEYWORD(STRING),
 
 	/** Default language of the document [RFC3066]. */
-	LANGUAGE(MetaDataType.STRING),
+	LANGUAGE(STRING),
 
 	/** Name of the person who created the document initially. */
-	INITIAL_CREATOR(MetaDataType.STRING),
+	INITIAL_CREATOR(STRING),
 
 	/** Name of the person who last modified the document (last = primarily responsible in ODF). */
-	CREATOR(MetaDataType.STRING),
+	CREATOR(STRING),
 
 	/** Date and time when the document was created. */
-	CREATION_DATE(MetaDataType.DATE),
+	CREATION_DATE(DATE),
 
 	/** Date and time when the document was last modified. */
-	DATE(MetaDataType.DATE),
+	MODIFICATION_DATE(DATE),
 
 	/** Total time spent editing the document. */
-	EDITING_DURATION(MetaDataType.STRING), //MetaDataType.DURATION),
+	EDITING_DURATION(STRING), //MetaDataType.DURATION),
 
 	/** Number of editing cycles the document has been through. */
-	EDITING_CYCLES(MetaDataType.INTEGER),
+	EDITING_CYCLES(INTEGER),
 
 	/** Element contains a string that identifies the application or tool that was used to create or last modify the XML document. */
-	GENERATOR(MetaDataType.STRING),
+	GENERATOR(STRING),
 
 	/** Nombre de tableaux dans le document. */
-	TABLE_COUNT(MetaDataType.INTEGER),
+	TABLE_COUNT(INTEGER),
 
 	/** Nombre d'objets dans le document. */
-	OBJECT_COUNT(MetaDataType.INTEGER),
+	OBJECT_COUNT(INTEGER),
 
 	/** Nombre d'images dans le document. */
-	IMAGE_COUNT(MetaDataType.INTEGER),
+	IMAGE_COUNT(INTEGER),
 
 	/** Nombre de pages dans le document. */
-	PAGE_COUNT(MetaDataType.INTEGER),
+	PAGE_COUNT(INTEGER),
 
 	/** Nombre de paragraphes dans le document. */
-	PARAGRAPH_COUNT(MetaDataType.INTEGER),
+	PARAGRAPH_COUNT(INTEGER),
 
 	/** Nombre de mots dans le document. */
-	WORD_COUNT(MetaDataType.INTEGER),
+	WORD_COUNT(INTEGER),
 
 	/** Nombre de caract�res dans le document. */
-	CHARACTER_COUNT(MetaDataType.INTEGER);
+	CHARACTER_COUNT(INTEGER);
 
 	//-----
 	private final MetaDataType metaDataType;

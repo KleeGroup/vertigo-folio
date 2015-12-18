@@ -21,8 +21,9 @@ public final class MSWordMetaDataExtractorPlugin extends AbstractMSMetaDataExtra
 		//-----
 		//Extraction des donn�es d'un fichier word
 		try (final InputStream inputStream = file.createInputStream()) {
-			final WordExtractor extractor = new WordExtractor(inputStream);
-			return extractor.getText();
+			try (final WordExtractor extractor = new WordExtractor(inputStream)) {
+				return extractor.getText();
+			}
 		}
 	}
 

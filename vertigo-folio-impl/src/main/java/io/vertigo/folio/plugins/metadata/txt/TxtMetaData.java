@@ -1,5 +1,6 @@
 package io.vertigo.folio.plugins.metadata.txt;
 
+import static io.vertigo.folio.metadata.MetaDataType.STRING;
 import io.vertigo.folio.metadata.MetaData;
 import io.vertigo.folio.metadata.MetaDataType;
 import io.vertigo.lang.Assertion;
@@ -12,8 +13,8 @@ import io.vertigo.lang.Assertion;
  */
 public enum TxtMetaData implements MetaData {
 	/** Contenu textuel. */
-	CONTENT(MetaDataType.STRING),
-	MARKDOWN_CONTENT(MetaDataType.STRING);
+	CONTENT(STRING),
+	MARKDOWN_CONTENT(STRING);
 
 	//-----
 	private final MetaDataType metaDataType;

@@ -3,7 +3,6 @@ package io.vertigo.folio.plugins.metadata.tika;
 import static io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaData.CHARACTER_COUNT;
 import static io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaData.CREATION_DATE;
 import static io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaData.CREATOR;
-import static io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaData.DATE;
 import static io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaData.DESCRIPTION;
 import static io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaData.GENERATOR;
 import static io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaData.INITIAL_CREATOR;
@@ -40,8 +39,8 @@ public class AutoTikaMetaDataExtractorPlugin extends AbstractTikaMetaDataExtract
 		bindMetaData(INITIAL_CREATOR, "initial-creator");
 		bindMetaData(CREATOR, "creator");
 
-		bindMetaData(CREATION_DATE, "Creation-Date");
-		bindMetaData(DATE, "date");
+		bindMetaData(CREATION_DATE, "creation-Date");
+		bindMetaData(AutoTikaMetaData.MODIFICATION_DATE, "modification-date");
 
 		bindMetaData(GENERATOR, "generator");
 		bindMetaData(PAGE_COUNT, "nbPage");

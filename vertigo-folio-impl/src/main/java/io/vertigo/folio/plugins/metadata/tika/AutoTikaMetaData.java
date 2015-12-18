@@ -1,5 +1,8 @@
 package io.vertigo.folio.plugins.metadata.tika;
 
+import static io.vertigo.folio.metadata.MetaDataType.DATE;
+import static io.vertigo.folio.metadata.MetaDataType.INTEGER;
+import static io.vertigo.folio.metadata.MetaDataType.STRING;
 import io.vertigo.folio.metadata.MetaDataType;
 import io.vertigo.lang.Assertion;
 
@@ -11,46 +14,46 @@ import io.vertigo.lang.Assertion;
  */
 public enum AutoTikaMetaData implements TikaMetaData {
 	/** Contenu textuel du fichier. */
-	CONTENT(MetaDataType.STRING),
+	CONTENT(STRING),
 
 	/** Title of the document. */
-	TITLE(MetaDataType.STRING),
+	TITLE(STRING),
 
 	/** Brief description of the document. */
-	DESCRIPTION(MetaDataType.STRING),
+	DESCRIPTION(STRING),
 
 	/** Subject of the document. */
-	SUBJECT(MetaDataType.STRING),
+	SUBJECT(STRING),
 
 	/** Keyword pertaining to the document. */
-	KEYWORD(MetaDataType.STRING),
+	KEYWORD(STRING),
 
 	/** Default language of the document [RFC3066]. */
-	LANGUAGE(MetaDataType.STRING),
+	LANGUAGE(STRING),
 
 	/** Name of the person who created the document initially. */
-	INITIAL_CREATOR(MetaDataType.STRING),
+	INITIAL_CREATOR(STRING),
 
 	/** Name of the person who last modified the document (last = primarily responsible in ODF). */
-	CREATOR(MetaDataType.STRING),
+	CREATOR(STRING),
 
 	/** Date and time when the document was created. */
-	CREATION_DATE(MetaDataType.DATE),
+	CREATION_DATE(DATE),
 
 	/** Date and time when the document was last modified. */
-	DATE(MetaDataType.DATE),
+	MODIFICATION_DATE(DATE),
 
 	/** Element contains a string that identifies the application or tool that was used to create or last modify the XML document. */
-	GENERATOR(MetaDataType.STRING),
+	GENERATOR(STRING),
 
 	/** Nombre de pages dans le document. */
-	PAGE_COUNT(MetaDataType.INTEGER),
+	PAGE_COUNT(INTEGER),
 
 	/** Nombre de mots dans le document. */
-	WORD_COUNT(MetaDataType.INTEGER),
+	WORD_COUNT(INTEGER),
 
 	/** Nombre de caract�res dans le document. */
-	CHARACTER_COUNT(MetaDataType.INTEGER);
+	CHARACTER_COUNT(INTEGER);
 
 	//-------------------------------------------------------------------------
 	private final MetaDataType metaDataType;

@@ -1,5 +1,6 @@
 package io.vertigo.folio.plugins.metadata.ldap;
 
+import static io.vertigo.folio.metadata.MetaDataType.STRING;
 import io.vertigo.folio.metadata.MetaData;
 import io.vertigo.folio.metadata.MetaDataType;
 import io.vertigo.lang.Assertion;
@@ -8,17 +9,17 @@ import io.vertigo.lang.Assertion;
  * Created by sbernard on 23/03/2015.
  */
 public enum LDAPMetaData implements MetaData {
-	NAME(MetaDataType.STRING),
-	SAMACCOUNTNAME(MetaDataType.STRING),
-	EMAIL(MetaDataType.STRING),
-	COMPANY(MetaDataType.STRING),
-	DEPARTMENT(MetaDataType.STRING),
-	FIRSTNAME(MetaDataType.STRING),
-	OFFICE(MetaDataType.STRING),
-	PHONE(MetaDataType.STRING),
-	TITLE(MetaDataType.STRING),
-	MANAGER_URL(MetaDataType.STRING),
-	THUMBNAIL(MetaDataType.STRING);
+	NAME(STRING),
+	SAMACCOUNTNAME(STRING),
+	EMAIL(STRING),
+	COMPANY(STRING),
+	DEPARTMENT(STRING),
+	FIRSTNAME(STRING),
+	OFFICE(STRING),
+	PHONE(STRING),
+	TITLE(STRING),
+	MANAGER_URL(STRING),
+	THUMBNAIL(STRING);
 
 	//-----
 	private final MetaDataType metaDataType;

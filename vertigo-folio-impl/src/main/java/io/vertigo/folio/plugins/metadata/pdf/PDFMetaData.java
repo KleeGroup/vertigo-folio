@@ -1,5 +1,6 @@
 package io.vertigo.folio.plugins.metadata.pdf;
 
+import static io.vertigo.folio.metadata.MetaDataType.STRING;
 import io.vertigo.folio.metadata.MetaData;
 import io.vertigo.folio.metadata.MetaDataType;
 import io.vertigo.lang.Assertion;
@@ -12,33 +13,33 @@ import io.vertigo.lang.Assertion;
  */
 public enum PDFMetaData implements MetaData {
 	/** Auteur. */
-	AUTHOR(MetaDataType.STRING),
+	AUTHOR(STRING),
 
 	/** Mots cl�s. */
-	KEYWORDS(MetaDataType.STRING),
+	KEYWORDS(STRING),
 
 	/** Titre du document. */
-	TITLE(MetaDataType.STRING),
+	TITLE(STRING),
 
 	/** Sujet du document. */
-	SUBJECT(MetaDataType.STRING),
+	SUBJECT(STRING),
 
 	/** Logiciel ayant g�n�r� ce PDF. */
-	PRODUCER(MetaDataType.STRING),
+	PRODUCER(STRING),
 
 	/** Contenu du document. */
-	CONTENT(MetaDataType.STRING),
+	CONTENT(STRING),
 
 	/** Compatibilit� PDF/A-1b. ("true" ou "false") */
-	PDFA(MetaDataType.STRING),
+	PDFA(STRING),
 
 	/** Compatibilit� PDF/A-1b. ("VALID" ou "INVALID : ${causes}") */
-	PDFA_VALIDATION_MSG(MetaDataType.STRING),
+	PDFA_VALIDATION_MSG(STRING),
 
-	THUMBNAIL_PAGE_1(MetaDataType.STRING),
-	THUMBNAIL_PAGE_2(MetaDataType.STRING),
-	THUMBNAIL_PAGE_3(MetaDataType.STRING),
-	THUMBNAIL_PAGE_4(MetaDataType.STRING);
+	THUMBNAIL_PAGE_1(STRING),
+	THUMBNAIL_PAGE_2(STRING),
+	THUMBNAIL_PAGE_3(STRING),
+	THUMBNAIL_PAGE_4(STRING);
 
 	//-----
 	private final MetaDataType metaDataType;

@@ -13,10 +13,10 @@ import io.vertigo.folio.metadata.MetaDataContainer;
 import io.vertigo.folio.metadata.MetaDataContainerBuilder;
 import io.vertigo.folio.metadata.MetaDataManager;
 import io.vertigo.lang.Assertion;
+import io.vertigo.util.ListBuilder;
 import io.vertigo.util.StringUtil;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -69,11 +69,12 @@ public final class DocumentManagerImpl implements DocumentManager {
 	}
 
 	private static void populateDocument(final DocumentBuilder documentBuilder, final MetaDataContainer mdc) {
-		final List<MetaData> excludedMetaData = new ArrayList<>(4);
-		excludedMetaData.add(FileInfoMetaData.FILE_NAME);
-		excludedMetaData.add(FileInfoMetaData.SIZE);
-		excludedMetaData.add(FileInfoMetaData.FILE_EXTENSION);
-		excludedMetaData.add(FileInfoMetaData.LAST_MODIFIED);
+		final List<MetaData> excludedMetaData = new ListBuilder<MetaData>()
+				.add(FileInfoMetaData.FILE_NAME)
+				.add(FileInfoMetaData.SIZE)
+				.add(FileInfoMetaData.FILE_EXTENSION)
+				.add(FileInfoMetaData.LAST_MODIFIED)
+				.build();
 
 		final MetaDataContainerBuilder mdcBuilder = new MetaDataContainerBuilder();
 		final String type = (String) mdc.getValue(FileInfoMetaData.FILE_EXTENSION);
