@@ -55,7 +55,7 @@ public final class PDFMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 			final String content = stripper.getText(pdd);
 			final String pdfaValidationMsg = getPdfA1bValidation(file);
 			final List<String> thumbnails = extractBase64Thumbnails(pdd);
-			//------------------------------------------------------------------
+			//-----
 			//Metadata
 			final PDDocumentInformation documentInformation = pdd.getDocumentInformation();
 			final MetaDataContainerBuilder metaDataContainerBuilder = new MetaDataContainerBuilder()
