@@ -79,7 +79,7 @@ public final class TxtMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 		return false;
 	}
 
-	private String getExtension(final VFile file) {
+	private static String getExtension(final VFile file) {
 		final String fileExtension = FileUtil.getFileExtension(file.getFileName());
 		return fileExtension.trim();
 	}

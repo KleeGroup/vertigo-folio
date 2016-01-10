@@ -1,9 +1,9 @@
 package io.vertigo.folio.namedentity;
 
-import io.vertigo.lang.Component;
+import io.vertigo.lang.Manager;
 
 import java.util.Set;
 
-public interface NamedEntityManager extends Component {
+public interface NamedEntityManager extends Manager {
 	Set<NamedEntity> extractNamedEntities(final String text);
 }

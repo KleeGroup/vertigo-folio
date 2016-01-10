@@ -2,7 +2,7 @@ package io.vertigo.folio.crawler;
 
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.document.model.DocumentVersion;
-import io.vertigo.lang.Component;
+import io.vertigo.lang.Manager;
 
 /**
  * Gestionnaires des crawler de DataSource.
@@ -11,7 +11,7 @@ import io.vertigo.lang.Component;
  * @author npiedeloup
  * @version $Id: CrawlerManager.java,v 1.5 2011/08/02 14:36:12 pchretien Exp $
  */
-public interface CrawlerManager extends Component {
+public interface CrawlerManager extends Manager {
 	/**
 	 * Crawl une dataSource.
 	 * @param dataSourceId Identifiant de la dataSource � parcourir

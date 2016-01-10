@@ -2,7 +2,7 @@ package io.vertigo.folio.document;
 
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.document.model.DocumentVersion;
-import io.vertigo.lang.Component;
+import io.vertigo.lang.Manager;
 
 import java.io.File;
 
@@ -10,7 +10,7 @@ import java.io.File;
  * @author npiedeloup
  * @version $Id: DocumentManager.java,v 1.6 2011/09/13 16:58:32 pchretien Exp $
  */
-public interface DocumentManager extends Component {
+public interface DocumentManager extends Manager {
 	//Stockage des documents par channel
 	DocumentStore getDocumentStore(final String storeId);
 

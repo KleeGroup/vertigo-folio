@@ -123,7 +123,7 @@ public class LDAPCrawlerPlugin implements CrawlerPlugin {
 		}
 	}
 
-	private final Document createDocumentFromLdapEntry(final Entry entry, final DocumentVersion documentVersion) throws Exception {
+	private static Document createDocumentFromLdapEntry(final Entry entry, final DocumentVersion documentVersion) throws Exception {
 		final String name = getAttribute(entry, "displayName");
 		final String samAccountName = getAttribute(entry, "sAMAccountName");
 		final String email = getAttribute(entry, "mail");
