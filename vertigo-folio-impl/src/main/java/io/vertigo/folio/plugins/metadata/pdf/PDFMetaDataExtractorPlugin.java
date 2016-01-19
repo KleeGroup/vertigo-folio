@@ -17,6 +17,7 @@ import java.util.List;
 import javax.activation.DataSource;
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -35,6 +36,7 @@ import sun.misc.BASE64Encoder;
  * @version $Id: PDFMetaDataExtractorPlugin.java,v 1.5 2014/02/27 10:22:04 pchretien Exp $
  */
 public final class PDFMetaDataExtractorPlugin implements MetaDataExtractorPlugin {
+	private static final Logger LOGGER = Logger.getLogger(PDFMetaDataExtractorPlugin.class);
 	private static final String PDFA_VALID = "VALID";
 	private static final String PDFA_INVALID = "INVALID";
 
@@ -100,8 +102,12 @@ public final class PDFMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 				 * This document process the end of PDF/A validation.
 				 */
 				try (final PreflightDocument document = parser.getPreflightDocument()) {
-					document.validate();
-
+					try {
+						document.validate();
+					} catch (final NullPointerException e) {
+						//bug connu https://issues.apache.org/jira/browse/PDFBOX-3024
+						LOGGER.warn("PdfBox preflight PDF/A validation error", e);
+					}
 					// Get validation result
 					result = document.getResult();
 				}
