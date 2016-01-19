@@ -20,7 +20,6 @@ import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
-import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.LdapConnection;
@@ -70,7 +69,7 @@ public class LDAPCrawlerPlugin implements CrawlerPlugin {
 					.setDn(new Dn(myDn))
 					.setName(username)
 					.setCredentials(password);
-			final BindResponse bindResponse = connection.bind(bindRequest);
+			connection.bind(bindRequest);
 			final Dn ldn = new Dn(documentVersion.getUrl());
 			final EntryCursor cursor = connection.search(ldn, "(&(objectclass=person)(objectclass=user))", SearchScope.SUBTREE);
 			final Entry entry = cursor.iterator().next();
@@ -103,7 +102,7 @@ public class LDAPCrawlerPlugin implements CrawlerPlugin {
 					.setName(username)
 					.setCredentials(password);
 
-			final BindResponse bindResponse = connection.bind(bindRequest);
+			connection.bind(bindRequest);
 			final Dn dn = new Dn("ou=Utilisateurs,dc=klee,dc=lan,dc=net");
 			final EntryCursor cursor = connection.search(dn, "(&(objectclass=person)(objectclass=user))", SearchScope.SUBTREE);
 			for (final Entry entry : cursor) {

@@ -1,25 +1,25 @@
 <?xml version =	'1.0' encoding = 'ISO-8859-1'?>
 <config>
-	<module name="kasper-commons">
+	<module name="vertigo-commons">
 	   <component api="AnalyticsManager" class="io.vertigo.commons.impl.analytics.AnalyticsManagerImpl" />
-	    <component api="WorkManager" class="io.vertigo.dynamo.impl.work.WorkManagerImpl">	
+	   <component api="WorkManager" class="io.vertigo.dynamo.impl.work.WorkManagerImpl">	
 	    	<param name="workerCount" value="5" />
 	    </component>
 	   <component api="FileManager" class="io.vertigo.dynamo.impl.file.FileManagerImpl" />
    </module>
 
-	<module name="kasper-document">
-	    <component api="MetaDataManager" class="io.vertigo.knock.impl.metadata.MetaDataManagerImpl" >
-	        <plugin class="io.vertigo.knock.plugins.metadata.microsoft.word.MSWordMetaDataExtractorPlugin" />
-	        <plugin class="io.vertigo.knock.plugins.metadata.microsoft.powerpoint.MSPowerPointMetaDataExtractorPlugin" />
-	        <plugin class="io.vertigo.knock.plugins.metadata.microsoft.excel.MSExcelMetaDataExtractorPlugin" />
-	        <plugin class="io.vertigo.knock.plugins.metadata.pdf.PDFMetaDataExtractorPlugin"/>
-	        <plugin class="io.vertigo.knock.plugins.metadata.txt.TxtMetaDataExtractorPlugin" >
+	<module name="vertigo-folio">
+	    <component api="MetaDataManager" class="io.vertigo.folio.impl.metadata.MetaDataManagerImpl" >
+	        <plugin class="io.vertigo.folio.plugins.metadata.microsoft.word.MSWordMetaDataExtractorPlugin" />
+	        <plugin class="io.vertigo.folio.plugins.metadata.microsoft.powerpoint.MSPowerPointMetaDataExtractorPlugin" />
+	        <plugin class="io.vertigo.folio.plugins.metadata.microsoft.excel.MSExcelMetaDataExtractorPlugin" />
+	        <plugin class="io.vertigo.folio.plugins.metadata.pdf.PDFMetaDataExtractorPlugin"/>
+	        <plugin class="io.vertigo.folio.plugins.metadata.txt.TxtMetaDataExtractorPlugin" >
 	        	<param name="extensions"  value="txt, log"/> 
 	        </plugin>
-	        <plugin class="io.vertigo.knock.plugins.metadata.ooxml.CommonOOXMLMetaDataExtractorPlugin" />
-	        <plugin class="io.vertigo.knock.plugins.metadata.odf.ODFMetaDataExtractorPlugin" />
-	        <plugin class="io.vertigo.knock.plugins.metadata.tika.AutoTikaMetaDataExtractorPlugin" />      
+	        <plugin class="io.vertigo.folio.plugins.metadata.ooxml.CommonOOXMLMetaDataExtractorPlugin" />
+	        <plugin class="io.vertigo.folio.plugins.metadata.odf.ODFMetaDataExtractorPlugin" />
+	        <plugin class="io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaDataExtractorPlugin" />      
 	    </component>  
 	</module>
 </config>

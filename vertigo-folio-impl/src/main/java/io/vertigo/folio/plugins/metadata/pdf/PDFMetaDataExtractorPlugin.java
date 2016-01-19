@@ -128,11 +128,12 @@ public final class PDFMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 		final List<PDPage> pages = pdd.getDocumentCatalog().getAllPages();
 		final ListBuilder<String> stringListBuilder = new ListBuilder<>();
 		// Get the pages one by one, testing if it exists for each one
-		for (int pageIndex = 1; pageIndex < 5; pageIndex++) {
-			if (pages.size() < pageIndex) {
-				break;
+		int nbThumbnails = 0;
+		for (final PDPage page : pages) {
+			stringListBuilder.add(encodeToString(page.convertToImage(BufferedImage.TYPE_INT_RGB, 48), "png"));
+			if (nbThumbnails++ > 5) {
+				break; //pas plus de 5 pages
 			}
-			stringListBuilder.add(encodeToString(pages.get(pageIndex).convertToImage(BufferedImage.TYPE_INT_RGB, 48), "png"));
 		}
 		return stringListBuilder.build();
 	}

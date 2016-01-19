@@ -64,9 +64,8 @@
 			(à l'exec) avec la 1.6.x présente dans d'autres modules </dependency> -->
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
-			<artifactId>preflight</artifactId> <!-- preflight permet la validation des PDF/A : tika 1.4 contient pdfbox 
-				1.8.1 -->
-			<version>2.0.0-RC1</version>
+			<artifactId>preflight</artifactId> <!-- preflight permet la validation des PDF/A : tika 1.11 contient pdfbox 1.8.10 -->
+			<version>1.8.10</version>
 		</dependency>
 		<!-- end:Document-metadatas -->
 

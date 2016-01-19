@@ -38,7 +38,7 @@ public final class KnockCrawler {
 		Injector.injectMembers(this, app.getComponentSpace());
 	}
 
-	public static void main(final String[] args) throws Exception {
+	public static void main(final String[] args) {
 		System.out.println(">>> start spider");
 		try (App app = new App(config())) {
 			new KnockCrawler(app).crawl();
@@ -85,7 +85,7 @@ public final class KnockCrawler {
 						.addParam("directory" , "z:")
 						.addParam ("maxFiles" , "250")
 						.addParam ("excludePatterns" , "")
-					.endPlugin()	
+					.endPlugin()
 					.addComponent(FileManager.class, FileManagerImpl.class)
 					.addComponent(DocumentManager.class, DocumentManagerImpl.class)
 					.addComponent(MetaDataManager.class, MetaDataManagerImpl.class)
