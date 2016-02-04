@@ -2,8 +2,8 @@ package io.vertigo.folio.plugins.metadata.microsoft;
 
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
 
 import java.io.InputStream;
@@ -27,10 +27,10 @@ public abstract class AbstractMSMetaDataExtractorPlugin implements MetaDataExtra
 
 	/** {@inheritDoc} */
 	@Override
-	public MetaDataContainer extractMetaData(final VFile file) throws Exception {
+	public MetaDataSet extractMetaDataSet(final VFile file) throws Exception {
 		Assertion.checkNotNull(file);
 		//----------------------------------------------------------------------
-		final MetaDataContainerBuilder metaDataContainerBuilder = new MetaDataContainerBuilder();
+		final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder();
 		//Etape 1 : Extraction des m�tadonn�es MS
 		final POIFSReader reader = new POIFSReader();
 		reader.registerListener(new POIFSReaderListenerImpl(metaDataContainerBuilder), "\005SummaryInformation");
@@ -40,7 +40,7 @@ public abstract class AbstractMSMetaDataExtractorPlugin implements MetaDataExtra
 		}
 		//Etape 2 : Extraction des contenus selon le format (xls, ppt, doc)
 		return metaDataContainerBuilder//
-				.withMetaData(MSMetaData.CONTENT, extractContent(file))//
+				.addMetaData(MSMetaData.CONTENT, extractContent(file))//
 				.build();
 	}
 }

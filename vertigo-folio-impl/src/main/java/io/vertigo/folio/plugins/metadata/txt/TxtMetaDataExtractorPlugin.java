@@ -3,8 +3,8 @@ package io.vertigo.folio.plugins.metadata.txt;
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.dynamo.file.util.FileUtil;
 import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
 
 import java.io.BufferedReader;
@@ -54,14 +54,14 @@ public final class TxtMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 
 	/** {@inheritDoc} */
 	@Override
-	public MetaDataContainer extractMetaData(final VFile file) throws Exception {
+	public MetaDataSet extractMetaDataSet(final VFile file) throws Exception {
 		Assertion.checkNotNull(file);
 		//-----
 		final String content = getContent(file);
-		final MetaDataContainerBuilder metaDataContainerBuilder = new MetaDataContainerBuilder()
-				.withMetaData(TxtMetaData.CONTENT, content);
+		final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder()
+				.addMetaData(TxtMetaData.CONTENT, content);
 		if ("MD".equalsIgnoreCase(getExtension(file))) {
-			metaDataContainerBuilder.withMetaData(TxtMetaData.MARKDOWN_CONTENT, content);
+			metaDataContainerBuilder.addMetaData(TxtMetaData.MARKDOWN_CONTENT, content);
 		}
 		return metaDataContainerBuilder.build();
 	}

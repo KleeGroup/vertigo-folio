@@ -1,7 +1,7 @@
 package io.vertigo.folio.impl.metadata;
 
 import io.vertigo.dynamo.file.model.VFile;
-import io.vertigo.folio.metadata.MetaDataContainer;
+import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.lang.Plugin;
 
 /**
@@ -17,7 +17,7 @@ public interface MetaDataExtractorPlugin extends Plugin {
 	 * @return M�tadonn�es.
 	 * @throws Exception Erreur
 	 */
-	MetaDataContainer extractMetaData(VFile file) throws Exception;
+	MetaDataSet extractMetaDataSet(VFile file) throws Exception;
 
 	/**
 	 * Pr�cise quels sont les fichiers accept�s par cet extracteur.

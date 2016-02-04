@@ -2,8 +2,8 @@ package io.vertigo.folio.impl.metadata;
 
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.dynamo.file.util.FileUtil;
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.folio.metadata.MetaDataManager;
 import io.vertigo.lang.Assertion;
 import io.vertigo.lang.Option;
@@ -41,7 +41,7 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 
 	/** {@inheritDoc} */
 	@Override
-	public MetaDataContainer extractMetaData(final VFile file) {
+	public MetaDataSet extractMetaData(final VFile file) {
 		Assertion.checkNotNull(file);
 		//-----
 		//		Assertion.notNull(extractorWork.getResource());
@@ -59,12 +59,12 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 		LOGGER.trace(String.format("Start extract MetaData on %s ", file.getFileName()));
 		final Option<MetaDataExtractorPlugin> metaDataExtractor = getMetaDataExtractorPlugin(file);
 
-		final MetaDataContainerBuilder metaDataContainerBuilder = new MetaDataContainerBuilder();
+		final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder();
 		//analyticsAgent.startProcess(fileExtension);
 		//boolean ok = false;
 		if (metaDataExtractor.isDefined()) {
 			LOGGER.info(String.format("Start extract MetaData on %s whith %s", file.getFileName(), metaDataExtractor.get().getClass().getSimpleName()));
-			metaDataContainerBuilder.withAllMetaDatas(extractMetaData(metaDataExtractor.get(), file));
+			metaDataContainerBuilder.addAllMetaDatas(extractMetaData(metaDataExtractor.get(), file));
 		} else {
 			LOGGER.info(String.format("No MetaDataExtractor found for %s", file.getFileName()));
 		}
@@ -74,31 +74,31 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 		return metaDataContainerBuilder.build();
 	}
 
-	private static MetaDataContainer extractMetaData(final MetaDataExtractorPlugin metaDataExtractor, final VFile file) {
+	private static MetaDataSet extractMetaData(final MetaDataExtractorPlugin metaDataExtractor, final VFile file) {
 		try {
-			return metaDataExtractor.extractMetaData(file);
+			return metaDataExtractor.extractMetaDataSet(file);
 		} catch (final Exception e) {
 			//	analyticsAgent.setValue(MEDA_SYSTEM_EXCEPTION_COUNT, 100);
 			// On n'a pas r�ussi � extraire les meta donn�es
 			// on cr�e un conteneur vide.
-			return MetaDataContainer.EMPTY_META_DATA_CONTAINER;
+			return MetaDataSet.EMPTY_META_DATA_SET;
 			//	LOGGER.warn("Impossible d'extraire les m�ta-donn�es de " + resource.getURI().toURN(), e);
 		} //finally {
 	}
 
-	private static void extractMetaData(final MetaDataContainerBuilder metaDataContainerBuilder, final VFile kFile) {
+	private static void extractMetaData(final MetaDataSetBuilder metaDataContainerBuilder, final VFile kFile) {
 		final String fileExtension = FileUtil.getFileExtension(kFile.getFileName());
 		//			//	analyticsAgent.stopProcess();
 		//		}
 		// Dans le cas des fichiers on ajoute la taille
 		metaDataContainerBuilder//
-				.withMetaData(FileInfoMetaData.SIZE, kFile.getLength())//
-				.withMetaData(FileInfoMetaData.FILE_EXTENSION, fileExtension.toUpperCase())//
+				.addMetaData(FileInfoMetaData.SIZE, kFile.getLength())//
+				.addMetaData(FileInfoMetaData.FILE_EXTENSION, fileExtension.toUpperCase())//
 				// note: il y a aussi FileSystemView.getFileSystemView().getSystemIcon(file)
 
 				// throw new KSystemException("Erreur de lecture des m�ta donn�es pour " + file.getName(), e);
-				.withMetaData(FileInfoMetaData.FILE_NAME, kFile.getFileName())//
-				.withMetaData(FileInfoMetaData.LAST_MODIFIED, kFile.getLastModified());
+				.addMetaData(FileInfoMetaData.FILE_NAME, kFile.getFileName())//
+				.addMetaData(FileInfoMetaData.LAST_MODIFIED, kFile.getLastModified());
 		//		mdContainer.setValue(metaDataManager.getNameSpace().getMetaData(DocumentMetaData.MEDA_LAST_MODIFIED_URN), fileInfo.getLastModified());
 		// mdContainer.setValue(PATH, file.getPath());
 		//	return mdContainer;

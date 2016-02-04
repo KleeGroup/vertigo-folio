@@ -1,7 +1,7 @@
 package io.vertigo.folio.document.model;
 
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
 
 import java.io.Serializable;
@@ -38,13 +38,13 @@ public final class Document implements Serializable {
 	private final String type;
 	private final DocumentCategory category;
 
-	private final MetaDataContainer sourceMetaDataContainer;
+	private final MetaDataSet sourceMetaDataContainer;
 
 	//ProcessedMetaData
-	private final MetaDataContainer enhancedMetaDataContainer;
+	private final MetaDataSet enhancedMetaDataContainer;
 
 	//AddedDefinedMetaData
-	private final MetaDataContainer addedMetaDataContainer;
+	private final MetaDataSet addedMetaDataContainer;
 
 	/**
 	 * Constructeur.
@@ -59,7 +59,7 @@ public final class Document implements Serializable {
 	 * @param addedMetaDataContainer metadata added by a person
 	 * @param category Category
 	 */
-	Document(final DocumentVersion documentVersion, final long size, final UUID revision, final String name, final String content, final String type, final DocumentCategory category, final MetaDataContainer sourceMetaDataContainer, final MetaDataContainer enhancedMetaDataContainer, final MetaDataContainer addedMetaDataContainer, final DocumentStatus documentStatus) {
+	Document(final DocumentVersion documentVersion, final long size, final UUID revision, final String name, final String content, final String type, final DocumentCategory category, final MetaDataSet sourceMetaDataContainer, final MetaDataSet enhancedMetaDataContainer, final MetaDataSet addedMetaDataContainer, final DocumentStatus documentStatus) {
 		Assertion.checkNotNull(documentVersion);
 		Assertion.checkArgument(size >= 0, "size doit �tre >=0");
 		Assertion.checkNotNull(revision);
@@ -131,14 +131,14 @@ public final class Document implements Serializable {
 	 *   
 	 * @return metadata stored in the source file
 	 */
-	public MetaDataContainer getSourceMetaDataContainer() {
+	public MetaDataSet getSourceMetaDataContainer() {
 		return sourceMetaDataContainer;
 	}
 
 	//-------------------------------------------------------------------------
 	// ProcessedMetaData
 	//-------------------------------------------------------------------------
-	public MetaDataContainer getEnhancedMetaDataContainer() {
+	public MetaDataSet getEnhancedMetaDataContainer() {
 		return enhancedMetaDataContainer;
 	}
 
@@ -153,21 +153,21 @@ public final class Document implements Serializable {
 	 *  
 	 * @return added metadata
 	 */
-	public MetaDataContainer getAddedMetaDataContainer() {
+	public MetaDataSet getAddedMetaDataContainer() {
 		return addedMetaDataContainer;
 	}
 
 	//-------------------------------------------------------------------------
 	// AggregatedMetaData
 	//-------------------------------------------------------------------------
-	public MetaDataContainer getMetaDataContainer() {
+	public MetaDataSet getMetaDataContainer() {
 		//On fabrique � la vol�e le MDC total.
 		//@TODO si beaucoup utilis� alors construire au d�marrage.
 		//L'ordre est important les MetaDonn�es utilisateurs peuvent donc surcharg�es des Metadonn�es "techniques"
-		return new MetaDataContainerBuilder()//
-				.withAllMetaDatas(sourceMetaDataContainer)//
-				.withAllMetaDatas(enhancedMetaDataContainer)//
-				.withAllMetaDatas(addedMetaDataContainer)//
+		return new MetaDataSetBuilder()//
+				.addAllMetaDatas(sourceMetaDataContainer)//
+				.addAllMetaDatas(enhancedMetaDataContainer)//
+				.addAllMetaDatas(addedMetaDataContainer)//
 				.build();
 	}
 

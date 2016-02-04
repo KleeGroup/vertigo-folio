@@ -19,8 +19,8 @@ import static io.vertigo.folio.plugins.metadata.ooxml.OOXMLCoreMetaData.VERSION;
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.dynamo.file.util.FileUtil;
 import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
 
 import java.io.InputStream;
@@ -43,7 +43,7 @@ public class CommonOOXMLMetaDataExtractorPlugin implements MetaDataExtractorPlug
 
 	/** {@inheritDoc} */
 	@Override
-	public final MetaDataContainer extractMetaData(final VFile file) throws Exception {
+	public final MetaDataSet extractMetaDataSet(final VFile file) throws Exception {
 		Assertion.checkNotNull(file);
 		//-----
 		if (file.getFileName().endsWith(".xlsx") && file.getLength() > 3.5d * 1024 * 1024) {
@@ -68,11 +68,11 @@ public class CommonOOXMLMetaDataExtractorPlugin implements MetaDataExtractorPlug
 	 * @param extractor Extracteur des m�tadonn�es
 	 * @return Container Conteneur o� placer les m�tadonn�es
 	 */
-	protected static final MetaDataContainer doExtractMetaData(final POIXMLTextExtractor extractor) {
-		final MetaDataContainerBuilder metaDataContainerBuilder = new MetaDataContainerBuilder();
+	protected static final MetaDataSet doExtractMetaData(final POIXMLTextExtractor extractor) {
+		final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder();
 
 		// Content
-		metaDataContainerBuilder.withMetaData(OOXMLOthersMetaData.CONTENT, extractor.getText());
+		metaDataContainerBuilder.addMetaData(OOXMLOthersMetaData.CONTENT, extractor.getText());
 
 		// Core Metadatas
 		final PackagePropertiesPart cp = extractor.getCoreProperties().getUnderlyingProperties();
@@ -153,23 +153,23 @@ public class CommonOOXMLMetaDataExtractorPlugin implements MetaDataExtractorPlug
 
 	}
 
-	private static void addProperty(final MetaDataContainerBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final String value) {
-		metaDataContainerBuilder.withMetaData(metaData, value);
+	private static void addProperty(final MetaDataSetBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final String value) {
+		metaDataContainerBuilder.addMetaData(metaData, value);
 	}
 
-	private static void addProperty(final MetaDataContainerBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final int value) {
-		metaDataContainerBuilder.withMetaData(metaData, value);
+	private static void addProperty(final MetaDataSetBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final int value) {
+		metaDataContainerBuilder.addMetaData(metaData, value);
 	}
 
-	private static void addProperty(final MetaDataContainerBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final Nullable<String> nullable) {
+	private static void addProperty(final MetaDataSetBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final Nullable<String> nullable) {
 		if (nullable.hasValue()) {
 			addProperty(metaDataContainerBuilder, metaData, nullable.getValue());
 		}
 	}
 
-	private static void addDateProperty(final MetaDataContainerBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final Nullable<Date> nullable) {
+	private static void addDateProperty(final MetaDataSetBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final Nullable<Date> nullable) {
 		if (nullable.hasValue()) {
-			metaDataContainerBuilder.withMetaData(metaData, nullable.getValue());
+			metaDataContainerBuilder.addMetaData(metaData, nullable.getValue());
 		}
 	}
 

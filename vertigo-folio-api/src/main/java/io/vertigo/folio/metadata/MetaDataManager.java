@@ -14,5 +14,5 @@ public interface MetaDataManager extends Manager {
 	 * Extraction des M�taDonn�es d'un fichier.
 	 * @param file Fichier dont on veut extraire les m�tadonn�es
 	 */
-	MetaDataContainer extractMetaData(final VFile file);
+	MetaDataSet extractMetaData(final VFile file);
 }

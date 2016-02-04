@@ -3,8 +3,8 @@ package io.vertigo.folio.plugins.metadata.pdf;
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.dynamo.file.util.FileUtil;
 import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
 import io.vertigo.util.ListBuilder;
 
@@ -48,7 +48,7 @@ public final class PDFMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 
 	/** {@inheritDoc} */
 	@Override
-	public MetaDataContainer extractMetaData(final VFile file) throws Exception {
+	public MetaDataSet extractMetaDataSet(final VFile file) throws Exception {
 		Assertion.checkNotNull(file);
 		//-----
 		//Extraction de TOUT le contenu d'un pdf
@@ -60,23 +60,23 @@ public final class PDFMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 			//-----
 			//Metadata
 			final PDDocumentInformation documentInformation = pdd.getDocumentInformation();
-			final MetaDataContainerBuilder metaDataContainerBuilder = new MetaDataContainerBuilder()
-					.withMetaData(PDFMetaData.AUTHOR, documentInformation.getAuthor())
-					.withMetaData(PDFMetaData.KEYWORDS, documentInformation.getKeywords())
-					.withMetaData(PDFMetaData.SUBJECT, documentInformation.getSubject())
-					.withMetaData(PDFMetaData.TITLE, documentInformation.getTitle())
-					.withMetaData(PDFMetaData.CONTENT, content)
-					.withMetaData(PDFMetaData.PRODUCER, documentInformation.getProducer())
-					.withMetaData(PDFMetaData.PDFA, String.valueOf(PDFA_VALID.equals(pdfaValidationMsg)))
-					.withMetaData(PDFMetaData.PDFA_VALIDATION_MSG, pdfaValidationMsg);
+			final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder()
+					.addMetaData(PDFMetaData.AUTHOR, documentInformation.getAuthor())
+					.addMetaData(PDFMetaData.KEYWORDS, documentInformation.getKeywords())
+					.addMetaData(PDFMetaData.SUBJECT, documentInformation.getSubject())
+					.addMetaData(PDFMetaData.TITLE, documentInformation.getTitle())
+					.addMetaData(PDFMetaData.CONTENT, content)
+					.addMetaData(PDFMetaData.PRODUCER, documentInformation.getProducer())
+					.addMetaData(PDFMetaData.PDFA, String.valueOf(PDFA_VALID.equals(pdfaValidationMsg)))
+					.addMetaData(PDFMetaData.PDFA_VALIDATION_MSG, pdfaValidationMsg);
 			if (thumbnails.size() > 0) {
-				metaDataContainerBuilder.withMetaData(PDFMetaData.THUMBNAIL_PAGE_1, thumbnails.get(0));
+				metaDataContainerBuilder.addMetaData(PDFMetaData.THUMBNAIL_PAGE_1, thumbnails.get(0));
 				if (thumbnails.size() > 1) {
-					metaDataContainerBuilder.withMetaData(PDFMetaData.THUMBNAIL_PAGE_2, thumbnails.get(1));
+					metaDataContainerBuilder.addMetaData(PDFMetaData.THUMBNAIL_PAGE_2, thumbnails.get(1));
 					if (thumbnails.size() > 2) {
-						metaDataContainerBuilder.withMetaData(PDFMetaData.THUMBNAIL_PAGE_3, thumbnails.get(2));
+						metaDataContainerBuilder.addMetaData(PDFMetaData.THUMBNAIL_PAGE_3, thumbnails.get(2));
 						if (thumbnails.size() > 3) {
-							metaDataContainerBuilder.withMetaData(PDFMetaData.THUMBNAIL_PAGE_4, thumbnails.get(3));
+							metaDataContainerBuilder.addMetaData(PDFMetaData.THUMBNAIL_PAGE_4, thumbnails.get(3));
 						}
 					}
 				}

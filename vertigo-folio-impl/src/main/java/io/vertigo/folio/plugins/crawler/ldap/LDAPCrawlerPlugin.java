@@ -4,8 +4,8 @@ import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.document.model.DocumentBuilder;
 import io.vertigo.folio.document.model.DocumentVersion;
 import io.vertigo.folio.impl.crawler.CrawlerPlugin;
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.folio.plugins.metadata.ldap.LDAPMetaData;
 import io.vertigo.lang.Assertion;
 import io.vertigo.util.ListBuilder;
@@ -135,18 +135,18 @@ public class LDAPCrawlerPlugin implements CrawlerPlugin {
 		final String manager_url = getAttribute(entry, "manager");
 		final String thumbnail = encodeImage(entry);
 
-		final MetaDataContainer mdc = new MetaDataContainerBuilder()
-				.withMetaData(LDAPMetaData.NAME, name)
-				.withMetaData(LDAPMetaData.SAMACCOUNTNAME, samAccountName)
-				.withMetaData(LDAPMetaData.EMAIL, email)
-				.withMetaData(LDAPMetaData.COMPANY, company)
-				.withMetaData(LDAPMetaData.DEPARTMENT, department)
-				.withMetaData(LDAPMetaData.FIRSTNAME, firstname)
-				.withMetaData(LDAPMetaData.OFFICE, office)
-				.withMetaData(LDAPMetaData.PHONE, phone)
-				.withMetaData(LDAPMetaData.TITLE, title)
-				.withMetaData(LDAPMetaData.MANAGER_URL, manager_url)
-				.withMetaData(LDAPMetaData.THUMBNAIL, thumbnail)
+		final MetaDataSet mdc = new MetaDataSetBuilder()
+				.addMetaData(LDAPMetaData.NAME, name)
+				.addMetaData(LDAPMetaData.SAMACCOUNTNAME, samAccountName)
+				.addMetaData(LDAPMetaData.EMAIL, email)
+				.addMetaData(LDAPMetaData.COMPANY, company)
+				.addMetaData(LDAPMetaData.DEPARTMENT, department)
+				.addMetaData(LDAPMetaData.FIRSTNAME, firstname)
+				.addMetaData(LDAPMetaData.OFFICE, office)
+				.addMetaData(LDAPMetaData.PHONE, phone)
+				.addMetaData(LDAPMetaData.TITLE, title)
+				.addMetaData(LDAPMetaData.MANAGER_URL, manager_url)
+				.addMetaData(LDAPMetaData.THUMBNAIL, thumbnail)
 				.build();
 		return new DocumentBuilder(documentVersion)
 				.withType("LDAP")

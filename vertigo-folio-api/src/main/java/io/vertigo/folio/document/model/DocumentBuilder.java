@@ -1,6 +1,6 @@
 package io.vertigo.folio.document.model;
 
-import io.vertigo.folio.metadata.MetaDataContainer;
+import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.lang.Assertion;
 import io.vertigo.lang.Builder;
 
@@ -19,11 +19,11 @@ public final class DocumentBuilder implements Builder<Document> {
 	private String myContent;
 	private String myType;
 	private DocumentCategory myCategory;
-	private MetaDataContainer mySourceMetaDataContainer;
+	private MetaDataSet mySourceMetaDataContainer;
 	//Processed
-	private MetaDataContainer myEnhancedMetaDataContainer;
+	private MetaDataSet myEnhancedMetaDataContainer;
 	//AddedMetaData
-	private MetaDataContainer myAddedMetaDataContainer;
+	private MetaDataSet myAddedMetaDataContainer;
 
 	private DocumentStatus myDocumentStatus;
 
@@ -91,7 +91,7 @@ public final class DocumentBuilder implements Builder<Document> {
 		return this;
 	}
 
-	public DocumentBuilder withSourceMetaDataContainer(final MetaDataContainer sourceMetaDataContainer) {
+	public DocumentBuilder withSourceMetaDataContainer(final MetaDataSet sourceMetaDataContainer) {
 		Assertion.checkNotNull(sourceMetaDataContainer);
 		//-----
 		mySourceMetaDataContainer = sourceMetaDataContainer;
@@ -99,7 +99,7 @@ public final class DocumentBuilder implements Builder<Document> {
 		return this;
 	}
 
-	public DocumentBuilder withEnhancedMetaDataContainer(final MetaDataContainer enhancedMetaDataContainer) {
+	public DocumentBuilder withEnhancedMetaDataContainer(final MetaDataSet enhancedMetaDataContainer) {
 		Assertion.checkNotNull(enhancedMetaDataContainer);
 		//-----
 		myEnhancedMetaDataContainer = enhancedMetaDataContainer;
@@ -108,7 +108,7 @@ public final class DocumentBuilder implements Builder<Document> {
 		return this;
 	}
 
-	public DocumentBuilder withAddedMetaDataContainer(final MetaDataContainer addedMetaDataContainer) {
+	public DocumentBuilder withAddedMetaDataContainer(final MetaDataSet addedMetaDataContainer) {
 		Assertion.checkNotNull(addedMetaDataContainer);
 		//-----
 		myAddedMetaDataContainer = addedMetaDataContainer;
@@ -129,9 +129,9 @@ public final class DocumentBuilder implements Builder<Document> {
 		if (document == null) {
 			//Pour le premier document on commence la r�vision � 0. (Pas de r�vision)
 			return new Document(documentVersion, mySize, nextRevision(), myName, myContent, myType, myCategory,
-					get(MetaDataContainer.EMPTY_META_DATA_CONTAINER, mySourceMetaDataContainer),
-					get(MetaDataContainer.EMPTY_META_DATA_CONTAINER, myEnhancedMetaDataContainer),
-					get(MetaDataContainer.EMPTY_META_DATA_CONTAINER, myAddedMetaDataContainer),
+					get(MetaDataSet.EMPTY_META_DATA_SET, mySourceMetaDataContainer),
+					get(MetaDataSet.EMPTY_META_DATA_SET, myEnhancedMetaDataContainer),
+					get(MetaDataSet.EMPTY_META_DATA_SET, myAddedMetaDataContainer),
 					get(new DocumentStatus(false, true, false), myDocumentStatus));
 		}
 
@@ -140,9 +140,9 @@ public final class DocumentBuilder implements Builder<Document> {
 		final String overriddenContent = get(document.getContent(), myContent);
 		final String overriddenType = get(document.getType(), myType);
 		final DocumentCategory overriddenCategory = get(document.getCategory(), myCategory);
-		final MetaDataContainer overriddenSourceMetaDataContainer = get(document.getSourceMetaDataContainer(), mySourceMetaDataContainer);
-		final MetaDataContainer overriddenEnhancedMetaDataContainer = get(document.getEnhancedMetaDataContainer(), myEnhancedMetaDataContainer);
-		final MetaDataContainer overriddenAddedMetaDataContainer = get(document.getAddedMetaDataContainer(), myAddedMetaDataContainer);
+		final MetaDataSet overriddenSourceMetaDataContainer = get(document.getSourceMetaDataContainer(), mySourceMetaDataContainer);
+		final MetaDataSet overriddenEnhancedMetaDataContainer = get(document.getEnhancedMetaDataContainer(), myEnhancedMetaDataContainer);
+		final MetaDataSet overriddenAddedMetaDataContainer = get(document.getAddedMetaDataContainer(), myAddedMetaDataContainer);
 		final DocumentStatus overriddenDocumentStatus = get(document.getDocumentStatus(), myDocumentStatus);
 
 		return new Document(

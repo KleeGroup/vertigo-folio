@@ -2,8 +2,8 @@ package io.vertigo.folio.plugins.metadata.tika;
 
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.folio.metadata.MetaDataType;
 import io.vertigo.lang.Assertion;
 
@@ -75,10 +75,10 @@ public abstract class AbstractTikaMetaDataExtractorPlugin<M extends TikaMetaData
 
 	/** {@inheritDoc} */
 	@Override
-	public final MetaDataContainer extractMetaData(final VFile file) throws Exception {
+	public final MetaDataSet extractMetaDataSet(final VFile file) throws Exception {
 		Assertion.checkNotNull(file);
 		//-----
-		final MetaDataContainerBuilder metaDataContainerBuilder = new MetaDataContainerBuilder();
+		final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder();
 		final org.apache.tika.metadata.Metadata tikaMetaData = new org.apache.tika.metadata.Metadata();
 
 		try (final InputStream inputStream = file.createInputStream()) {
@@ -94,7 +94,7 @@ public abstract class AbstractTikaMetaDataExtractorPlugin<M extends TikaMetaData
 			// Lancement du parsing
 			parser.parse(inputStream, new BodyContentHandler(handler), tikaMetaData, context);
 
-			metaDataContainerBuilder.withMetaData(contentMetaData, handler.toString());
+			metaDataContainerBuilder.addMetaData(contentMetaData, handler.toString());
 		}
 
 		// Parcours des m�tadonn�es et ajout au conteneur
@@ -103,7 +103,7 @@ public abstract class AbstractTikaMetaDataExtractorPlugin<M extends TikaMetaData
 				final M metaData = metaDataMap.get(name);
 				final String value = tikaMetaData.get(name);
 
-				metaDataContainerBuilder.withMetaData(metaData, stringToValue(metaData.getType(), value));
+				metaDataContainerBuilder.addMetaData(metaData, stringToValue(metaData.getType(), value));
 			}
 		}
 

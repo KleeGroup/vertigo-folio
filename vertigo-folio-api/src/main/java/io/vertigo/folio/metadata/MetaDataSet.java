@@ -15,8 +15,8 @@ import java.util.Set;
  * @author pchretien
  * @version $Id: MetaDataContainer.java,v 1.3 2013/10/22 10:58:44 pchretien Exp $
  */
-public final class MetaDataContainer implements Serializable {
-	public static final MetaDataContainer EMPTY_META_DATA_CONTAINER = new MetaDataContainer();
+public final class MetaDataSet implements Serializable {
+	public static final MetaDataSet EMPTY_META_DATA_SET = new MetaDataSet();
 
 	/**Identifiant de s�rialisation. */
 	private static final long serialVersionUID = 8518904186883185597L;
@@ -26,14 +26,14 @@ public final class MetaDataContainer implements Serializable {
 	/**
 	 * Constructeur.
 	 */
-	private MetaDataContainer() {
+	private MetaDataSet() {
 		metadatas = Collections.emptyMap();
 	}
 
 	/**
 	 * Constructeur ferm� (utilisable par le seul builder.
 	 */
-	MetaDataContainer(final Map<MetaData, Object> metadatas) {
+	MetaDataSet(final Map<MetaData, Object> metadatas) {
 		Assertion.checkNotNull(metadatas);
 		//-----
 		this.metadatas = Collections.unmodifiableMap(metadatas);
@@ -42,7 +42,7 @@ public final class MetaDataContainer implements Serializable {
 	/**
 	 * @return Set des m�ta donn�es.
 	 */
-	public Set<MetaData> getMetaDataSet() {
+	public Set<MetaData> getMetaDatas() {
 		return metadatas.keySet();
 	}
 

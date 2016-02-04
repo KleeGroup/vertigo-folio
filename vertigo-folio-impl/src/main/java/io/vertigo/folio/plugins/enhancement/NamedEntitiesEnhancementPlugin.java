@@ -2,8 +2,8 @@ package io.vertigo.folio.plugins.enhancement;
 
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.impl.enhancement.EnhancementPlugin;
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.folio.namedentity.NamedEntity;
 import io.vertigo.folio.namedentity.NamedEntityManager;
 import io.vertigo.lang.Assertion;
@@ -25,7 +25,7 @@ public class NamedEntitiesEnhancementPlugin implements EnhancementPlugin {
 	}
 
 	@Override
-	public MetaDataContainer extract(final Document document) {
+	public MetaDataSet extract(final Document document) {
 		Assertion.checkNotNull(document);
 		//-------------------------------------------------------------
 		final Set<NamedEntity> namedEntities = namedEntityManager.extractNamedEntities(document.getContent());
@@ -40,8 +40,8 @@ public class NamedEntitiesEnhancementPlugin implements EnhancementPlugin {
 		if (stringBuilder.length() > 0) {
 			stringBuilder.delete(stringBuilder.lastIndexOf(","), stringBuilder.length() - 1);
 		}
-		return new MetaDataContainerBuilder()
-				.withMetaData(NamedEntitiesMetaData.NAMED_ENTITIES, stringBuilder.toString())
+		return new MetaDataSetBuilder()
+				.addMetaData(NamedEntitiesMetaData.NAMED_ENTITIES, stringBuilder.toString())
 				.build();
 	}
 }

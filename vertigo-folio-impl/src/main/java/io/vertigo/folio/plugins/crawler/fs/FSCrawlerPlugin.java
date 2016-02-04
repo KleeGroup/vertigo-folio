@@ -10,8 +10,8 @@ import io.vertigo.folio.document.model.DocumentVersionBuilder;
 import io.vertigo.folio.impl.crawler.CrawlerPlugin;
 import io.vertigo.folio.impl.metadata.FileInfoMetaData;
 import io.vertigo.folio.metadata.MetaData;
-import io.vertigo.folio.metadata.MetaDataContainer;
-import io.vertigo.folio.metadata.MetaDataContainerBuilder;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.folio.metadata.MetaDataManager;
 import io.vertigo.lang.Assertion;
 import io.vertigo.util.StringUtil;
@@ -201,12 +201,12 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 		final VFile kFile = fileManager.createFile(file);
 
 		//On extrait les MetaDatas
-		final MetaDataContainer mdc = metaDataManager.extractMetaData(kFile);
+		final MetaDataSet mdc = metaDataManager.extractMetaData(kFile);
 		//final DocumentCategory category = extractCategory(documentVersion);
 		return createDocument(documentVersion, mdc);
 	}
 
-	private static Document createDocument(final DocumentVersion documentVersion, final MetaDataContainer extractedMdc) {
+	private static Document createDocument(final DocumentVersion documentVersion, final MetaDataSet extractedMdc) {
 		//On cr�e le document
 		//System.out.println("createDocument :" + fileDownloadUrl);
 		final DocumentBuilder documentBuilder = new DocumentBuilder(documentVersion);
@@ -215,14 +215,14 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 		return documentBuilder.build();
 	}
 
-	private static void populateDocument(final DocumentBuilder documentBuilder, final MetaDataContainer mdc) {
+	private static void populateDocument(final DocumentBuilder documentBuilder, final MetaDataSet mdc) {
 		final List<MetaData> excludedMetaData = new ArrayList<>(4);
 		excludedMetaData.add(FileInfoMetaData.FILE_NAME);
 		excludedMetaData.add(FileInfoMetaData.SIZE);
 		excludedMetaData.add(FileInfoMetaData.FILE_EXTENSION);
 		excludedMetaData.add(FileInfoMetaData.LAST_MODIFIED);
 
-		final MetaDataContainerBuilder mdcBuilder = new MetaDataContainerBuilder();
+		final MetaDataSetBuilder mdcBuilder = new MetaDataSetBuilder();
 		final String type = (String) mdc.getValue(FileInfoMetaData.FILE_EXTENSION);
 
 		documentBuilder
@@ -233,13 +233,13 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 
 		//documentBuilder.setLastModified((Date) mdc.getValue(FileInfoMetaData.LAST_MODIFIED));
 		boolean contentSet = false;
-		for (final MetaData metaData : mdc.getMetaDataSet()) {
+		for (final MetaData metaData : mdc.getMetaDatas()) {
 			if ("CONTENT".equals(metaData.toString())) {
 				Assertion.checkArgument(!contentSet, "Le contenu � d�j� �t� trouv�, que faire de {0}.CONTENT ?", metaData.getClass().getName());
 				documentBuilder.withContent((String) mdc.getValue(metaData));
 				contentSet = true;
 			} else if (!excludedMetaData.contains(metaData)) {
-				mdcBuilder.withMetaData(metaData, mdc.getValue(metaData));
+				mdcBuilder.addMetaData(metaData, mdc.getValue(metaData));
 			}
 		}
 		documentBuilder.withSourceMetaDataContainer(mdcBuilder.build());

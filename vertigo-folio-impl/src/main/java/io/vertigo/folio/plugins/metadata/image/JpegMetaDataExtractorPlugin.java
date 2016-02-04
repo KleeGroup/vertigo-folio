@@ -4,7 +4,7 @@ package io.vertigo.folio.plugins.metadata.image;
 
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
-import io.vertigo.folio.metadata.MetaDataContainer;
+import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.lang.Assertion;
 
 //import com.drew.imaging.jpeg.JpegMetadataReader;
@@ -18,7 +18,7 @@ public final class JpegMetaDataExtractorPlugin implements MetaDataExtractorPlugi
 
 	/** {@inheritDoc} */
 	@Override
-	public MetaDataContainer extractMetaData(final VFile file) throws Exception {
+	public MetaDataSet extractMetaDataSet(final VFile file) throws Exception {
 		throw new UnsupportedOperationException();
 		/*		Assertion.notNull(fileInfo);
 		//-----

@@ -25,16 +25,6 @@ public enum MetaDataType {
 
 	/** Boolean */
 	BOOLEAN(Boolean.class);
-
-	/** Date ou masque de date; */
-	//CALENDAR(Calendar.class);
-
-	/** Dur�e. Stock�e en Millisecondes. */
-	//DURATION(Long.class),
-
-	/** Type de m�tadonn�e g�n�rique stock�e sous forme de String. */
-	//UNKNOWN(String.class);
-
 	//-----
 	private final Class<?> javaClass;
 

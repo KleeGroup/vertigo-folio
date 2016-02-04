@@ -12,7 +12,7 @@ import java.util.Map;
  * @author pchretien
  * @version $Id: MetaDataContainerBuilder.java,v 1.4 2014/02/27 10:21:46 pchretien Exp $
  */
-public final class MetaDataContainerBuilder implements Builder<MetaDataContainer> {
+public final class MetaDataSetBuilder implements Builder<MetaDataSet> {
 	private final Map<MetaData, Object> metadatas = new HashMap<>();
 
 	/**
@@ -21,7 +21,7 @@ public final class MetaDataContainerBuilder implements Builder<MetaDataContainer
 	 * @param metaData m�ta-donn�e
 	 * @param value Valeur de la m�ta-donn�e
 	 */
-	public MetaDataContainerBuilder withMetaData(final MetaData metaData, final Object value) {
+	public MetaDataSetBuilder addMetaData(final MetaData metaData, final Object value) {
 		Assertion.checkNotNull(metaData);
 		metaData.getType().checkValue(value);
 		//-----
@@ -34,11 +34,11 @@ public final class MetaDataContainerBuilder implements Builder<MetaDataContainer
 	 * Les pr�c�dentes m�tadonn�es sont possiblement remplac�es par les nouvelles.
 	 * @param metaDataContainer MDC � ajouter
 	 */
-	public MetaDataContainerBuilder withAllMetaDatas(final MetaDataContainer metaDataContainer) {
+	public MetaDataSetBuilder addAllMetaDatas(final MetaDataSet metaDataContainer) {
 		Assertion.checkNotNull(metaDataContainer);
 		//-----
-		for (final MetaData metaData : metaDataContainer.getMetaDataSet()) {
-			withMetaData(metaData, metaDataContainer.getValue(metaData));
+		for (final MetaData metaData : metaDataContainer.getMetaDatas()) {
+			addMetaData(metaData, metaDataContainer.getValue(metaData));
 		}
 		return this;
 	}
@@ -48,10 +48,10 @@ public final class MetaDataContainerBuilder implements Builder<MetaDataContainer
 	 * @return Conteneur des m�tadonn�es
 	 */
 	@Override
-	public MetaDataContainer build() {
+	public MetaDataSet build() {
 		if (metadatas.isEmpty()) {
-			return MetaDataContainer.EMPTY_META_DATA_CONTAINER;
+			return MetaDataSet.EMPTY_META_DATA_SET;
 		}
-		return new MetaDataContainer(metadatas);
+		return new MetaDataSet(metadatas);
 	}
 }
