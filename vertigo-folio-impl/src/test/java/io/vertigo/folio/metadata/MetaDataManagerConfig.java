@@ -2,6 +2,8 @@ package io.vertigo.folio.metadata;
 
 import io.vertigo.app.config.AppConfig;
 import io.vertigo.app.config.AppConfigBuilder;
+import io.vertigo.commons.daemon.DaemonManager;
+import io.vertigo.commons.impl.daemon.DaemonManagerImpl;
 import io.vertigo.dynamo.file.FileManager;
 import io.vertigo.dynamo.impl.file.FileManagerImpl;
 import io.vertigo.folio.impl.metadata.MetaDataManagerImpl;
@@ -21,6 +23,7 @@ final class MetaDataManagerConfig {
 		return new AppConfigBuilder()
 //				.beginModule(CommonsFeatures.class).endModule()
 				.beginModule("vertigo-dynamo")
+					.addComponent(DaemonManager.class, DaemonManagerImpl.class)
 					.addComponent(FileManager.class, FileManagerImpl.class)
 				.endModule()
 				.beginModule("vertigo-document")

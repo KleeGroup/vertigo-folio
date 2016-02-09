@@ -14,8 +14,8 @@
             <plugin class="io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaDataExtractorPlugin"/>
         </component>
 
-
-        <component api="FileManager" class="io.vertigo.dynamo.impl.file.FileManagerImpl"/>
+		<component api="DaemonManager" class="io.vertigo.commons.impl.daemon.DaemonManagerImpl" />
+		<component api="FileManager" class="io.vertigo.dynamo.impl.file.FileManagerImpl"/>
         <component api="DocumentManager" class="io.vertigo.folio.impl.document.DocumentManagerImpl"/>
         <component api="CrawlerManager" class="io.vertigo.folio.impl.crawler.CrawlerManagerImpl">
             <plugin class="io.vertigo.folio.plugins.crawler.fs.FSCrawlerPlugin">
