@@ -5,19 +5,18 @@ import io.vertigo.app.config.AppConfig;
 import io.vertigo.dynamo.file.FileManager;
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.folio.impl.metadata.FileInfoMetaData;
-import io.vertigo.folio.metadata.MetaData;
-import io.vertigo.folio.metadata.MetaDataSet;
-import io.vertigo.folio.metadata.MetaDataManager;
 import io.vertigo.folio.plugins.metadata.microsoft.MSMetaData;
 import io.vertigo.folio.plugins.metadata.odf.ODFMetaData;
 import io.vertigo.folio.plugins.metadata.ooxml.OOXMLCoreMetaData;
 import io.vertigo.folio.plugins.metadata.pdf.PDFMetaData;
 import io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaData;
 import io.vertigo.folio.plugins.metadata.txt.TxtMetaData;
+import io.vertigo.lang.Assertion;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.inject.Inject;
 
@@ -45,6 +44,8 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 
 	private MetaDataSet buildMDC(final String fileName) {
 		try {
+			final URL fileURL = MetaDataManagerTest.class.getResource(fileName);
+			Assertion.checkNotNull(fileURL, "File not found : {0}", fileName);
 			final URI fileURI = MetaDataManagerTest.class.getResource(fileName).toURI();
 			final VFile file = fileManager.createFile(new File(fileURI));
 			return metaDataManager.extractMetaData(file);
