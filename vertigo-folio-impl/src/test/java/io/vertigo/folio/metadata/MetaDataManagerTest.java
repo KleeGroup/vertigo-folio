@@ -97,7 +97,7 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	/** Test TXT. */
 	@Test
 	public void testTxt() {
-		final MetaDataSet metaDataContainer = buildMDC("data/txt/Lautreamont.txt");
+		final MetaDataSet metaDataContainer = buildMDC("data/txt/lautreamont.txt");
 		final String content = (String) metaDataContainer.getValue(TxtMetaData.CONTENT);
 		Assert.assertTrue(content.contains("cantiques"));
 	}
@@ -137,7 +137,7 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	/** Test PPTX. */
 	@Test
 	public void testPptX() {
-		final MetaDataSet metaDataContainer = buildMDC("data/ooxml/pptx/architecture.pptx");
+		final MetaDataSet metaDataContainer = buildMDC("data/ooxml/pptx/Architecture.pptx");
 		printMetaData(metaDataContainer);
 		Assert.assertEquals("kleegroup", metaDataContainer.getValue(OOXMLCoreMetaData.CREATOR));
 		//		Assert.assertEquals("Waveform", metaDataContainer.getValue(OOXMLExtendedMetaData.TEMPLATE));
