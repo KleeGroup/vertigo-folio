@@ -165,9 +165,9 @@ public final class Document implements Serializable {
 		//@TODO si beaucoup utilis� alors construire au d�marrage.
 		//L'ordre est important les MetaDonn�es utilisateurs peuvent donc surcharg�es des Metadonn�es "techniques"
 		return new MetaDataSetBuilder()//
-				.addAllMetaDatas(sourceMetaDataContainer)//
-				.addAllMetaDatas(enhancedMetaDataContainer)//
-				.addAllMetaDatas(addedMetaDataContainer)//
+				.addMetaDataSet(sourceMetaDataContainer)
+				.addMetaDataSet(enhancedMetaDataContainer)
+				.addMetaDataSet(addedMetaDataContainer)
 				.build();
 	}
 

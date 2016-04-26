@@ -20,6 +20,7 @@ public final class MetaDataSetBuilder implements Builder<MetaDataSet> {
 	 * Si la m�tadonn�e est d�j� d�finie elle est surcharg�e.
 	 * @param metaData m�ta-donn�e
 	 * @param value Valeur de la m�ta-donn�e
+	 * @return this builder
 	 */
 	public MetaDataSetBuilder addMetaData(final MetaData metaData, final Object value) {
 		Assertion.checkNotNull(metaData);
@@ -32,13 +33,14 @@ public final class MetaDataSetBuilder implements Builder<MetaDataSet> {
 	/**
 	 * Ajout d'une liste de meta donn�es d�finies dans un MDC au MDC.
 	 * Les pr�c�dentes m�tadonn�es sont possiblement remplac�es par les nouvelles.
-	 * @param metaDataContainer MDC � ajouter
+	 * @param metaDataSet MDC � ajouter
+	 * @return this builder
 	 */
-	public MetaDataSetBuilder addAllMetaDatas(final MetaDataSet metaDataContainer) {
-		Assertion.checkNotNull(metaDataContainer);
+	public MetaDataSetBuilder addMetaDataSet(final MetaDataSet metaDataSet) {
+		Assertion.checkNotNull(metaDataSet);
 		//-----
-		for (final MetaData metaData : metaDataContainer.getMetaDatas()) {
-			addMetaData(metaData, metaDataContainer.getValue(metaData));
+		for (final MetaData metaData : metaDataSet.getMetaDatas()) {
+			addMetaData(metaData, metaDataSet.getValue(metaData));
 		}
 		return this;
 	}

@@ -64,7 +64,7 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 		//boolean ok = false;
 		if (metaDataExtractor.isDefined()) {
 			LOGGER.info(String.format("Start extract MetaData on %s whith %s", file.getFileName(), metaDataExtractor.get().getClass().getSimpleName()));
-			metaDataContainerBuilder.addAllMetaDatas(extractMetaData(metaDataExtractor.get(), file));
+			metaDataContainerBuilder.addMetaDataSet(extractMetaData(metaDataExtractor.get(), file));
 		} else {
 			LOGGER.info(String.format("No MetaDataExtractor found for %s", file.getFileName()));
 		}

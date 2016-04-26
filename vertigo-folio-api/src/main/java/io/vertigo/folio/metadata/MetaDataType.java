@@ -46,14 +46,14 @@ public enum MetaDataType {
 	}
 
 	/**
-	 * Teste si une m�tadonn�e a une valeur compatible avec le type.
-	 * @param metaDataValue	M�tadonn�e dont on veut tester la valeur
+	 * Checks if a value has the right type.
+	 * @param metaDataValue	value
 	 */
 	public void checkValue(final Object metaDataValue) {
-		//Par convention toute valeur null est valide.
+		//By convention null value is valid
 		//Si une valeur est non null on v�rifie que son type est correct.
 		if (metaDataValue != null && !javaClass.isInstance(metaDataValue)) {
-			throw new IllegalStateException("La valeur assign�e doit �tre d'un type compatible avec le type de la m�tadonn�e");
+			throw new IllegalStateException("La valeur assignée doit être d'un type compatible avec le type de la métadonnée");
 		}
 	}
 }
