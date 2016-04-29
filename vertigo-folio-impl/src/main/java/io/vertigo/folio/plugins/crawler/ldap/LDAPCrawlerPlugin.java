@@ -30,7 +30,7 @@ import sun.misc.BASE64Encoder;
 /**
  * Created by sbernard on 19/03/2015.
  */
-public class LDAPCrawlerPlugin implements CrawlerPlugin {
+public final class LDAPCrawlerPlugin implements CrawlerPlugin {
 	private final String myDataSourceId;
 	private final String host;
 	private final int port;
@@ -135,7 +135,7 @@ public class LDAPCrawlerPlugin implements CrawlerPlugin {
 		final String manager_url = getAttribute(entry, "manager");
 		final String thumbnail = encodeImage(entry);
 
-		final MetaDataSet mdc = new MetaDataSetBuilder()
+		final MetaDataSet metaDataSetBuilder = new MetaDataSetBuilder()
 				.addMetaData(LDAPMetaData.NAME, name)
 				.addMetaData(LDAPMetaData.SAMACCOUNTNAME, samAccountName)
 				.addMetaData(LDAPMetaData.EMAIL, email)
@@ -152,7 +152,7 @@ public class LDAPCrawlerPlugin implements CrawlerPlugin {
 				.withType("LDAP")
 				.withName(samAccountName)
 				.withSize(entry.size())
-				.withSourceMetaDataContainer(mdc)
+				.withSourceMetaDataSet(metaDataSetBuilder)
 				.build();
 	}
 

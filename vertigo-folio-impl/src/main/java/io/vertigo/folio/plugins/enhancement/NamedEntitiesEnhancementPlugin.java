@@ -15,30 +15,31 @@ import javax.inject.Inject;
 /**
  * Created by sbernard on 30/12/2014.
  */
-public class NamedEntitiesEnhancementPlugin implements EnhancementPlugin {
+public final class NamedEntitiesEnhancementPlugin implements EnhancementPlugin {
 	private final NamedEntityManager namedEntityManager;
 
 	@Inject
 	public NamedEntitiesEnhancementPlugin(final NamedEntityManager namedEntityManager) {
 		Assertion.checkNotNull(namedEntityManager);
+		//-----
 		this.namedEntityManager = namedEntityManager;
 	}
 
 	@Override
 	public MetaDataSet extract(final Document document) {
 		Assertion.checkNotNull(document);
-		//-------------------------------------------------------------
+		//-----
 		final Set<NamedEntity> namedEntities = namedEntityManager.extractNamedEntities(document.getContent());
 
 		// Concatenation des entités trouvées pour l'indexation
 		final StringBuilder stringBuilder = new StringBuilder();
+		boolean first = true;
 		for (final NamedEntity namedEntity : namedEntities) {
+			if (!first) {
+				stringBuilder.append(", ");
+			}
 			stringBuilder.append(namedEntity.getName());
-			stringBuilder.append(", ");
-		}
-		// Suppression de la dernière virgule
-		if (stringBuilder.length() > 0) {
-			stringBuilder.delete(stringBuilder.lastIndexOf(","), stringBuilder.length() - 1);
+			first = false;
 		}
 		return new MetaDataSetBuilder()
 				.addMetaData(NamedEntitiesMetaData.NAMED_ENTITIES, stringBuilder.toString())

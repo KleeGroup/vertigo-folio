@@ -18,7 +18,7 @@ import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
-public class StanfordTokenizerPlugin implements TokenizerPlugin {
+public final class StanfordTokenizerPlugin implements TokenizerPlugin {
 	private final MaxentTagger tagger;
 
 	@Inject

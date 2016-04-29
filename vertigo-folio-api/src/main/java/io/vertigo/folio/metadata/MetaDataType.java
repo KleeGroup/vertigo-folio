@@ -17,9 +17,6 @@ public enum MetaDataType {
 	/** Integer. */
 	INTEGER(Integer.class),
 
-	/** Long. */
-	LONG(Long.class),
-
 	/** Date. */
 	DATE(Date.class),
 

@@ -135,43 +135,8 @@ public abstract class AbstractTikaMetaDataExtractorPlugin<M extends TikaMetaData
 					}
 				}
 
-				/*case DURATION :
-					final Matcher matcher = Pattern.compile("PT(\\d{0,2})H(\\d{0,2})M(\\d{0,2})S").matcher((String) value);
-					if (matcher.matches()) {
-						try {
-							final int hours = matcher.group(1).length() > 0 ? Integer.parseInt(matcher.group(1)) : 0;
-							final int minutes = matcher.group(2).length() > 0 ? Integer.parseInt(matcher.group(2)) : 0;
-							final int seconds = matcher.group(3).length() > 0 ? Integer.parseInt(matcher.group(3)) : 0;
-
-							final Calendar cal = Calendar.getInstance();
-							cal.setTimeInMillis(0);
-							cal.set(Calendar.HOUR_OF_DAY, hours);
-							cal.set(Calendar.MINUTE, minutes);
-							cal.set(Calendar.SECOND, seconds);
-
-							return cal.getTimeInMillis();
-
-						} catch (final NumberFormatException e) {
-							return null;
-						}
-					} else {
-						return null;
-					}*/
-				//			case CALENDAR:
-				//				try {
-				//					final Date date = DateFormat.getDateInstance().parse(stringValue);
-				//					final Calendar calendar = Calendar.getInstance();
-				//					calendar.setTime(date);
-				//					return calendar;
-				//				} catch (final ParseException e) {
-				//					return null;
-				//				}
-
 			case STRING:
-				//		case UNKNOWN:
 				return stringValue;
-			case LONG:
-				return Long.parseLong(stringValue);
 			case BOOLEAN:
 				return Boolean.parseBoolean(stringValue);
 			default:

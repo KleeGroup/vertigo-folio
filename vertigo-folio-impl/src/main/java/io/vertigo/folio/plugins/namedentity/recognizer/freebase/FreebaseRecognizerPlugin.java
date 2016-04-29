@@ -31,7 +31,7 @@ import org.json.simple.parser.ParseException;
 /**
  * Created by sbernard on 17/12/2014.
  */
-public class FreebaseRecognizerPlugin implements RecognizerPlugin {
+public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 	private final String FREEBASE_PREFIX = "https://www.googleapis.com/freebase/v1/search";
 	private final String FREEBASE_API_KEY;
 	private final Option<Proxy> proxy;

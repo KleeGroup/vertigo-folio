@@ -12,7 +12,7 @@ import io.vertigo.lang.Assertion;
  */
 public enum FileInfoMetaData implements MetaData {
 	/** Taille du fichier. */
-	SIZE(MetaDataType.LONG),
+	SIZE(MetaDataType.INTEGER),
 
 	/** Extension du fichier. */
 	FILE_EXTENSION(MetaDataType.STRING),

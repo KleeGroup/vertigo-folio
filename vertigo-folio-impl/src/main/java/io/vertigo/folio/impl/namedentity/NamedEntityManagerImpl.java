@@ -11,15 +11,15 @@ import javax.inject.Inject;
 
 public final class NamedEntityManagerImpl implements NamedEntityManager {
 	private final TokenizerPlugin tokenizerPlugin;
-	private final RecognizerPlugin characterizationPlugin;
+	private final RecognizerPlugin recognizerPlugin;
 
 	@Inject
-	public NamedEntityManagerImpl(final TokenizerPlugin tokenizerPlugin, final RecognizerPlugin characterizationPlugin) {
+	public NamedEntityManagerImpl(final TokenizerPlugin tokenizerPlugin, final RecognizerPlugin recognizerPlugin) {
 		Assertion.checkNotNull(tokenizerPlugin);
-		Assertion.checkNotNull(characterizationPlugin);
+		Assertion.checkNotNull(recognizerPlugin);
 		//----
 		this.tokenizerPlugin = tokenizerPlugin;
-		this.characterizationPlugin = characterizationPlugin;
+		this.recognizerPlugin = recognizerPlugin;
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public final class NamedEntityManagerImpl implements NamedEntityManager {
 		Assertion.checkNotNull(text);
 		//----
 		final List<String> tokens = tokenizerPlugin.tokenize(text);
-		return characterizationPlugin.recognizeNamedEntities(tokens);
+		return recognizerPlugin.recognizeNamedEntities(tokens);
 	}
 
 }

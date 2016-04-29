@@ -10,9 +10,9 @@ import io.vertigo.folio.document.model.DocumentVersionBuilder;
 import io.vertigo.folio.impl.crawler.CrawlerPlugin;
 import io.vertigo.folio.impl.metadata.FileInfoMetaData;
 import io.vertigo.folio.metadata.MetaData;
+import io.vertigo.folio.metadata.MetaDataManager;
 import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.folio.metadata.MetaDataSetBuilder;
-import io.vertigo.folio.metadata.MetaDataManager;
 import io.vertigo.lang.Assertion;
 import io.vertigo.util.StringUtil;
 
@@ -215,34 +215,34 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 		return documentBuilder.build();
 	}
 
-	private static void populateDocument(final DocumentBuilder documentBuilder, final MetaDataSet mdc) {
+	private static void populateDocument(final DocumentBuilder documentBuilder, final MetaDataSet metaDataSet) {
 		final List<MetaData> excludedMetaData = new ArrayList<>(4);
 		excludedMetaData.add(FileInfoMetaData.FILE_NAME);
 		excludedMetaData.add(FileInfoMetaData.SIZE);
 		excludedMetaData.add(FileInfoMetaData.FILE_EXTENSION);
 		excludedMetaData.add(FileInfoMetaData.LAST_MODIFIED);
 
-		final MetaDataSetBuilder mdcBuilder = new MetaDataSetBuilder();
-		final String type = (String) mdc.getValue(FileInfoMetaData.FILE_EXTENSION);
+		final MetaDataSetBuilder metaDataSetBuilder = new MetaDataSetBuilder();
+		final String type = (String) metaDataSet.getValue(FileInfoMetaData.FILE_EXTENSION);
 
 		documentBuilder
-				.withName((String) mdc.getValue(FileInfoMetaData.FILE_NAME))
-				.withSize((Long) mdc.getValue(FileInfoMetaData.SIZE))
+				.withName((String) metaDataSet.getValue(FileInfoMetaData.FILE_NAME))
+				.withSize((Integer) metaDataSet.getValue(FileInfoMetaData.SIZE))
 				.withType(StringUtil.isEmpty(type) ? "<aucun>" : type)
 				.withContent("");//vide par defaut
 
 		//documentBuilder.setLastModified((Date) mdc.getValue(FileInfoMetaData.LAST_MODIFIED));
 		boolean contentSet = false;
-		for (final MetaData metaData : mdc.getMetaDatas()) {
+		for (final MetaData metaData : metaDataSet.getMetaDatas()) {
 			if ("CONTENT".equals(metaData.toString())) {
 				Assertion.checkArgument(!contentSet, "Le contenu � d�j� �t� trouv�, que faire de {0}.CONTENT ?", metaData.getClass().getName());
-				documentBuilder.withContent((String) mdc.getValue(metaData));
+				documentBuilder.withContent((String) metaDataSet.getValue(metaData));
 				contentSet = true;
 			} else if (!excludedMetaData.contains(metaData)) {
-				mdcBuilder.addMetaData(metaData, mdc.getValue(metaData));
+				metaDataSetBuilder.addMetaData(metaData, metaDataSet.getValue(metaData));
 			}
 		}
-		documentBuilder.withSourceMetaDataContainer(mdcBuilder.build());
+		documentBuilder.withSourceMetaDataSet(metaDataSetBuilder.build());
 	}
 
 	private static DocumentCategory extractCategory(final DocumentVersion documentVersion) {

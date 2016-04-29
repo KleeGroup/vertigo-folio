@@ -12,18 +12,18 @@ import java.util.UUID;
  */
 public final class DocumentBuilder implements Builder<Document> {
 	//Version
-	private Long mySize;
+	private Integer mySize;
 
 	//ExtractedMetaContent
 	private String myName;
 	private String myContent;
 	private String myType;
 	private DocumentCategory myCategory;
-	private MetaDataSet mySourceMetaDataContainer;
+	private MetaDataSet mySourceMetaDataSet;
 	//Processed
-	private MetaDataSet myEnhancedMetaDataContainer;
+	private MetaDataSet myEnhancedMetaDataSet;
 	//AddedMetaData
-	private MetaDataSet myAddedMetaDataContainer;
+	private MetaDataSet myAddedMetaDataSet;
 
 	private DocumentStatus myDocumentStatus;
 
@@ -51,7 +51,7 @@ public final class DocumentBuilder implements Builder<Document> {
 	}
 
 	//Version
-	public DocumentBuilder withSize(final long size) {
+	public DocumentBuilder withSize(final int size) {
 		Assertion.checkArgument(size >= 0, "size must be  >=0");
 		//-----
 		mySize = size;
@@ -91,27 +91,27 @@ public final class DocumentBuilder implements Builder<Document> {
 		return this;
 	}
 
-	public DocumentBuilder withSourceMetaDataContainer(final MetaDataSet sourceMetaDataContainer) {
-		Assertion.checkNotNull(sourceMetaDataContainer);
+	public DocumentBuilder withSourceMetaDataSet(final MetaDataSet sourceMetaDataSet) {
+		Assertion.checkNotNull(sourceMetaDataSet);
 		//-----
-		mySourceMetaDataContainer = sourceMetaDataContainer;
+		mySourceMetaDataSet = sourceMetaDataSet;
 		setDirtyFlag();
 		return this;
 	}
 
-	public DocumentBuilder withEnhancedMetaDataContainer(final MetaDataSet enhancedMetaDataContainer) {
-		Assertion.checkNotNull(enhancedMetaDataContainer);
+	public DocumentBuilder withEnhancedMetaDataSet(final MetaDataSet enhancedMetaDataSet) {
+		Assertion.checkNotNull(enhancedMetaDataSet);
 		//-----
-		myEnhancedMetaDataContainer = enhancedMetaDataContainer;
+		myEnhancedMetaDataSet = enhancedMetaDataSet;
 		setDirtyFlag();
 		myDocumentStatus = new DocumentStatus(myDocumentStatus.isIndexed(), myDocumentStatus.isDirty(), true);
 		return this;
 	}
 
-	public DocumentBuilder withAddedMetaDataContainer(final MetaDataSet addedMetaDataContainer) {
-		Assertion.checkNotNull(addedMetaDataContainer);
+	public DocumentBuilder withAddedMetaDataSet(final MetaDataSet addedMetaDataSet) {
+		Assertion.checkNotNull(addedMetaDataSet);
 		//-----
-		myAddedMetaDataContainer = addedMetaDataContainer;
+		myAddedMetaDataSet = addedMetaDataSet;
 		setDirtyFlag();
 		return this;
 	}
@@ -129,20 +129,20 @@ public final class DocumentBuilder implements Builder<Document> {
 		if (document == null) {
 			//Pour le premier document on commence la r�vision � 0. (Pas de r�vision)
 			return new Document(documentVersion, mySize, nextRevision(), myName, myContent, myType, myCategory,
-					get(MetaDataSet.EMPTY_META_DATA_SET, mySourceMetaDataContainer),
-					get(MetaDataSet.EMPTY_META_DATA_SET, myEnhancedMetaDataContainer),
-					get(MetaDataSet.EMPTY_META_DATA_SET, myAddedMetaDataContainer),
+					get(MetaDataSet.EMPTY_META_DATA_SET, mySourceMetaDataSet),
+					get(MetaDataSet.EMPTY_META_DATA_SET, myEnhancedMetaDataSet),
+					get(MetaDataSet.EMPTY_META_DATA_SET, myAddedMetaDataSet),
 					get(new DocumentStatus(false, true, false), myDocumentStatus));
 		}
 
-		final long overriddenSize = get(document.getSize(), mySize);
+		final int overriddenSize = get(document.getSize(), mySize);
 		final String overriddenName = get(document.getName(), myName);
 		final String overriddenContent = get(document.getContent(), myContent);
 		final String overriddenType = get(document.getType(), myType);
 		final DocumentCategory overriddenCategory = get(document.getCategory(), myCategory);
-		final MetaDataSet overriddenSourceMetaDataContainer = get(document.getSourceMetaDataContainer(), mySourceMetaDataContainer);
-		final MetaDataSet overriddenEnhancedMetaDataContainer = get(document.getEnhancedMetaDataContainer(), myEnhancedMetaDataContainer);
-		final MetaDataSet overriddenAddedMetaDataContainer = get(document.getAddedMetaDataContainer(), myAddedMetaDataContainer);
+		final MetaDataSet overriddenSourceMetaDataSet = get(document.getSourceMetaDataSet(), mySourceMetaDataSet);
+		final MetaDataSet overriddenEnhancedMetaDataSet = get(document.getEnhancedMetaDataSet(), myEnhancedMetaDataSet);
+		final MetaDataSet overriddenAddedMetaDataSet = get(document.getAddedMetaDataSet(), myAddedMetaDataSet);
 		final DocumentStatus overriddenDocumentStatus = get(document.getDocumentStatus(), myDocumentStatus);
 
 		return new Document(
@@ -153,9 +153,9 @@ public final class DocumentBuilder implements Builder<Document> {
 				overriddenContent,
 				overriddenType,
 				overriddenCategory,
-				overriddenSourceMetaDataContainer,
-				overriddenEnhancedMetaDataContainer,
-				overriddenAddedMetaDataContainer,
+				overriddenSourceMetaDataSet,
+				overriddenEnhancedMetaDataSet,
+				overriddenAddedMetaDataSet,
 				overriddenDocumentStatus);
 	}
 

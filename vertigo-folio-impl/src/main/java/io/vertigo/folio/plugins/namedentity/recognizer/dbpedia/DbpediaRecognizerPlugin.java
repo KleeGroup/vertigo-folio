@@ -30,7 +30,7 @@ import org.json.simple.parser.ParseException;
 /**
  * Created by sbernard on 10/12/2014.
  */
-public class DbpediaRecognizerPlugin implements RecognizerPlugin {
+public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 	private static final String DBPEDIA_LOOKUP_PREFIX = "http://lookup.dbpedia.org/api/search/KeywordSearch";
 	private final Option<Proxy> proxy;
 
@@ -66,7 +66,7 @@ public class DbpediaRecognizerPlugin implements RecognizerPlugin {
 			} catch (final MalformedURLException e) {
 				throw new RuntimeException("Erreur lors de la creation de l'URL", e);
 			}
-			final HttpURLConnection connection = createConnection(url);
+			final HttpURLConnection connection = createConnection(proxy, url);
 			connection.setRequestProperty("Accept", "application/json");
 
 			JSONObject response = null;
@@ -103,17 +103,17 @@ public class DbpediaRecognizerPlugin implements RecognizerPlugin {
 		return namedEntities;
 	}
 
-	private HttpURLConnection createConnection(final URL url) {
+	private static HttpURLConnection createConnection(final Option<Proxy> proxy, final URL url) {
 		Assertion.checkNotNull(url);
 		//----
 		try {
-			return doCreateConnection(url);
+			return doCreateConnection(proxy, url);
 		} catch (final IOException e) {
 			throw new RuntimeException("Erreur de connexion au service (HTTP)", e);
 		}
 	}
 
-	private HttpURLConnection doCreateConnection(final URL url) throws IOException {
+	private static HttpURLConnection doCreateConnection(final Option<Proxy> proxy, final URL url) throws IOException {
 		Assertion.checkNotNull(url);
 		//---------------------------------------------------------------------------
 		HttpURLConnection connection;

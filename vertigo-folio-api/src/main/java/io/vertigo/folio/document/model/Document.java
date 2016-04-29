@@ -32,19 +32,19 @@ public final class Document implements Serializable {
 	//Revision
 	private final UUID revision;
 	//ExtractedMetaContent
-	private final long size;
+	private final int size;
 	private final String name;
 	private final String content;
 	private final String type;
 	private final DocumentCategory category;
 
-	private final MetaDataSet sourceMetaDataContainer;
+	private final MetaDataSet sourceMetaDataSet;
 
 	//ProcessedMetaData
-	private final MetaDataSet enhancedMetaDataContainer;
+	private final MetaDataSet enhancedMetaDataSet;
 
 	//AddedDefinedMetaData
-	private final MetaDataSet addedMetaDataContainer;
+	private final MetaDataSet addedMetaDataset;
 
 	/**
 	 * Constructeur.
@@ -54,12 +54,12 @@ public final class Document implements Serializable {
 	 * @param name Nom du document (not null)
 	 * @param content Contenu extrait du document
 	 * @param type Type de document
-	 * @param sourceMetaDataContainer 	metadata stored in the files (exif, id3...)
-	 * @param enhancedMetaDataContainer Meta-donn�es ajout�es (process) du document (not null)
-	 * @param addedMetaDataContainer metadata added by a person
+	 * @param sourceMetaDataSet 	metadata stored in the files (exif, id3...)
+	 * @param enhancedMetaDataSet Meta-donn�es ajout�es (process) du document (not null)
+	 * @param addedMetaDataSet metadata added by a person
 	 * @param category Category
 	 */
-	Document(final DocumentVersion documentVersion, final long size, final UUID revision, final String name, final String content, final String type, final DocumentCategory category, final MetaDataSet sourceMetaDataContainer, final MetaDataSet enhancedMetaDataContainer, final MetaDataSet addedMetaDataContainer, final DocumentStatus documentStatus) {
+	Document(final DocumentVersion documentVersion, final int size, final UUID revision, final String name, final String content, final String type, final DocumentCategory category, final MetaDataSet sourceMetaDataSet, final MetaDataSet enhancedMetaDataSet, final MetaDataSet addedMetaDataSet, final DocumentStatus documentStatus) {
 		Assertion.checkNotNull(documentVersion);
 		Assertion.checkArgument(size >= 0, "size doit �tre >=0");
 		Assertion.checkNotNull(revision);
@@ -67,9 +67,9 @@ public final class Document implements Serializable {
 		Assertion.checkNotNull(content); //peut �tre vide
 		Assertion.checkNotNull(type); //peut �tre vide
 		Assertion.checkNotNull(category);
-		Assertion.checkNotNull(sourceMetaDataContainer);
-		Assertion.checkNotNull(enhancedMetaDataContainer);
-		Assertion.checkNotNull(addedMetaDataContainer);
+		Assertion.checkNotNull(sourceMetaDataSet);
+		Assertion.checkNotNull(enhancedMetaDataSet);
+		Assertion.checkNotNull(addedMetaDataSet);
 		Assertion.checkNotNull(documentStatus);
 		//--------------------------------------------------------------------
 		this.documentVersion = documentVersion;
@@ -79,10 +79,10 @@ public final class Document implements Serializable {
 		this.content = content;
 		this.type = type;
 		this.category = category;
-		this.sourceMetaDataContainer = sourceMetaDataContainer;
+		this.sourceMetaDataSet = sourceMetaDataSet;
 		//--------------------------------------------------------------------
-		this.enhancedMetaDataContainer = enhancedMetaDataContainer;
-		this.addedMetaDataContainer = addedMetaDataContainer;
+		this.enhancedMetaDataSet = enhancedMetaDataSet;
+		addedMetaDataset = addedMetaDataSet;
 		this.documentStatus = documentStatus;
 	}
 
@@ -101,7 +101,7 @@ public final class Document implements Serializable {
 	//-------------------------------------------------------------------------
 	// ExtractedMetaContent
 	//-------------------------------------------------------------------------
-	public long getSize() {
+	public int getSize() {
 		return size;
 	}
 
@@ -131,15 +131,15 @@ public final class Document implements Serializable {
 	 *   
 	 * @return metadata stored in the source file
 	 */
-	public MetaDataSet getSourceMetaDataContainer() {
-		return sourceMetaDataContainer;
+	public MetaDataSet getSourceMetaDataSet() {
+		return sourceMetaDataSet;
 	}
 
 	//-------------------------------------------------------------------------
 	// ProcessedMetaData
 	//-------------------------------------------------------------------------
-	public MetaDataSet getEnhancedMetaDataContainer() {
-		return enhancedMetaDataContainer;
+	public MetaDataSet getEnhancedMetaDataSet() {
+		return enhancedMetaDataSet;
 	}
 
 	/**
@@ -153,21 +153,21 @@ public final class Document implements Serializable {
 	 *  
 	 * @return added metadata
 	 */
-	public MetaDataSet getAddedMetaDataContainer() {
-		return addedMetaDataContainer;
+	public MetaDataSet getAddedMetaDataSet() {
+		return addedMetaDataset;
 	}
 
 	//-------------------------------------------------------------------------
 	// AggregatedMetaData
 	//-------------------------------------------------------------------------
-	public MetaDataSet getMetaDataContainer() {
+	public MetaDataSet getMetaDataSet() {
 		//On fabrique � la vol�e le MDC total.
 		//@TODO si beaucoup utilis� alors construire au d�marrage.
 		//L'ordre est important les MetaDonn�es utilisateurs peuvent donc surcharg�es des Metadonn�es "techniques"
 		return new MetaDataSetBuilder()//
-				.addMetaDataSet(sourceMetaDataContainer)
-				.addMetaDataSet(enhancedMetaDataContainer)
-				.addMetaDataSet(addedMetaDataContainer)
+				.addMetaDataSet(sourceMetaDataSet)
+				.addMetaDataSet(enhancedMetaDataSet)
+				.addMetaDataSet(addedMetaDataset)
 				.build();
 	}
 

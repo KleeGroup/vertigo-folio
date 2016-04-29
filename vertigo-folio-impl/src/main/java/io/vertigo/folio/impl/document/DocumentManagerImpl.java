@@ -9,9 +9,9 @@ import io.vertigo.folio.document.model.DocumentBuilder;
 import io.vertigo.folio.document.model.DocumentVersion;
 import io.vertigo.folio.impl.metadata.FileInfoMetaData;
 import io.vertigo.folio.metadata.MetaData;
+import io.vertigo.folio.metadata.MetaDataManager;
 import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.folio.metadata.MetaDataSetBuilder;
-import io.vertigo.folio.metadata.MetaDataManager;
 import io.vertigo.lang.Assertion;
 import io.vertigo.util.ListBuilder;
 import io.vertigo.util.StringUtil;
@@ -81,7 +81,7 @@ public final class DocumentManagerImpl implements DocumentManager {
 
 		documentBuilder
 				.withName((String) mdc.getValue(FileInfoMetaData.FILE_NAME))
-				.withSize((Long) mdc.getValue(FileInfoMetaData.SIZE))
+				.withSize((Integer) mdc.getValue(FileInfoMetaData.SIZE))
 				.withType(StringUtil.isEmpty(type) ? "<aucun>" : type)
 				.withContent("");//vide par defaut
 
@@ -96,7 +96,7 @@ public final class DocumentManagerImpl implements DocumentManager {
 				mdcBuilder.addMetaData(metaData, mdc.getValue(metaData));
 			}
 		}
-		documentBuilder.withSourceMetaDataContainer(mdcBuilder.build());
+		documentBuilder.withSourceMetaDataSet(mdcBuilder.build());
 	}
 	//
 	//	/** {@inheritDoc} */

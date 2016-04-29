@@ -4,16 +4,16 @@ import io.vertigo.folio.document.model.DocumentVersion;
 import io.vertigo.folio.document.model.DocumentVersionBuilder;
 import io.vertigo.lang.Assertion;
 
+import java.util.Iterator;
+
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.util.DateUtils;
 
-import java.util.Iterator;
-
 /**
  * Created by sbernard on 19/03/2015.
  */
-public class LDAPEntryIterator implements Iterator<DocumentVersion> {
+public final class LDAPEntryIterator implements Iterator<DocumentVersion> {
 	private final Iterator<Entry> entryIterator;
 	private final String dataSourceId;
 
@@ -52,7 +52,7 @@ public class LDAPEntryIterator implements Iterator<DocumentVersion> {
 					.withDataSourceId(dataSourceId)
 					.withLastModified(DateUtils.getDate(entry.get("whenChanged").getString()))
 					.withSourceUrl(entry.get("distinguishedName").getString());
-		} catch (LdapInvalidAttributeValueException e) {
+		} catch (final LdapInvalidAttributeValueException e) {
 			throw new RuntimeException(e);
 		}
 		return documentVersionBuilder.build();

@@ -1,0 +1,39 @@
+<?xml version =	'1.0' encoding = 'ISO-8859-1'?>
+<config>
+	<module name="kasper-commons">
+		<component api="MetaDataManager" class="io.vertigo.knock.impl.metadata.MetaDataManagerImpl">
+			<plugin class="io.vertigo.knock.plugins.metadata.microsoft.word.MSWordMetaDataExtractorPlugin" />
+			<plugin class="io.vertigo.knock.plugins.metadata.microsoft.powerpoint.MSPowerPointMetaDataExtractorPlugin" />
+			<plugin class="io.vertigo.knock.plugins.metadata.microsoft.excel.MSExcelMetaDataExtractorPlugin" />
+			<plugin class="io.vertigo.knock.plugins.metadata.pdf.PDFMetaDataExtractorPlugin" />
+			<plugin class="io.vertigo.knock.plugins.metadata.txt.TxtMetaDataExtractorPlugin">
+				<param name="extensions" value="txt, log" />
+			</plugin>
+			<plugin class="io.vertigo.knock.plugins.metadata.ooxml.CommonOOXMLMetaDataExtractorPlugin" />
+			<plugin class="io.vertigo.knock.plugins.metadata.odf.ODFMetaDataExtractorPlugin" />
+			<plugin class="io.vertigo.knock.plugins.metadata.tika.AutoTikaMetaDataExtractorPlugin" />
+		</component>
+
+		<component api="FileManager" class="io.vertigo.dynamo.impl.file.FileManagerImpl" /> 
+		<component api="DocumentManager" class="io.vertigo.knock.impl.document.DocumentManagerImpl" />
+		<component api="CrawlerManager" class="io.vertigo.knock.impl.crawler.CrawlerManagerImpl">
+			<plugin class="io.vertigo.knock.plugins.crawler.fs.FSCrawlerPlugin">
+				<param name="dataSourceId" value="testFS" />
+				<param name="directory" value="../vertigo-incubator/vertigo-labs-impl/src/test/java/io/vertigo/knock/channel/data/" />
+				<param name="maxFiles" value="25" />
+				<param name="excludePatterns" value="" />
+			</plugin>
+		</component>
+		
+		
+		<component api="ChannelManager" class="io.vertigo.knock.impl.channel.ChannelManagerImpl">
+			<plugin class="io.vertigo.knock.channel.MockPostProcessorPlugin"/>
+			<plugin class="io.vertigo.knock.plugins.channel.processor.io.vertigo.knock.plugins.channel.processor.NamedEntitiesDocumentPostProcessorPlugin"/>
+		</component>
+
+		<component api="ResourceManager" class="io.vertigo.commons.impl.resource.ResourceManagerImpl">
+			<plugin class="io.vertigo.commons.plugins.resource.java.ClassPathResourceResolverPlugin"/>
+		</component>
+		
+	</module>
+</config>

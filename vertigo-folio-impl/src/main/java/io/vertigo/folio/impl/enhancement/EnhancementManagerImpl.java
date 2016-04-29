@@ -13,7 +13,7 @@ import javax.inject.Inject;
 /**
  * Created by sbernard on 28/05/2015.
  */
-public class EnhancementManagerImpl implements EnhancementManager {
+public final class EnhancementManagerImpl implements EnhancementManager {
 	@Inject
 	private List<EnhancementPlugin> enhancementPlugins;
 
