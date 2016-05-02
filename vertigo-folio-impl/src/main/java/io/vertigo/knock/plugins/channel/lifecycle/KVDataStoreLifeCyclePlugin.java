@@ -30,7 +30,7 @@ public class KVDataStoreLifeCyclePlugin implements LifeCyclePlugin {
 	@Override
 	public boolean isCrawled(final ChannelDefinition channelDefinition, final DocumentVersion documentVersion) {
 		final Option<Document> documentOption = kvStoreManager.find(channelDefinition.getName(), documentVersion.getKey(), Document.class);
-		if (documentOption.isDefined()) {
+		if (documentOption.isPresent()) {
 			return documentVersion.getLastModified().equals(documentOption.get().getDocumentVersion().getLastModified());
 		}
 		return false;

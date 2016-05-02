@@ -38,12 +38,12 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 	public DbpediaRecognizerPlugin(final @Named("proxyHost") Option<String> proxyHost, @Named("proxyPort") final Option<String> proxyPort) {
 		Assertion.checkNotNull(proxyHost);
 		Assertion.checkNotNull(proxyPort);
-		Assertion.checkArgument((proxyHost.isDefined() && proxyPort.isDefined()) || (proxyHost.isEmpty() && proxyPort.isEmpty()), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
+		Assertion.checkArgument((proxyHost.isPresent() && proxyPort.isPresent()) || (proxyHost.isEmpty() && proxyPort.isEmpty()), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
 		//----
-		if (proxyHost.isDefined()) {
-			proxy = Option.some(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get()))));
+		if (proxyHost.isPresent()) {
+			proxy = Option.of(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get()))));
 		} else {
-			proxy = Option.none();
+			proxy = Option.empty();
 		}
 	}
 
@@ -117,7 +117,7 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 		Assertion.checkNotNull(url);
 		//---------------------------------------------------------------------------
 		HttpURLConnection connection;
-		if (proxy.isDefined()) {
+		if (proxy.isPresent()) {
 			connection = (HttpURLConnection) url.openConnection(proxy.get());
 		} else {
 			connection = (HttpURLConnection) url.openConnection();

@@ -31,11 +31,11 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 		//-----
 		for (final MetaDataExtractorPlugin plugin : metaDataExtractorPlugins) {
 			if (plugin.accept(file)) {
-				return Option.some(plugin);
+				return Option.of(plugin);
 			}
 		}
 		//Si pas de metaDataExtractorPlugin associ�
-		return Option.none();
+		return Option.empty();
 
 	}
 
@@ -62,7 +62,7 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 		final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder();
 		//analyticsAgent.startProcess(fileExtension);
 		//boolean ok = false;
-		if (metaDataExtractor.isDefined()) {
+		if (metaDataExtractor.isPresent()) {
 			LOGGER.info(String.format("Start extract MetaData on %s whith %s", file.getFileName(), metaDataExtractor.get().getClass().getSimpleName()));
 			metaDataContainerBuilder.addMetaDataSet(extractMetaData(metaDataExtractor.get(), file));
 		} else {
