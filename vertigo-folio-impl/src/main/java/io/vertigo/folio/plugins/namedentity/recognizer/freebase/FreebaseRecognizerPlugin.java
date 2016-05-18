@@ -1,10 +1,5 @@
 package io.vertigo.folio.plugins.namedentity.recognizer.freebase;
 
-import io.vertigo.folio.impl.namedentity.RecognizerPlugin;
-import io.vertigo.folio.namedentity.NamedEntity;
-import io.vertigo.lang.Assertion;
-import io.vertigo.lang.Option;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,6 +23,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import io.vertigo.folio.impl.namedentity.RecognizerPlugin;
+import io.vertigo.folio.namedentity.NamedEntity;
+import io.vertigo.lang.Assertion;
+import io.vertigo.lang.Option;
+
 /**
  * Created by sbernard on 17/12/2014.
  */
@@ -41,7 +41,7 @@ public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 		Assertion.checkNotNull(apiKey);
 		Assertion.checkNotNull(proxyHost);
 		Assertion.checkNotNull(proxyPort);
-		Assertion.checkArgument(proxyHost.isPresent() && proxyPort.isPresent() || proxyHost.isEmpty() && proxyPort.isEmpty(), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
+		Assertion.checkArgument(proxyHost.isPresent() && proxyPort.isPresent() || !proxyHost.isPresent() && !proxyPort.isPresent(), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
 		//----
 		if (proxyHost.isPresent()) {
 			proxy = Option.of(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get()))));
