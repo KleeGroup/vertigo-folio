@@ -1,15 +1,5 @@
 package io.vertigo.folio.plugins.crawler.ldap;
 
-import io.vertigo.folio.document.model.Document;
-import io.vertigo.folio.document.model.DocumentBuilder;
-import io.vertigo.folio.document.model.DocumentVersion;
-import io.vertigo.folio.impl.crawler.CrawlerPlugin;
-import io.vertigo.folio.metadata.MetaDataSet;
-import io.vertigo.folio.metadata.MetaDataSetBuilder;
-import io.vertigo.folio.plugins.metadata.ldap.LDAPMetaData;
-import io.vertigo.lang.Assertion;
-import io.vertigo.util.ListBuilder;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,13 +15,22 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 
+import io.vertigo.folio.document.model.Document;
+import io.vertigo.folio.document.model.DocumentBuilder;
+import io.vertigo.folio.document.model.DocumentVersion;
+import io.vertigo.folio.impl.crawler.CrawlerPlugin;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
+import io.vertigo.folio.plugins.metadata.ldap.LDAPMetaData;
+import io.vertigo.lang.Assertion;
+import io.vertigo.util.ListBuilder;
 import sun.misc.BASE64Encoder;
 
 /**
  * Created by sbernard on 19/03/2015.
  */
 public final class LDAPCrawlerPlugin implements CrawlerPlugin {
-	private final String myDataSourceId;
+	private final String dataSourceId;
 	private final String host;
 	private final int port;
 	private final String username;
@@ -47,7 +46,7 @@ public final class LDAPCrawlerPlugin implements CrawlerPlugin {
 		Assertion.checkNotNull(password);
 		Assertion.checkNotNull(dn);
 		//-------------
-		myDataSourceId = dataSourceId;
+		this.dataSourceId = dataSourceId;
 		this.host = host;
 		this.port = port;
 		this.username = username;
@@ -79,21 +78,17 @@ public final class LDAPCrawlerPlugin implements CrawlerPlugin {
 		}
 	}
 
-	/**
-	 * @param dataSourceId Id de la datasource
-	 * @return si ce plugin g�re cette datasource
-	 */
+	/** {@inheritDoc} */
 	@Override
-	public boolean accept(final String dataSourceId) {
-		return myDataSourceId.equals(dataSourceId);
+	public String getDataSourceId() {
+		return dataSourceId;
 	}
 
 	/**
-	 * @param startAtUrl url de d�part
 	 * @return Iterator de crawling de documentVersion
 	 */
 	@Override
-	public Iterable<DocumentVersion> crawl(final String startAtUrl) {
+	public Iterable<DocumentVersion> crawl() {
 		final ListBuilder<Entry> listBuilder = new ListBuilder<>();
 		try (final LdapConnection connection = new LdapNetworkConnection(host, port)) {
 			final BindRequest bindRequest = new BindRequestImpl()
@@ -113,7 +108,7 @@ public final class LDAPCrawlerPlugin implements CrawlerPlugin {
 			return new Iterable<DocumentVersion>() {
 				@Override
 				public Iterator<DocumentVersion> iterator() {
-					return new LDAPEntryIterator(list.iterator(), myDataSourceId);
+					return new LDAPEntryIterator(list.iterator(), dataSourceId);
 				}
 			};
 

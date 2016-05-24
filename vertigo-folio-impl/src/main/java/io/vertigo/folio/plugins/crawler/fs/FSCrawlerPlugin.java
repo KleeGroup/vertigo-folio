@@ -1,5 +1,18 @@
 package io.vertigo.folio.plugins.crawler.fs;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import io.vertigo.dynamo.file.FileManager;
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.folio.document.model.Document;
@@ -15,19 +28,6 @@ import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
 import io.vertigo.util.StringUtil;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  * Crawler de fichier synchrone.
@@ -133,7 +133,8 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 
 	/** {@inheritDoc} */
 	@Override
-	public Iterable<DocumentVersion> crawl(final String startAtUrl) {
+	public Iterable<DocumentVersion> crawl() {
+		final String startAtUrl = "";
 		return new Iterable<DocumentVersion>() {
 
 			@Override
@@ -145,8 +146,8 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean accept(final String testDataSourceId) {
-		return dataSourceId.equals(testDataSourceId);
+	public String getDataSourceId() {
+		return dataSourceId;
 	}
 
 	private static class DocumentVersionIterator implements Iterator<DocumentVersion> {

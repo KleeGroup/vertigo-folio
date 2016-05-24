@@ -1,8 +1,14 @@
 package io.vertigo.knock.impl.channel;
 
+import java.util.Collection;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.apache.log4j.Logger;
+
 import io.vertigo.app.Home;
 import io.vertigo.dynamo.kvstore.KVStoreManager;
-import io.vertigo.folio.crawler.Crawler;
 import io.vertigo.folio.crawler.CrawlerManager;
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.document.model.DocumentBuilder;
@@ -16,13 +22,6 @@ import io.vertigo.knock.impl.channel.listener.ChannelListener;
 import io.vertigo.knock.impl.channel.listener.ChannelListenerImpl;
 import io.vertigo.knock.indexation.IndexationManager;
 import io.vertigo.util.ListBuilder;
-
-import java.util.Collection;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.apache.log4j.Logger;
 
 /**
  * Created by sbernard on 04/02/2015.
@@ -153,8 +152,7 @@ public final class ChannelManagerImpl implements ChannelManager {
 	}
 
 	private void doCrawl(final ChannelDefinition channelDefinition) {
-		final Crawler crawler = crawlerManager.getCrawler(channelDefinition.getDataSourceName());
-		for (final DocumentVersion documentVersion : crawler.crawl("")) {
+		for (final DocumentVersion documentVersion : crawlerManager.crawl(channelDefinition.getDataSourceName())) {
 			if (!lifeCyclePlugin.isCrawled(channelDefinition, documentVersion)) {
 				this.doCrawl(channelDefinition, documentVersion);
 			}

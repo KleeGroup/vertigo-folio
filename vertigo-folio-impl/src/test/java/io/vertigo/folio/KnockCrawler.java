@@ -1,5 +1,7 @@
 package io.vertigo.folio;
 
+import javax.inject.Inject;
+
 import io.vertigo.app.App;
 import io.vertigo.app.config.AppConfig;
 import io.vertigo.app.config.AppConfigBuilder;
@@ -25,8 +27,6 @@ import io.vertigo.folio.plugins.metadata.pdf.PDFMetaDataExtractorPlugin;
 import io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaDataExtractorPlugin;
 import io.vertigo.folio.plugins.metadata.txt.TxtMetaDataExtractorPlugin;
 
-import javax.inject.Inject;
-
 public final class KnockCrawler {
 	@Inject
 	private CrawlerManager crawlerManager;
@@ -49,7 +49,7 @@ public final class KnockCrawler {
 
 	private void crawl() {
 		int i = 0;
-		for (final DocumentVersion documentVersion : crawlerManager.getCrawler("myFS").crawl("")) {
+		for (final DocumentVersion documentVersion : crawlerManager.crawl("myFS")) {
 			System.out.println("doc[" + i + "]: " + documentVersion.getUrl());
 			try {
 				final Document document = crawlerManager.readDocument(documentVersion);

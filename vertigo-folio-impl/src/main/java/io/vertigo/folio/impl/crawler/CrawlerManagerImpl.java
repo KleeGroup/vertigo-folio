@@ -1,17 +1,19 @@
 package io.vertigo.folio.impl.crawler;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import io.vertigo.folio.crawler.CrawlerManager;
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.document.model.DocumentVersion;
 import io.vertigo.lang.Assertion;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
 /**
- * Impl�mentation standard du Manager de crawling de document.
- * Ce manager g�re les diff�rentes sources de donn�es, et utilise un plugin adapat� leurs sp�cificit�es techniques.
+ * This class is the standard impl of the CrawlerManager.
+ * Many dataSources can be managed.
+ * Each dataSource is defined by an Id.
+ *
  * @author npiedeloup
  * @version $Id: CrawlerManagerImpl.java,v 1.11 2014/02/17 17:55:57 npiedeloup Exp $
  */
@@ -31,14 +33,19 @@ public final class CrawlerManagerImpl implements CrawlerManager {
 		return getCrawler(documentVersion.getDataSourceId()).readDocument(documentVersion);
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public CrawlerPlugin getCrawler(final String dataSourceId) {
+	private CrawlerPlugin getCrawler(final String dataSourceId) {
 		for (final CrawlerPlugin crawler : crawlerPlugins) {
-			if (crawler.accept(dataSourceId)) {
+			if (crawler.getDataSourceId().equals(dataSourceId)) {
 				return crawler;
 			}
 		}
 		throw new RuntimeException("Pas de crawler pour la dataSource " + dataSourceId);
+	}
+
+	@Override
+	public Iterable<DocumentVersion> crawl(final String dataSourceId) {
+		Assertion.checkArgNotEmpty("dataSourceId");
+		//-----
+		return getCrawler(dataSourceId).crawl();
 	}
 }

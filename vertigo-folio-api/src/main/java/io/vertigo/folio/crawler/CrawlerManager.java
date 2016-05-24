@@ -16,7 +16,7 @@ public interface CrawlerManager extends Manager {
 	 * Crawl une dataSource.
 	 * @param dataSourceId Identifiant de la dataSource � parcourir
 	 */
-	Crawler getCrawler(final String dataSourceId);
+	Iterable<DocumentVersion> crawl(final String dataSourceId);
 
 	/**
 	 * Lit le document avec ses m�ta-donn�es.
