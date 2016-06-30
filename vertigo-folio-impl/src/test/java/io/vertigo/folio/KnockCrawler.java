@@ -3,6 +3,7 @@ package io.vertigo.folio;
 import javax.inject.Inject;
 
 import io.vertigo.app.App;
+import io.vertigo.app.AutoCloseableApp;
 import io.vertigo.app.config.AppConfig;
 import io.vertigo.app.config.AppConfigBuilder;
 import io.vertigo.core.component.di.injector.Injector;
@@ -40,7 +41,7 @@ public final class KnockCrawler {
 
 	public static void main(final String[] args) {
 		System.out.println(">>> start spider");
-		try (App app = new App(config())) {
+		try (AutoCloseableApp app = new AutoCloseableApp(config())) {
 			new KnockCrawler(app).crawl();
 		} catch (final Exception e) {
 			e.printStackTrace();
