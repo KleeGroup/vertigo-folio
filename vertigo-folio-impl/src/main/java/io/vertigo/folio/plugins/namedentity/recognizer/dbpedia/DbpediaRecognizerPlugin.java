@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -25,25 +26,24 @@ import org.json.simple.parser.ParseException;
 import io.vertigo.folio.impl.namedentity.RecognizerPlugin;
 import io.vertigo.folio.namedentity.NamedEntity;
 import io.vertigo.lang.Assertion;
-import io.vertigo.lang.Option;
 
 /**
  * Created by sbernard on 10/12/2014.
  */
 public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 	private static final String DBPEDIA_LOOKUP_PREFIX = "http://lookup.dbpedia.org/api/search/KeywordSearch";
-	private final Option<Proxy> proxy;
+	private final Optional<Proxy> proxy;
 
 	@Inject
-	public DbpediaRecognizerPlugin(final @Named("proxyHost") Option<String> proxyHost, @Named("proxyPort") final Option<String> proxyPort) {
+	public DbpediaRecognizerPlugin(final @Named("proxyHost") Optional<String> proxyHost, @Named("proxyPort") final Optional<String> proxyPort) {
 		Assertion.checkNotNull(proxyHost);
 		Assertion.checkNotNull(proxyPort);
 		Assertion.checkArgument((proxyHost.isPresent() && proxyPort.isPresent()) || (!proxyHost.isPresent() && !proxyPort.isPresent()), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
 		//----
 		if (proxyHost.isPresent()) {
-			proxy = Option.of(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get()))));
+			proxy = Optional.of(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get()))));
 		} else {
-			proxy = Option.empty();
+			proxy = Optional.empty();
 		}
 	}
 
@@ -103,7 +103,7 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 		return namedEntities;
 	}
 
-	private static HttpURLConnection createConnection(final Option<Proxy> proxy, final URL url) {
+	private static HttpURLConnection createConnection(final Optional<Proxy> proxy, final URL url) {
 		Assertion.checkNotNull(url);
 		//----
 		try {
@@ -113,7 +113,7 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 		}
 	}
 
-	private static HttpURLConnection doCreateConnection(final Option<Proxy> proxy, final URL url) throws IOException {
+	private static HttpURLConnection doCreateConnection(final Optional<Proxy> proxy, final URL url) throws IOException {
 		Assertion.checkNotNull(url);
 		//---------------------------------------------------------------------------
 		HttpURLConnection connection;

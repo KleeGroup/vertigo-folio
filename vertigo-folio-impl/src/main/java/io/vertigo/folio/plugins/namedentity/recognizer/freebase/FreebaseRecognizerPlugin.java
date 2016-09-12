@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -26,7 +27,6 @@ import org.json.simple.parser.ParseException;
 import io.vertigo.folio.impl.namedentity.RecognizerPlugin;
 import io.vertigo.folio.namedentity.NamedEntity;
 import io.vertigo.lang.Assertion;
-import io.vertigo.lang.Option;
 
 /**
  * Created by sbernard on 17/12/2014.
@@ -34,19 +34,19 @@ import io.vertigo.lang.Option;
 public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 	private final String FREEBASE_PREFIX = "https://www.googleapis.com/freebase/v1/search";
 	private final String FREEBASE_API_KEY;
-	private final Option<Proxy> proxy;
+	private final Optional<Proxy> proxy;
 
 	@Inject
-	public FreebaseRecognizerPlugin(final @Named("apiKey") String apiKey, final @Named("proxyHost") Option<String> proxyHost, @Named("proxyPort") final Option<String> proxyPort) {
+	public FreebaseRecognizerPlugin(final @Named("apiKey") String apiKey, final @Named("proxyHost") Optional<String> proxyHost, @Named("proxyPort") final Optional<String> proxyPort) {
 		Assertion.checkNotNull(apiKey);
 		Assertion.checkNotNull(proxyHost);
 		Assertion.checkNotNull(proxyPort);
 		Assertion.checkArgument(proxyHost.isPresent() && proxyPort.isPresent() || !proxyHost.isPresent() && !proxyPort.isPresent(), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
 		//----
 		if (proxyHost.isPresent()) {
-			proxy = Option.of(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get()))));
+			proxy = Optional.of(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get()))));
 		} else {
-			proxy = Option.empty();
+			proxy = Optional.empty();
 		}
 		FREEBASE_API_KEY = apiKey;
 	}

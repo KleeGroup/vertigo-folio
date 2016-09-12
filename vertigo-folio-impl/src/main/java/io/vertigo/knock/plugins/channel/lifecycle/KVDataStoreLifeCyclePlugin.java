@@ -1,5 +1,10 @@
 package io.vertigo.knock.plugins.channel.lifecycle;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
 import io.vertigo.dynamo.kvstore.KVStoreManager;
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.document.model.DocumentBuilder;
@@ -7,12 +12,7 @@ import io.vertigo.folio.document.model.DocumentVersion;
 import io.vertigo.knock.channel.ChannelDefinition;
 import io.vertigo.knock.impl.channel.LifeCyclePlugin;
 import io.vertigo.lang.Assertion;
-import io.vertigo.lang.Option;
 import io.vertigo.util.ListBuilder;
-
-import java.util.List;
-
-import javax.inject.Inject;
 
 /**
  * Created by sbernard on 25/02/2015.
@@ -29,7 +29,7 @@ public class KVDataStoreLifeCyclePlugin implements LifeCyclePlugin {
 
 	@Override
 	public boolean isCrawled(final ChannelDefinition channelDefinition, final DocumentVersion documentVersion) {
-		final Option<Document> documentOption = kvStoreManager.find(channelDefinition.getName(), documentVersion.getKey(), Document.class);
+		final Optional<Document> documentOption = kvStoreManager.find(channelDefinition.getName(), documentVersion.getKey(), Document.class);
 		if (documentOption.isPresent()) {
 			return documentVersion.getLastModified().equals(documentOption.get().getDocumentVersion().getLastModified());
 		}

@@ -1,18 +1,18 @@
 package io.vertigo.folio.impl.metadata;
 
-import io.vertigo.dynamo.file.model.VFile;
-import io.vertigo.dynamo.file.util.FileUtil;
-import io.vertigo.folio.metadata.MetaDataSet;
-import io.vertigo.folio.metadata.MetaDataSetBuilder;
-import io.vertigo.folio.metadata.MetaDataManager;
-import io.vertigo.lang.Assertion;
-import io.vertigo.lang.Option;
-
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
+
+import io.vertigo.dynamo.file.model.VFile;
+import io.vertigo.dynamo.file.util.FileUtil;
+import io.vertigo.folio.metadata.MetaDataManager;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
+import io.vertigo.lang.Assertion;
 
 /**
  * Impl�mentation de r�f�rence de l'extracteur de m�tadonn�es.
@@ -26,16 +26,16 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 	@Inject
 	private List<MetaDataExtractorPlugin> metaDataExtractorPlugins;
 
-	private Option<MetaDataExtractorPlugin> getMetaDataExtractorPlugin(final VFile file) {
+	private Optional<MetaDataExtractorPlugin> getMetaDataExtractorPlugin(final VFile file) {
 		Assertion.checkNotNull(file);
 		//-----
 		for (final MetaDataExtractorPlugin plugin : metaDataExtractorPlugins) {
 			if (plugin.accept(file)) {
-				return Option.of(plugin);
+				return Optional.of(plugin);
 			}
 		}
 		//Si pas de metaDataExtractorPlugin associ�
-		return Option.empty();
+		return Optional.empty();
 
 	}
 
@@ -57,7 +57,7 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 		//-----
 		//		final String fileExtension = FileInfoHelper.getFileExtension(resource);
 		LOGGER.trace(String.format("Start extract MetaData on %s ", file.getFileName()));
-		final Option<MetaDataExtractorPlugin> metaDataExtractor = getMetaDataExtractorPlugin(file);
+		final Optional<MetaDataExtractorPlugin> metaDataExtractor = getMetaDataExtractorPlugin(file);
 
 		final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder();
 		//analyticsAgent.startProcess(fileExtension);

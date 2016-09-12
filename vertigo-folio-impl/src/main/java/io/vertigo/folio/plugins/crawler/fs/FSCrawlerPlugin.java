@@ -61,7 +61,8 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 			@Named("excludePatterns") final String strExcludePatterns) {
 		Assertion.checkArgNotEmpty(dataSourceId);
 		Assertion.checkArgNotEmpty(strDirectory);
-		Assertion.checkArgument(maxFiles == null || maxFiles > 0, "maxFiles est null ou positif");
+		Assertion.when(maxFiles != null)
+				.check(() -> maxFiles > 0, "maxFiles est null ou positif");
 		//-----
 		this.dataSourceId = dataSourceId;
 		directory = new File(strDirectory);
