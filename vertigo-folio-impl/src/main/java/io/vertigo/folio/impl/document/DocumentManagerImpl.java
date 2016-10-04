@@ -1,5 +1,10 @@
 package io.vertigo.folio.impl.document;
 
+import java.io.File;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import io.vertigo.dynamo.file.FileManager;
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.folio.document.DocumentManager;
@@ -15,11 +20,6 @@ import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
 import io.vertigo.util.ListBuilder;
 import io.vertigo.util.StringUtil;
-
-import java.io.File;
-import java.util.List;
-
-import javax.inject.Inject;
 
 public final class DocumentManagerImpl implements DocumentManager {
 	private final MetaDataManager metaDataManager;
@@ -76,7 +76,7 @@ public final class DocumentManagerImpl implements DocumentManager {
 				.add(FileInfoMetaData.LAST_MODIFIED)
 				.build();
 
-		final MetaDataSetBuilder mdcBuilder = new MetaDataSetBuilder();
+		final MetaDataSetBuilder metaDataSetBuilder = new MetaDataSetBuilder();
 		final String type = (String) mdc.getValue(FileInfoMetaData.FILE_EXTENSION);
 
 		documentBuilder
@@ -93,10 +93,10 @@ public final class DocumentManagerImpl implements DocumentManager {
 				documentBuilder.withContent((String) mdc.getValue(metaData));
 				contentSet = true;
 			} else if (!excludedMetaData.contains(metaData)) {
-				mdcBuilder.addMetaData(metaData, mdc.getValue(metaData));
+				metaDataSetBuilder.addMetaData(metaData, mdc.getValue(metaData));
 			}
 		}
-		documentBuilder.withSourceMetaDataSet(mdcBuilder.build());
+		documentBuilder.withSourceMetaDataSet(metaDataSetBuilder.build());
 	}
 	//
 	//	/** {@inheritDoc} */

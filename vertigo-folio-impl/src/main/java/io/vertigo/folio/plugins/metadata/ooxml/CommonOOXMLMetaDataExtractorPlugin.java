@@ -16,12 +16,6 @@ import static io.vertigo.folio.plugins.metadata.ooxml.OOXMLCoreMetaData.REVISION
 import static io.vertigo.folio.plugins.metadata.ooxml.OOXMLCoreMetaData.SUBJECT;
 import static io.vertigo.folio.plugins.metadata.ooxml.OOXMLCoreMetaData.TITLE;
 import static io.vertigo.folio.plugins.metadata.ooxml.OOXMLCoreMetaData.VERSION;
-import io.vertigo.dynamo.file.model.VFile;
-import io.vertigo.dynamo.file.util.FileUtil;
-import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
-import io.vertigo.folio.metadata.MetaDataSet;
-import io.vertigo.folio.metadata.MetaDataSetBuilder;
-import io.vertigo.lang.Assertion;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -31,6 +25,13 @@ import org.apache.poi.extractor.ExtractorFactory;
 import org.apache.poi.openxml4j.opc.internal.PackagePropertiesPart;
 import org.apache.poi.openxml4j.util.Nullable;
 import org.openxmlformats.schemas.officeDocument.x2006.extendedProperties.CTProperties;
+
+import io.vertigo.dynamo.file.model.VFile;
+import io.vertigo.dynamo.file.util.FileUtil;
+import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
+import io.vertigo.folio.metadata.MetaDataSet;
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
+import io.vertigo.lang.Assertion;
 
 /**
  * Extrait les m�tadonn�es classiques d'un document Office Open XML.
@@ -69,107 +70,107 @@ public class CommonOOXMLMetaDataExtractorPlugin implements MetaDataExtractorPlug
 	 * @return Container Conteneur o� placer les m�tadonn�es
 	 */
 	protected static final MetaDataSet doExtractMetaData(final POIXMLTextExtractor extractor) {
-		final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder();
+		final MetaDataSetBuilder metaDataSetBuilder = new MetaDataSetBuilder();
 
 		// Content
-		metaDataContainerBuilder.addMetaData(OOXMLOthersMetaData.CONTENT, extractor.getText());
+		metaDataSetBuilder.addMetaData(OOXMLOthersMetaData.CONTENT, extractor.getText());
 
 		// Core Metadatas
 		final PackagePropertiesPart cp = extractor.getCoreProperties().getUnderlyingProperties();
-		addProperty(metaDataContainerBuilder, CATEGORY, cp.getCategoryProperty());
-		addProperty(metaDataContainerBuilder, CONTENT_TYPE, cp.getContentTypeProperty());
-		addProperty(metaDataContainerBuilder, CONTENT_STATUS, cp.getContentStatusProperty());
-		addDateProperty(metaDataContainerBuilder, CREATED, cp.getCreatedProperty());
-		addProperty(metaDataContainerBuilder, CREATOR, cp.getCreatorProperty());
-		addProperty(metaDataContainerBuilder, DESCRIPTION, cp.getDescriptionProperty());
-		addProperty(metaDataContainerBuilder, IDENTIFIER, cp.getIdentifierProperty());
-		addProperty(metaDataContainerBuilder, KEYWORDS, cp.getKeywordsProperty());
-		addProperty(metaDataContainerBuilder, LANGUAGE, cp.getLanguageProperty());
-		addProperty(metaDataContainerBuilder, LAST_MODIFIED_BY, cp.getLastModifiedByProperty());
-		addDateProperty(metaDataContainerBuilder, LAST_PRINTED, cp.getLastPrintedProperty());
-		addDateProperty(metaDataContainerBuilder, MODIFIED, cp.getModifiedProperty());
-		addProperty(metaDataContainerBuilder, REVISION_NUMBER, cp.getRevisionProperty());
-		addProperty(metaDataContainerBuilder, SUBJECT, cp.getSubjectProperty());
-		addProperty(metaDataContainerBuilder, TITLE, cp.getTitleProperty());
-		addProperty(metaDataContainerBuilder, VERSION, cp.getVersionProperty());
+		addProperty(metaDataSetBuilder, CATEGORY, cp.getCategoryProperty());
+		addProperty(metaDataSetBuilder, CONTENT_TYPE, cp.getContentTypeProperty());
+		addProperty(metaDataSetBuilder, CONTENT_STATUS, cp.getContentStatusProperty());
+		addDateProperty(metaDataSetBuilder, CREATED, cp.getCreatedProperty());
+		addProperty(metaDataSetBuilder, CREATOR, cp.getCreatorProperty());
+		addProperty(metaDataSetBuilder, DESCRIPTION, cp.getDescriptionProperty());
+		addProperty(metaDataSetBuilder, IDENTIFIER, cp.getIdentifierProperty());
+		addProperty(metaDataSetBuilder, KEYWORDS, cp.getKeywordsProperty());
+		addProperty(metaDataSetBuilder, LANGUAGE, cp.getLanguageProperty());
+		addProperty(metaDataSetBuilder, LAST_MODIFIED_BY, cp.getLastModifiedByProperty());
+		addDateProperty(metaDataSetBuilder, LAST_PRINTED, cp.getLastPrintedProperty());
+		addDateProperty(metaDataSetBuilder, MODIFIED, cp.getModifiedProperty());
+		addProperty(metaDataSetBuilder, REVISION_NUMBER, cp.getRevisionProperty());
+		addProperty(metaDataSetBuilder, SUBJECT, cp.getSubjectProperty());
+		addProperty(metaDataSetBuilder, TITLE, cp.getTitleProperty());
+		addProperty(metaDataSetBuilder, VERSION, cp.getVersionProperty());
 
 		// Extended Metadatas
 		final CTProperties extendedProperties = extractor.getExtendedProperties().getUnderlyingProperties();
 		if (extendedProperties.isSetApplication()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.APPLICATION, extendedProperties.getApplication());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.APPLICATION, extendedProperties.getApplication());
 		}
 		if (extendedProperties.isSetAppVersion()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.APP_VERSION, extendedProperties.getAppVersion());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.APP_VERSION, extendedProperties.getAppVersion());
 		}
 		if (extendedProperties.isSetCharacters()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.CHARACTERS, extendedProperties.getCharacters());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.CHARACTERS, extendedProperties.getCharacters());
 		}
 		if (extendedProperties.isSetCharactersWithSpaces()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.CHARACTERS_WITH_SPACES, extendedProperties.getCharactersWithSpaces());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.CHARACTERS_WITH_SPACES, extendedProperties.getCharactersWithSpaces());
 		}
 		if (extendedProperties.isSetCompany()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.COMPANY, extendedProperties.getCompany());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.COMPANY, extendedProperties.getCompany());
 		}
 		if (extendedProperties.isSetSlides()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.HIDDEN_SLIDES, extendedProperties.getHiddenSlides());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.HIDDEN_SLIDES, extendedProperties.getHiddenSlides());
 		}
 		if (extendedProperties.isSetLines()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.LINES, extendedProperties.getLines());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.LINES, extendedProperties.getLines());
 		}
 		if (extendedProperties.isSetManager()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.MANAGER, extendedProperties.getManager());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.MANAGER, extendedProperties.getManager());
 		}
 		if (extendedProperties.isSetSlides()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.MMCLIPS, extendedProperties.getMMClips());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.MMCLIPS, extendedProperties.getMMClips());
 		}
 		if (extendedProperties.isSetNotes()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.NOTES, extendedProperties.getNotes());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.NOTES, extendedProperties.getNotes());
 		}
 		if (extendedProperties.isSetPages()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.PAGES, extendedProperties.getPages());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.PAGES, extendedProperties.getPages());
 		}
 		if (extendedProperties.isSetParagraphs()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.PARAGRAPHS, extendedProperties.getParagraphs());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.PARAGRAPHS, extendedProperties.getParagraphs());
 		}
 		if (extendedProperties.isSetPresentationFormat()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.PRESENTATION_FORMAT, extendedProperties.getPresentationFormat());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.PRESENTATION_FORMAT, extendedProperties.getPresentationFormat());
 		}
 		if (extendedProperties.isSetSlides()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.SLIDES, extendedProperties.getSlides());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.SLIDES, extendedProperties.getSlides());
 		}
 		if (extendedProperties.isSetTemplate()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.TEMPLATE, extendedProperties.getTemplate());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.TEMPLATE, extendedProperties.getTemplate());
 		}
 		if (extendedProperties.isSetTotalTime()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.TOTAL_TIME, extendedProperties.getTotalTime());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.TOTAL_TIME, extendedProperties.getTotalTime());
 		}
 		if (extendedProperties.isSetWords()) {
-			addProperty(metaDataContainerBuilder, OOXMLExtendedMetaData.WORDS, extendedProperties.getWords());
+			addProperty(metaDataSetBuilder, OOXMLExtendedMetaData.WORDS, extendedProperties.getWords());
 		}
 
 		// Custom Metadatas
 		//extractor.getCustomProperties();
-		return metaDataContainerBuilder.build();
+		return metaDataSetBuilder.build();
 
 	}
 
-	private static void addProperty(final MetaDataSetBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final String value) {
-		metaDataContainerBuilder.addMetaData(metaData, value);
+	private static void addProperty(final MetaDataSetBuilder metaDataSetBuilder, final OOXMLMetaData metaData, final String value) {
+		metaDataSetBuilder.addMetaData(metaData, value);
 	}
 
-	private static void addProperty(final MetaDataSetBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final int value) {
-		metaDataContainerBuilder.addMetaData(metaData, value);
+	private static void addProperty(final MetaDataSetBuilder metaDataSetBuilder, final OOXMLMetaData metaData, final int value) {
+		metaDataSetBuilder.addMetaData(metaData, value);
 	}
 
-	private static void addProperty(final MetaDataSetBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final Nullable<String> nullable) {
+	private static void addProperty(final MetaDataSetBuilder metaDataSetBuilder, final OOXMLMetaData metaData, final Nullable<String> nullable) {
 		if (nullable.hasValue()) {
-			addProperty(metaDataContainerBuilder, metaData, nullable.getValue());
+			addProperty(metaDataSetBuilder, metaData, nullable.getValue());
 		}
 	}
 
-	private static void addDateProperty(final MetaDataSetBuilder metaDataContainerBuilder, final OOXMLMetaData metaData, final Nullable<Date> nullable) {
+	private static void addDateProperty(final MetaDataSetBuilder metaDataSetBuilder, final OOXMLMetaData metaData, final Nullable<Date> nullable) {
 		if (nullable.hasValue()) {
-			metaDataContainerBuilder.addMetaData(metaData, nullable.getValue());
+			metaDataSetBuilder.addMetaData(metaData, nullable.getValue());
 		}
 	}
 

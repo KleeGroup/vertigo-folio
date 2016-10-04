@@ -34,12 +34,11 @@ public final class CrawlerManagerImpl implements CrawlerManager {
 	}
 
 	private CrawlerPlugin getCrawler(final String dataSourceId) {
-		for (final CrawlerPlugin crawler : crawlerPlugins) {
-			if (crawler.getDataSourceId().equals(dataSourceId)) {
-				return crawler;
-			}
-		}
-		throw new RuntimeException("Pas de crawler pour la dataSource " + dataSourceId);
+		return crawlerPlugins
+				.stream()
+				.filter(crawlerPlugin -> crawlerPlugin.getDataSourceId().equals(dataSourceId))
+				.findFirst()
+				.orElseThrow(() -> new RuntimeException("Pas de crawler pour la dataSource " + dataSourceId));
 	}
 
 	@Override

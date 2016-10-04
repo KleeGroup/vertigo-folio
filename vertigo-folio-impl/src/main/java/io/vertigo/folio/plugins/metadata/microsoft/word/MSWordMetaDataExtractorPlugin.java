@@ -1,13 +1,13 @@
 package io.vertigo.folio.plugins.metadata.microsoft.word;
 
+import java.io.InputStream;
+
+import org.apache.poi.hwpf.extractor.WordExtractor;
+
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.dynamo.file.util.FileUtil;
 import io.vertigo.folio.plugins.metadata.microsoft.AbstractMSMetaDataExtractorPlugin;
 import io.vertigo.lang.Assertion;
-
-import java.io.InputStream;
-
-import org.apache.poi.hwpf.extractor.WordExtractor;
 
 /**
  * @author pchretien
@@ -20,10 +20,8 @@ public final class MSWordMetaDataExtractorPlugin extends AbstractMSMetaDataExtra
 		Assertion.checkNotNull(file);
 		//-----
 		//Extraction des donn�es d'un fichier word
-		try (final InputStream inputStream = file.createInputStream()) {
-			try (final WordExtractor extractor = new WordExtractor(inputStream)) {
-				return extractor.getText();
-			}
+		try (final InputStream inputStream = file.createInputStream(); final WordExtractor extractor = new WordExtractor(inputStream)) {
+			return extractor.getText();
 		}
 	}
 

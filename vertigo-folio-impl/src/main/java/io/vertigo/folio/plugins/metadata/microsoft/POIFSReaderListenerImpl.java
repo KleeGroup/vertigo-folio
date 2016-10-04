@@ -9,12 +9,12 @@ import org.apache.poi.poifs.eventfilesystem.POIFSReaderEvent;
 import org.apache.poi.poifs.eventfilesystem.POIFSReaderListener;
 
 final class POIFSReaderListenerImpl implements POIFSReaderListener {
-	private final MetaDataSetBuilder metaDataContainerBuilder;
+	private final MetaDataSetBuilder metaDataSetBuilder;
 
-	POIFSReaderListenerImpl(final MetaDataSetBuilder metaDataContainerBuilder) {
-		Assertion.checkNotNull(metaDataContainerBuilder);
+	POIFSReaderListenerImpl(final MetaDataSetBuilder metaDataSetBuilder) {
+		Assertion.checkNotNull(metaDataSetBuilder);
 		//---------------------------------------------------------------------
-		this.metaDataContainerBuilder = metaDataContainerBuilder;
+		this.metaDataSetBuilder = metaDataSetBuilder;
 	}
 
 	/** {@inheritDoc} */
@@ -22,7 +22,7 @@ final class POIFSReaderListenerImpl implements POIFSReaderListener {
 	public void processPOIFSReaderEvent(final POIFSReaderEvent event) {
 		try {
 			final SummaryInformation si = (SummaryInformation) PropertySetFactory.create(event.getStream());
-			metaDataContainerBuilder
+			metaDataSetBuilder
 					.addMetaData(MSMetaData.TITLE, si.getTitle())
 					.addMetaData(MSMetaData.AUTHOR, si.getAuthor())
 					.addMetaData(MSMetaData.SUBJECT, si.getSubject())

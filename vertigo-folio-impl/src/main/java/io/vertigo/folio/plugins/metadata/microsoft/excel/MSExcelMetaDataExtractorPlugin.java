@@ -1,10 +1,5 @@
 package io.vertigo.folio.plugins.metadata.microsoft.excel;
 
-import io.vertigo.dynamo.file.model.VFile;
-import io.vertigo.dynamo.file.util.FileUtil;
-import io.vertigo.folio.plugins.metadata.microsoft.AbstractMSMetaDataExtractorPlugin;
-import io.vertigo.lang.Assertion;
-
 import java.io.InputStream;
 import java.util.Iterator;
 
@@ -16,6 +11,11 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
+import io.vertigo.dynamo.file.model.VFile;
+import io.vertigo.dynamo.file.util.FileUtil;
+import io.vertigo.folio.plugins.metadata.microsoft.AbstractMSMetaDataExtractorPlugin;
+import io.vertigo.lang.Assertion;
+
 /**
  * @author pchretien
  * @version $Id: MSExcelMetaDataExtractorPlugin.java,v 1.5 2014/02/27 10:21:46 pchretien Exp $
@@ -25,7 +25,8 @@ public final class MSExcelMetaDataExtractorPlugin extends AbstractMSMetaDataExtr
 	/** {@inheritDoc} */
 	@Override
 	protected String extractContent(final VFile file) throws Exception {
-		if (file.getFileName().endsWith(".xls") && file.getLength() > 50 * 1024 * 1024) {
+		if (file.getFileName().endsWith(".xls")
+				&& file.getLength() > 50 * 1024 * 1024) {
 			return "TOO_BIG : " + file.getLength() / 1024 + "Ko";
 			//throw new java.lang.UnsupportedOperationException("Fichier XLS trop gros pour �tre trait� : " + file.getLength() / 1024 + "Ko");
 		}

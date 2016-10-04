@@ -29,14 +29,10 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 	private Optional<MetaDataExtractorPlugin> getMetaDataExtractorPlugin(final VFile file) {
 		Assertion.checkNotNull(file);
 		//-----
-		for (final MetaDataExtractorPlugin plugin : metaDataExtractorPlugins) {
-			if (plugin.accept(file)) {
-				return Optional.of(plugin);
-			}
-		}
-		//Si pas de metaDataExtractorPlugin associ�
-		return Optional.empty();
-
+		return metaDataExtractorPlugins
+				.stream()
+				.filter(metaDataExtractorPlugin -> metaDataExtractorPlugin.accept(file))
+				.findFirst();
 	}
 
 	/** {@inheritDoc} */
