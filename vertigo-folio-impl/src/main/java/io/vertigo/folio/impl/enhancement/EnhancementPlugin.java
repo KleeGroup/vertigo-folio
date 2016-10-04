@@ -5,5 +5,5 @@ import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.lang.Plugin;
 
 public interface EnhancementPlugin extends Plugin {
-	MetaDataSet extract(final Document document) throws Exception;
+	MetaDataSet extract(final Document document);
 }

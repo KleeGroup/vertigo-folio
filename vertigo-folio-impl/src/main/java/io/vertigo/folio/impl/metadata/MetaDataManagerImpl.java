@@ -82,12 +82,12 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 		} //finally {
 	}
 
-	private static void extractMetaData(final MetaDataSetBuilder metaDataContainerBuilder, final VFile kFile) {
+	private static void extractMetaData(final MetaDataSetBuilder metaDataSetBuilder, final VFile kFile) {
 		final String fileExtension = FileUtil.getFileExtension(kFile.getFileName());
 		//			//	analyticsAgent.stopProcess();
 		//		}
 		// Dans le cas des fichiers on ajoute la taille
-		metaDataContainerBuilder//
+		metaDataSetBuilder//
 				.addMetaData(FileInfoMetaData.SIZE, kFile.getLength())//
 				.addMetaData(FileInfoMetaData.FILE_EXTENSION, fileExtension.toUpperCase())//
 				// note: il y a aussi FileSystemView.getFileSystemView().getSystemIcon(file)

@@ -1,14 +1,14 @@
 package io.vertigo.folio.impl.enhancement;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.enhancement.EnhancementManager;
 import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
-
-import java.util.List;
-
-import javax.inject.Inject;
 
 /**
  * Created by sbernard on 28/05/2015.
@@ -23,11 +23,7 @@ public final class EnhancementManagerImpl implements EnhancementManager {
 		//-----
 		final MetaDataSetBuilder metaDataSetBuilder = new MetaDataSetBuilder();
 		for (final EnhancementPlugin enhancementPlugin : enhancementPlugins) {
-			try {
-				metaDataSetBuilder.addMetaDataSet(enhancementPlugin.extract(document));
-			} catch (final Exception e) {
-				throw (e);
-			}
+			metaDataSetBuilder.addMetaDataSet(enhancementPlugin.extract(document));
 		}
 		return metaDataSetBuilder.build();
 	}

@@ -39,7 +39,8 @@ public final class TxtMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 
 	private static String getContent(final VFile file) throws Exception {
 
-		try (final InputStream inputStream = file.createInputStream(); final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+		try (final InputStream inputStream = file.createInputStream();
+				final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 			final int length = file.getLength().intValue();
 			final StringBuilder content = new StringBuilder("");
 			content.ensureCapacity(Math.min(length, MAX_CONTENT_LENGTH));

@@ -1,12 +1,12 @@
 package io.vertigo.folio.plugins.metadata.microsoft;
 
-import io.vertigo.folio.metadata.MetaDataSetBuilder;
-import io.vertigo.lang.Assertion;
-
 import org.apache.poi.hpsf.PropertySetFactory;
 import org.apache.poi.hpsf.SummaryInformation;
 import org.apache.poi.poifs.eventfilesystem.POIFSReaderEvent;
 import org.apache.poi.poifs.eventfilesystem.POIFSReaderListener;
+
+import io.vertigo.folio.metadata.MetaDataSetBuilder;
+import io.vertigo.lang.Assertion;
 
 final class POIFSReaderListenerImpl implements POIFSReaderListener {
 	private final MetaDataSetBuilder metaDataSetBuilder;

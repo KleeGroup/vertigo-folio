@@ -250,8 +250,7 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 	private static DocumentCategory extractCategory(final DocumentVersion documentVersion) {
 		final String url = documentVersion.getUrl();
 
-		final Pattern urlPattern = Pattern.compile(categoryUrlRegex);
-		final Matcher urlMatcher = urlPattern.matcher(url);
+		final Matcher urlMatcher = Pattern.compile(categoryUrlRegex).matcher(url);
 		urlMatcher.find();
 		final String categoryUrl = urlMatcher.group();
 
