@@ -1,6 +1,7 @@
 package io.vertigo.folio.impl.crawler;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
@@ -42,8 +43,8 @@ public final class CrawlerManagerImpl implements CrawlerManager {
 	}
 
 	@Override
-	public Iterable<DocumentVersion> crawl(final String dataSourceId) {
-		Assertion.checkArgNotEmpty("dataSourceId");
+	public Stream<DocumentVersion> crawl(final String dataSourceId) {
+		Assertion.checkArgNotEmpty(dataSourceId);
 		//-----
 		return getCrawler(dataSourceId).crawl();
 	}

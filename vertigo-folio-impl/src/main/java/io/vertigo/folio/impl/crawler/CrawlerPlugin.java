@@ -1,5 +1,7 @@
 package io.vertigo.folio.impl.crawler;
 
+import java.util.stream.Stream;
+
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.document.model.DocumentVersion;
 import io.vertigo.lang.Plugin;
@@ -16,7 +18,7 @@ public interface CrawlerPlugin extends Plugin {
 	/**
 	 * @return Iterator de crawling de documentVersion
 	 */
-	Iterable<DocumentVersion> crawl();
+	Stream<DocumentVersion> crawl();
 
 	/**
 	 * Lit le document avec ses m�ta-donn�es.

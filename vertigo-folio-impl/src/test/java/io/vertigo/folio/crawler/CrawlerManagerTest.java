@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import org.junit.Test;
 
 import io.vertigo.AbstractTestCaseJU4;
-import io.vertigo.folio.document.model.DocumentVersion;
 
 /**
  * Test de l'impl�mentation standard.
@@ -19,13 +18,8 @@ public final class CrawlerManagerTest extends AbstractTestCaseJU4 {
 
 	@Test
 	public void testDiskC() {
-		int i = 0;
-		for (final DocumentVersion documentVersion : crawlerManager.crawl("")) {
-			System.out.println("doc[" + i + "]: " + documentVersion.getUrl());
-			i++;
-			if (i > 1000) {
-				break;
-			}
-		}
+		crawlerManager.crawl("myFS")
+				.limit(1000)
+				.forEach(documentVersion -> System.out.println("doc : " + documentVersion.getUrl()));
 	}
 }

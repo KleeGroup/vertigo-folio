@@ -7,8 +7,12 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -134,15 +138,12 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 
 	/** {@inheritDoc} */
 	@Override
-	public Iterable<DocumentVersion> crawl() {
+	public Stream<DocumentVersion> crawl() {
 		final String startAtUrl = "";
-		return new Iterable<DocumentVersion>() {
-
-			@Override
-			public Iterator<DocumentVersion> iterator() {
-				return new DocumentVersionIterator(directory, dataSourceId, createFileIterator(startAtUrl));
-			}
-		};
+		final int characteristics = 0;
+		final Spliterator<DocumentVersion> spliterator = Spliterators.spliteratorUnknownSize(new DocumentVersionIterator(directory, dataSourceId, createFileIterator(startAtUrl)), characteristics);
+		final boolean parallel = false;
+		return StreamSupport.stream(spliterator, parallel);
 	}
 
 	/** {@inheritDoc} */

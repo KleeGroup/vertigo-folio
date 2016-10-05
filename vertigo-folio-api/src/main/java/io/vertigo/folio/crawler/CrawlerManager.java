@@ -1,5 +1,7 @@
 package io.vertigo.folio.crawler;
 
+import java.util.stream.Stream;
+
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.document.model.DocumentVersion;
 import io.vertigo.lang.Manager;
@@ -16,7 +18,7 @@ public interface CrawlerManager extends Manager {
 	 * Crawl une dataSource.
 	 * @param dataSourceId Identifiant de la dataSource � parcourir
 	 */
-	Iterable<DocumentVersion> crawl(final String dataSourceId);
+	Stream<DocumentVersion> crawl(final String dataSourceId);
 
 	/**
 	 * Lit le document avec ses m�ta-donn�es.
