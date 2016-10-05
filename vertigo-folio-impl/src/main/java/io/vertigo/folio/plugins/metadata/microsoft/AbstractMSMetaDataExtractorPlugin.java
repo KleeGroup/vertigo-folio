@@ -1,14 +1,14 @@
 package io.vertigo.folio.plugins.metadata.microsoft;
 
+import java.io.InputStream;
+
+import org.apache.poi.poifs.eventfilesystem.POIFSReader;
+
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
 import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
-
-import java.io.InputStream;
-
-import org.apache.poi.poifs.eventfilesystem.POIFSReader;
 
 /**
  * Fabrique Abstraite des documents Lucene
@@ -30,17 +30,17 @@ public abstract class AbstractMSMetaDataExtractorPlugin implements MetaDataExtra
 	public MetaDataSet extractMetaDataSet(final VFile file) throws Exception {
 		Assertion.checkNotNull(file);
 		//----------------------------------------------------------------------
-		final MetaDataSetBuilder metaDataContainerBuilder = new MetaDataSetBuilder();
+		final MetaDataSetBuilder metaDataSetBuilder = new MetaDataSetBuilder();
 		//Etape 1 : Extraction des m�tadonn�es MS
 		final POIFSReader reader = new POIFSReader();
-		reader.registerListener(new POIFSReaderListenerImpl(metaDataContainerBuilder), "\005SummaryInformation");
+		reader.registerListener(new POIFSReaderListenerImpl(metaDataSetBuilder), "\005SummaryInformation");
 
 		try (final InputStream inputStream = file.createInputStream()) {
 			reader.read(inputStream);
 		}
 		//Etape 2 : Extraction des contenus selon le format (xls, ppt, doc)
-		return metaDataContainerBuilder//
-				.addMetaData(MSMetaData.CONTENT, extractContent(file))//
+		return metaDataSetBuilder
+				.addMetaData(MSMetaData.CONTENT, extractContent(file))
 				.build();
 	}
 }

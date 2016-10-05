@@ -1,6 +1,7 @@
 package io.vertigo.folio.plugins.metadata.txt;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -37,7 +38,7 @@ public final class TxtMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 		this.extensions = Arrays.asList(extensions.split(","));
 	}
 
-	private static String getContent(final VFile file) throws Exception {
+	private static String getContent(final VFile file) throws IOException {
 
 		try (final InputStream inputStream = file.createInputStream();
 				final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -53,9 +54,9 @@ public final class TxtMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 		}
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}  */
 	@Override
-	public MetaDataSet extractMetaDataSet(final VFile file) throws Exception {
+	public MetaDataSet extractMetaDataSet(final VFile file) throws IOException {
 		Assertion.checkNotNull(file);
 		//-----
 		final String content = getContent(file);
