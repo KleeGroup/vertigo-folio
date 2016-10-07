@@ -1,4 +1,4 @@
-package io.vertigo.folio;
+package io.vertigo.knock;
 
 import javax.inject.Inject;
 
@@ -12,7 +12,6 @@ import io.vertigo.dynamo.impl.file.FileManagerImpl;
 import io.vertigo.folio.crawler.CrawlerManager;
 import io.vertigo.folio.document.DocumentManager;
 import io.vertigo.folio.document.model.Document;
-import io.vertigo.folio.document.model.DocumentVersion;
 import io.vertigo.folio.impl.crawler.CrawlerManagerImpl;
 import io.vertigo.folio.impl.document.DocumentManagerImpl;
 import io.vertigo.folio.impl.metadata.MetaDataManagerImpl;
@@ -49,26 +48,23 @@ public final class KnockCrawler {
 	}
 
 	private void crawl() {
-		int i = 0;
-		for (final DocumentVersion documentVersion : crawlerManager.crawl("myFS")) {
-			System.out.println("doc[" + i + "]: " + documentVersion.getUrl());
-			try {
-				final Document document = crawlerManager.readDocument(documentVersion);
-				System.out.println("   +--- name : " + document.getName());
-				System.out.println("   +--- source");
-				for (final MetaData metaData : document.getSourceMetaDataSet().getMetaDatas()) {
-					System.out.println("   +------ " + metaData + " : " + document.getSourceMetaDataSet().getValue(metaData));
-				}
-			} catch (final Throwable e) {
-				System.out.println("   +---: failed to read");
-			}
-			//			System.out.println("   +---: " + document);
-			//			final Document document = metaDataManager.extractMetaData(new VFile(documentVersion.getUrl()));
-			i++;
-			if (i > 100) {
-				break;
-			}
-		}
+		final int i = 0;
+		crawlerManager
+				.crawl("myFS")
+				.limit(100)
+				.forEach(documentVersion -> {
+					System.out.println("doc[" + i + "]: " + documentVersion.getUrl());
+					try {
+						final Document document = crawlerManager.readDocument(documentVersion);
+						System.out.println("   +--- name : " + document.getName());
+						System.out.println("   +--- source");
+						for (final MetaData metaData : document.getSourceMetaDataSet().getMetaDatas()) {
+							System.out.println("   +------ " + metaData + " : " + document.getSourceMetaDataSet().getValue(metaData));
+						}
+					} catch (final Throwable e) {
+						System.out.println("   +---: failed to read");
+					}
+				});
 	}
 
 	private static AppConfig config() {
