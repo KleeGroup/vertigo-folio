@@ -68,7 +68,7 @@ public final class DocumentManagerImpl implements DocumentManager {
 		return createDocument(documentVersion, mdc);
 	}
 
-	private static void populateDocument(final DocumentBuilder documentBuilder, final MetaDataSet mdc) {
+	private static void populateDocument(final DocumentBuilder documentBuilder, final MetaDataSet metaDataSet) {
 		final List<MetaData> excludedMetaData = new ListBuilder<MetaData>()
 				.add(FileInfoMetaData.FILE_NAME)
 				.add(FileInfoMetaData.SIZE)
@@ -77,23 +77,23 @@ public final class DocumentManagerImpl implements DocumentManager {
 				.build();
 
 		final MetaDataSetBuilder metaDataSetBuilder = new MetaDataSetBuilder();
-		final String type = (String) mdc.getValue(FileInfoMetaData.FILE_EXTENSION);
+		final String type = (String) metaDataSet.getValue(FileInfoMetaData.FILE_EXTENSION);
 
 		documentBuilder
-				.withName((String) mdc.getValue(FileInfoMetaData.FILE_NAME))
-				.withSize((Integer) mdc.getValue(FileInfoMetaData.SIZE))
+				.withName((String) metaDataSet.getValue(FileInfoMetaData.FILE_NAME))
+				.withSize((Integer) metaDataSet.getValue(FileInfoMetaData.SIZE))
 				.withType(StringUtil.isEmpty(type) ? "<aucun>" : type)
 				.withContent("");//vide par defaut
 
 		//documentBuilder.setLastModified((Date) mdc.getValue(FileInfoMetaData.LAST_MODIFIED));
 		boolean contentSet = false;
-		for (final MetaData metaData : mdc.getMetaDatas()) {
+		for (final MetaData metaData : metaDataSet.getMetaDatas()) {
 			if ("CONTENT".equals(metaData.toString())) {
 				Assertion.checkArgument(!contentSet, "Le contenu � d�j� �t� trouv�, que faire de {0}.CONTENT ?", metaData.getClass().getName());
-				documentBuilder.withContent((String) mdc.getValue(metaData));
+				documentBuilder.withContent((String) metaDataSet.getValue(metaData));
 				contentSet = true;
 			} else if (!excludedMetaData.contains(metaData)) {
-				metaDataSetBuilder.addMetaData(metaData, mdc.getValue(metaData));
+				metaDataSetBuilder.addMetaData(metaData, metaDataSet.getValue(metaData));
 			}
 		}
 		documentBuilder.withSourceMetaDataSet(metaDataSetBuilder.build());

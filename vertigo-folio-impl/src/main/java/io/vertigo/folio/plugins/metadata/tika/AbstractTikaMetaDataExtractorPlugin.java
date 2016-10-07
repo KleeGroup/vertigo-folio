@@ -121,6 +121,8 @@ public abstract class AbstractTikaMetaDataExtractorPlugin<M extends TikaMetaData
 		}
 
 		switch (metaDataType) {
+			case LONG:
+				return Long.parseLong(stringValue);
 			case INTEGER:
 				return Integer.parseInt(stringValue);
 

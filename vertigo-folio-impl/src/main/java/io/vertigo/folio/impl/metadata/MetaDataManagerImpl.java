@@ -88,8 +88,8 @@ public final class MetaDataManagerImpl implements MetaDataManager {
 		//		}
 		// Dans le cas des fichiers on ajoute la taille
 		metaDataSetBuilder//
-				.addMetaData(FileInfoMetaData.SIZE, kFile.getLength())//
-				.addMetaData(FileInfoMetaData.FILE_EXTENSION, fileExtension.toUpperCase())//
+				.addMetaData(FileInfoMetaData.SIZE, kFile.getLength())
+				.addMetaData(FileInfoMetaData.FILE_EXTENSION, fileExtension.toUpperCase())
 				// note: il y a aussi FileSystemView.getFileSystemView().getSystemIcon(file)
 
 				// throw new KSystemException("Erreur de lecture des m�ta donn�es pour " + file.getName(), e);

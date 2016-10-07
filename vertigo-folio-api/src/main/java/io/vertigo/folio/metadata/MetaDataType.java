@@ -1,8 +1,8 @@
 package io.vertigo.folio.metadata;
 
-import io.vertigo.lang.Assertion;
-
 import java.util.Date;
+
+import io.vertigo.lang.Assertion;
 
 /**
  * Type of metadata.
@@ -13,6 +13,9 @@ import java.util.Date;
 public enum MetaDataType {
 	/** text. */
 	STRING(String.class),
+
+	/** Integer. */
+	LONG(Long.class),
 
 	/** Integer. */
 	INTEGER(Integer.class),
@@ -50,7 +53,7 @@ public enum MetaDataType {
 		//By convention null value is valid
 		//Si une valeur est non null on v�rifie que son type est correct.
 		if (metaDataValue != null && !javaClass.isInstance(metaDataValue)) {
-			throw new IllegalStateException("La valeur assignée doit être d'un type compatible avec le type de la métadonnée");
+			throw new IllegalStateException("La valeur assignée de type " + metaDataValue.getClass() + " doit être d'un type compatible avec le type " + javaClass + " de la métadonnée");
 		}
 	}
 }

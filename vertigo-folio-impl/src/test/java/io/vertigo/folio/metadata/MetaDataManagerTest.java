@@ -1,7 +1,20 @@
 package io.vertigo.folio.metadata;
 
-import io.vertigo.AbstractTestCaseJU4;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import javax.inject.Inject;
+
+import org.apache.log4j.Logger;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import io.vertigo.app.AutoCloseableApp;
 import io.vertigo.app.config.AppConfig;
+import io.vertigo.core.component.di.injector.Injector;
 import io.vertigo.dynamo.file.FileManager;
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.folio.impl.metadata.FileInfoMetaData;
@@ -13,36 +26,39 @@ import io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaData;
 import io.vertigo.folio.plugins.metadata.txt.TxtMetaData;
 import io.vertigo.lang.Assertion;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import javax.inject.Inject;
-
-import org.apache.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
  * Test de l'impl�mentation standard.
  *
  * @author pchretien
  * @version $Id: MetaDataManagerTest.java,v 1.5 2014/07/16 13:26:33 pchretien Exp $
  */
-public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
+public final class MetaDataManagerTest {
 	private static final Logger LOG = Logger.getLogger(MetaDataManagerTest.class);
 	@Inject
 	private MetaDataManager metaDataManager;
 	@Inject
 	private FileManager fileManager;
 
-	@Override
-	protected AppConfig buildAppConfig() {
+	private AutoCloseableApp app;
+
+	@Before
+	public final void setUp() throws Exception {
+		app = new AutoCloseableApp(buildAppConfig());
+		Injector.injectMembers(this, app.getComponentSpace());
+	}
+
+	@Before
+	public final void tearDown() throws Exception {
+		if (app == null) {
+			app.close();
+		}
+	}
+
+	private AppConfig buildAppConfig() {
 		return MetaDataManagerConfig.build();
 	}
 
-	private MetaDataSet buildMDC(final String fileName) {
+	private MetaDataSet buildMetaDataSet(final String fileName) {
 		try {
 			final URL fileURL = MetaDataManagerTest.class.getResource(fileName);
 			Assertion.checkNotNull(fileURL, "File not found : {0}", fileName);
@@ -59,16 +75,16 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	/** Test DOC. */
 	@Test
 	public void testDoc() {
-		final MetaDataSet metaDataContainer = buildMDC("data/microsoft/doc/klee.doc");
-		Assert.assertEquals("kleegroup", metaDataContainer.getValue(MSMetaData.AUTHOR));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/microsoft/doc/klee.doc");
+		Assert.assertEquals("kleegroup", metaDataSet.getValue(MSMetaData.AUTHOR));
 	}
 
 	/** Test DOCX. */
 	@Test
 	public void testDocX() {
-		final MetaDataSet metaDataContainer = buildMDC("data/ooxml/docx/klee.docx");
-		printMetaData(metaDataContainer);
-		Assert.assertEquals("kleegroup", metaDataContainer.getValue(OOXMLCoreMetaData.CREATOR));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/ooxml/docx/klee.docx");
+		printMetaData(metaDataSet);
+		Assert.assertEquals("kleegroup", metaDataSet.getValue(OOXMLCoreMetaData.CREATOR));
 		//		Assert.assertEquals("Documentation Interface CRM --> Agresso", metaDataContainer.getValue(OOXMLCoreMetaData.TITLE));
 		//		Assert.assertEquals("Amine Kouddane", metaDataContainer.getValue(OOXMLCoreMetaData.CREATOR));
 		//		Assert.assertEquals("KleeGroup", metaDataContainer.getValue(OOXMLExtendedMetaData.COMPANY));
@@ -79,9 +95,9 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	/** Test ODT. */
 	@Test
 	public void testOdt() {
-		final MetaDataSet metaDataContainer = buildMDC("data/odf/klee.odt");
-		printMetaData(metaDataContainer);
-		Assert.assertEquals("kleegroup", metaDataContainer.getValue(ODFMetaData.INITIAL_CREATOR));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/odf/klee.odt");
+		printMetaData(metaDataSet);
+		Assert.assertEquals("kleegroup", metaDataSet.getValue(ODFMetaData.INITIAL_CREATOR));
 		//		Assert.assertEquals("E. Paumier", metaDataContainer.getValue(ODFMetaData.INITIAL_CREATOR));
 		//		Assert.assertEquals("Edouard Paumier", metaDataContainer.getValue(ODFMetaData.CREATOR));
 		//		Assert.assertEquals(10, metaDataContainer.getValue(ODFMetaData.EDITING_CYCLES));
@@ -97,32 +113,32 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	/** Test TXT. */
 	@Test
 	public void testTxt() {
-		final MetaDataSet metaDataContainer = buildMDC("data/txt/lautreamont.txt");
-		final String content = (String) metaDataContainer.getValue(TxtMetaData.CONTENT);
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/txt/lautreamont.txt");
+		final String content = (String) metaDataSet.getValue(TxtMetaData.CONTENT);
 		Assert.assertTrue(content.contains("cantiques"));
 	}
 
 	/** Test PDF. */
 	@Test
 	public void testPdf() {
-		final MetaDataSet metaDataContainer = buildMDC("data/pdf/recette.pdf");
-		Assert.assertEquals("Agglo", metaDataContainer.getValue(PDFMetaData.AUTHOR));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/pdf/recette.pdf");
+		Assert.assertEquals("Agglo", metaDataSet.getValue(PDFMetaData.AUTHOR));
 	}
 
 	/** Test PDF/A. */
 	@Test
 	public void testPdfaValid() {
-		final MetaDataSet metaDataContainer = buildMDC("data/pdf/VERCINGETORIX-pdfa.pdf");
-		Assert.assertEquals("true", metaDataContainer.getValue(PDFMetaData.PDFA));
-		Assert.assertEquals("VALID", metaDataContainer.getValue(PDFMetaData.PDFA_VALIDATION_MSG));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/pdf/VERCINGETORIX-pdfa.pdf");
+		Assert.assertEquals("true", metaDataSet.getValue(PDFMetaData.PDFA));
+		Assert.assertEquals("VALID", metaDataSet.getValue(PDFMetaData.PDFA_VALIDATION_MSG));
 	}
 
 	/** Test PDF/A. */
 	@Test
 	public void testPdfaInvalid() {
-		final MetaDataSet metaDataContainer = buildMDC("data/pdf/recette.pdf");
-		Assert.assertEquals("false", metaDataContainer.getValue(PDFMetaData.PDFA));
-		Assert.assertNotSame("VALID", metaDataContainer.getValue(PDFMetaData.PDFA_VALIDATION_MSG));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/pdf/recette.pdf");
+		Assert.assertEquals("false", metaDataSet.getValue(PDFMetaData.PDFA));
+		Assert.assertNotSame("VALID", metaDataSet.getValue(PDFMetaData.PDFA_VALIDATION_MSG));
 	}
 
 	//-----------------------------ppt, pptx-----------------------------------
@@ -130,16 +146,16 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	/**Test PPT. */
 	@Test
 	public void testPpt() {
-		final MetaDataSet metaDataContainer = buildMDC("data/microsoft/ppt/Architecture.ppt");
-		Assert.assertEquals("kleegroup", metaDataContainer.getValue(MSMetaData.AUTHOR));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/microsoft/ppt/Architecture.ppt");
+		Assert.assertEquals("kleegroup", metaDataSet.getValue(MSMetaData.AUTHOR));
 	}
 
 	/** Test PPTX. */
 	@Test
 	public void testPptX() {
-		final MetaDataSet metaDataContainer = buildMDC("data/ooxml/pptx/Architecture.pptx");
-		printMetaData(metaDataContainer);
-		Assert.assertEquals("kleegroup", metaDataContainer.getValue(OOXMLCoreMetaData.CREATOR));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/ooxml/pptx/Architecture.pptx");
+		printMetaData(metaDataSet);
+		Assert.assertEquals("kleegroup", metaDataSet.getValue(OOXMLCoreMetaData.CREATOR));
 		//		Assert.assertEquals("Waveform", metaDataContainer.getValue(OOXMLExtendedMetaData.TEMPLATE));
 		//		Assert.assertEquals(1, metaDataContainer.getValue(OOXMLExtendedMetaData.MMCLIPS));
 	}
@@ -151,8 +167,8 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	 */
 	@Test
 	public void testXls() {
-		final MetaDataSet metaDataContainer = buildMDC("data/microsoft/xls/132-2_comptages_2004.xls");
-		Assert.assertEquals("PARC DU MERCANTOUR", metaDataContainer.getValue(MSMetaData.AUTHOR));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/microsoft/xls/132-2_comptages_2004.xls");
+		Assert.assertEquals("PARC DU MERCANTOUR", metaDataSet.getValue(MSMetaData.AUTHOR));
 	}
 
 	//	/**
@@ -167,9 +183,9 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	 */
 	@Test
 	public void testXlsX() {
-		final MetaDataSet metaDataContainer = buildMDC("data/ooxml/xlsx/Champs.xlsx");
-		printMetaData(metaDataContainer);
-		Assert.assertEquals("epaumier", metaDataContainer.getValue(OOXMLCoreMetaData.CREATOR));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/ooxml/xlsx/Champs.xlsx");
+		printMetaData(metaDataSet);
+		Assert.assertEquals("epaumier", metaDataSet.getValue(OOXMLCoreMetaData.CREATOR));
 	}
 
 	/**
@@ -177,11 +193,11 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	 */
 	@Test
 	public void testUndefinded() {
-		final MetaDataSet metaDataContainer = buildMDC("data/undefined/undefined.zip");
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/undefined/undefined.zip");
 		//Le type de fichier zip n'�tant pas d�clar�, on  ne r�cup�re que les donn�es relatives au fichier
-		printMetaData(metaDataContainer);
+		printMetaData(metaDataSet);
 		//MetaData de fichier + le content que tika r�cup�re en ouvrant le zip
-		Assert.assertEquals(FileInfoMetaData.values().length + 1, metaDataContainer.getMetaDatas().size());
+		Assert.assertEquals(FileInfoMetaData.values().length + 1, metaDataSet.getMetaDatas().size());
 	}
 
 	/**
@@ -189,8 +205,8 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	 */
 	@Test
 	public void testMbox() {
-		final MetaDataSet metaDataContainer = buildMDC("data/autoparse/complex.mbox");
-		printMetaData(metaDataContainer);
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/autoparse/complex.mbox");
+		printMetaData(metaDataSet);
 	}
 
 	/**
@@ -198,15 +214,15 @@ public final class MetaDataManagerTest extends AbstractTestCaseJU4 {
 	 */
 	@Test
 	public void testTikaDetector() {
-		final MetaDataSet metaDataContainer = buildMDC("data/autodetect/klee.mysterious");
-		printMetaData(metaDataContainer);
-		Assert.assertEquals("kleegroup", metaDataContainer.getValue(AutoTikaMetaData.CREATOR));
+		final MetaDataSet metaDataSet = buildMetaDataSet("data/autodetect/klee.mysterious");
+		printMetaData(metaDataSet);
+		Assert.assertEquals("kleegroup", metaDataSet.getValue(AutoTikaMetaData.CREATOR));
 	}
 
-	private void printMetaData(final MetaDataSet metaDataContainer) {
+	private void printMetaData(final MetaDataSet metaDataSet) {
 		if (LOG.isDebugEnabled()) {
-			for (final MetaData md : metaDataContainer.getMetaDatas()) {
-				LOG.debug(md.toString() + " = " + metaDataContainer.getValue(md));
+			for (final MetaData md : metaDataSet.getMetaDatas()) {
+				LOG.debug(md.toString() + " = " + metaDataSet.getValue(md));
 			}
 		}
 	}
