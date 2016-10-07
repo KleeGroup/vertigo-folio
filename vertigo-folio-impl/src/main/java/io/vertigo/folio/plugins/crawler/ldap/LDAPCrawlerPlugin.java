@@ -1,29 +1,31 @@
 package io.vertigo.folio.plugins.crawler.ldap;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.util.DateUtils;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 
 import io.vertigo.folio.document.model.Document;
 import io.vertigo.folio.document.model.DocumentBuilder;
 import io.vertigo.folio.document.model.DocumentVersion;
+import io.vertigo.folio.document.model.DocumentVersionBuilder;
 import io.vertigo.folio.impl.crawler.CrawlerPlugin;
 import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.folio.plugins.metadata.ldap.LDAPMetaData;
 import io.vertigo.lang.Assertion;
-import io.vertigo.util.ListBuilder;
 import sun.misc.BASE64Encoder;
 
 /**
@@ -88,8 +90,7 @@ public final class LDAPCrawlerPlugin implements CrawlerPlugin {
 	 * @return Iterator de crawling de documentVersion
 	 */
 	@Override
-	public Iterable<DocumentVersion> crawl() {
-		final ListBuilder<Entry> listBuilder = new ListBuilder<>();
+	public Stream<DocumentVersion> crawl() {
 		try (final LdapConnection connection = new LdapNetworkConnection(host, port)) {
 			final BindRequest bindRequest = new BindRequestImpl()
 					.setSimple(true)
@@ -99,20 +100,25 @@ public final class LDAPCrawlerPlugin implements CrawlerPlugin {
 
 			connection.bind(bindRequest);
 			final Dn dn = new Dn("ou=Utilisateurs,dc=klee,dc=lan,dc=net");
-			final EntryCursor cursor = connection.search(dn, "(&(objectclass=person)(objectclass=user))", SearchScope.SUBTREE);
-			for (final Entry entry : cursor) {
-				listBuilder.add(entry);
-			}
+			final EntryCursor entryCursor = connection.search(dn, "(&(objectclass=person)(objectclass=user))", SearchScope.SUBTREE);
 
-			final List list = listBuilder.build();
-			return new Iterable<DocumentVersion>() {
-				@Override
-				public Iterator<DocumentVersion> iterator() {
-					return new LDAPEntryIterator(list.iterator(), dataSourceId);
-				}
-			};
-
+			final boolean parallel = false;
+			return StreamSupport.stream(entryCursor.spliterator(), parallel)
+					.map(entry -> toDocumentVersion(dataSourceId, entry));
 		} catch (final Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static DocumentVersion toDocumentVersion(final String dataSourceId, final Entry entry) {
+		final DocumentVersionBuilder documentVersionBuilder = new DocumentVersionBuilder();
+		try {
+			return new DocumentVersionBuilder()
+					.withDataSourceId(dataSourceId)
+					.withLastModified(DateUtils.getDate(entry.get("whenChanged").getString()))
+					.withSourceUrl(entry.get("distinguishedName").getString())
+					.build();
+		} catch (final LdapInvalidAttributeValueException e) {
 			throw new RuntimeException(e);
 		}
 	}
