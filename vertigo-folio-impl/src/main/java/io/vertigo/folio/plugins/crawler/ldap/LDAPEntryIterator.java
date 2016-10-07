@@ -1,14 +1,14 @@
 package io.vertigo.folio.plugins.crawler.ldap;
 
-import io.vertigo.folio.document.model.DocumentVersion;
-import io.vertigo.folio.document.model.DocumentVersionBuilder;
-import io.vertigo.lang.Assertion;
-
 import java.util.Iterator;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.util.DateUtils;
+
+import io.vertigo.folio.document.model.DocumentVersion;
+import io.vertigo.folio.document.model.DocumentVersionBuilder;
+import io.vertigo.lang.Assertion;
 
 /**
  * Created by sbernard on 19/03/2015.

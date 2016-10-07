@@ -27,6 +27,7 @@ import io.vertigo.folio.impl.metadata.MetaDataExtractorPlugin;
 import io.vertigo.folio.metadata.MetaDataSet;
 import io.vertigo.folio.metadata.MetaDataSetBuilder;
 import io.vertigo.lang.Assertion;
+import io.vertigo.lang.WrappedException;
 import io.vertigo.util.ListBuilder;
 import sun.misc.BASE64Encoder;
 
@@ -47,7 +48,7 @@ public final class PDFMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 
 	/** {@inheritDoc} */
 	@Override
-	public MetaDataSet extractMetaDataSet(final VFile file) throws Exception {
+	public MetaDataSet extractMetaDataSet(final VFile file) {
 		Assertion.checkNotNull(file);
 		//-----
 		//Extraction de TOUT le contenu d'un pdf
@@ -82,6 +83,8 @@ public final class PDFMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 				}
 			}
 			return metaDataSetBuilder.build();
+		} catch (final IOException e) {
+			throw new WrappedException(e);
 		}
 	}
 
