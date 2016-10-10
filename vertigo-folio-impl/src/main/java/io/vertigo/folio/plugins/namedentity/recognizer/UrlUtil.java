@@ -1,14 +1,16 @@
-package io.vertigo.folio.plugins.namedentity;
+package io.vertigo.folio.plugins.namedentity.recognizer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
@@ -20,6 +22,13 @@ import io.vertigo.lang.WrappedException;
 
 public final class UrlUtil {
 	private static final JSONParser parser = new JSONParser();
+
+	public static Proxy buildProxy(final Optional<String> proxyHost, final Optional<String> proxyPort) {
+		if (proxyHost.isPresent()) {
+			return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get())));
+		}
+		return Proxy.NO_PROXY;
+	}
 
 	private static HttpURLConnection createConnection(final Proxy proxy, final URL url) {
 		Assertion.checkNotNull(url);

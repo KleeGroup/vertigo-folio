@@ -1,6 +1,5 @@
 package io.vertigo.folio.plugins.namedentity.recognizer.dbpedia;
 
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +14,7 @@ import org.json.simple.JSONObject;
 
 import io.vertigo.folio.impl.namedentity.RecognizerPlugin;
 import io.vertigo.folio.namedentity.NamedEntity;
-import io.vertigo.folio.plugins.namedentity.UrlUtil;
+import io.vertigo.folio.plugins.namedentity.recognizer.UrlUtil;
 import io.vertigo.lang.Assertion;
 import io.vertigo.lang.WrappedException;
 
@@ -32,14 +31,7 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 		Assertion.checkNotNull(proxyPort);
 		Assertion.checkArgument((proxyHost.isPresent() && proxyPort.isPresent()) || (!proxyHost.isPresent() && !proxyPort.isPresent()), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
 		//----
-		proxy = buildProxy(proxyHost, proxyPort);
-	}
-
-	private static Proxy buildProxy(final Optional<String> proxyHost, final Optional<String> proxyPort) {
-		if (proxyHost.isPresent()) {
-			return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get())));
-		}
-		return Proxy.NO_PROXY;
+		proxy = UrlUtil.buildProxy(proxyHost, proxyPort);
 	}
 
 	@Override

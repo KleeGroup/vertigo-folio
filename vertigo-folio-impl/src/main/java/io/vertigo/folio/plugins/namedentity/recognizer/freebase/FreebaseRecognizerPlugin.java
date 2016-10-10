@@ -1,6 +1,5 @@
 package io.vertigo.folio.plugins.namedentity.recognizer.freebase;
 
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,7 +15,7 @@ import org.json.simple.JSONObject;
 
 import io.vertigo.folio.impl.namedentity.RecognizerPlugin;
 import io.vertigo.folio.namedentity.NamedEntity;
-import io.vertigo.folio.plugins.namedentity.UrlUtil;
+import io.vertigo.folio.plugins.namedentity.recognizer.UrlUtil;
 import io.vertigo.lang.Assertion;
 
 /**
@@ -34,16 +33,9 @@ public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 		Assertion.checkNotNull(proxyPort);
 		Assertion.checkArgument(proxyHost.isPresent() && proxyPort.isPresent() || !proxyHost.isPresent() && !proxyPort.isPresent(), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
 		//----
-		proxy = buildProxy(proxyHost, proxyPort);
+		proxy = UrlUtil.buildProxy(proxyHost, proxyPort);
 
 		FREEBASE_API_KEY = apiKey;
-	}
-
-	private static Proxy buildProxy(final Optional<String> proxyHost, final Optional<String> proxyPort) {
-		if (proxyHost.isPresent()) {
-			return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get())));
-		}
-		return Proxy.NO_PROXY;
 	}
 
 	@Override
@@ -55,9 +47,7 @@ public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 			final String urlAsString = FREEBASE_PREFIX + "?query=" + UrlUtil.encodeUTF8(token) + "&key=" + FREEBASE_API_KEY + "&limit=5&lang=fr";
 
 			final JSONObject response = UrlUtil.exec(proxy, urlAsString);
-
 			final JSONArray results = (JSONArray) response.get("result");
-
 			try {
 				final Iterator<Object> jsonObjectIterator = results.iterator();
 				while (jsonObjectIterator.hasNext()) {
