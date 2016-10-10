@@ -34,7 +34,7 @@ import io.vertigo.lang.Assertion;
 public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 	private final String FREEBASE_PREFIX = "https://www.googleapis.com/freebase/v1/search";
 	private final String FREEBASE_API_KEY;
-	private final Optional<Proxy> proxy;
+	private final Proxy proxy;
 
 	@Inject
 	public FreebaseRecognizerPlugin(final @Named("apiKey") String apiKey, final @Named("proxyHost") Optional<String> proxyHost, @Named("proxyPort") final Optional<String> proxyPort) {
@@ -43,12 +43,16 @@ public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 		Assertion.checkNotNull(proxyPort);
 		Assertion.checkArgument(proxyHost.isPresent() && proxyPort.isPresent() || !proxyHost.isPresent() && !proxyPort.isPresent(), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
 		//----
-		if (proxyHost.isPresent()) {
-			proxy = Optional.of(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get()))));
-		} else {
-			proxy = Optional.empty();
-		}
+		proxy = buildProxy(proxyHost, proxyPort);
+
 		FREEBASE_API_KEY = apiKey;
+	}
+
+	private static Proxy buildProxy(final Optional<String> proxyHost, final Optional<String> proxyPort) {
+		if (proxyHost.isPresent()) {
+			return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get())));
+		}
+		return Proxy.NO_PROXY;
 	}
 
 	@Override
@@ -99,11 +103,11 @@ public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 					final Iterator<Object> jsonObjectIterator = results.iterator();
 					while (jsonObjectIterator.hasNext()) {
 						final JSONObject nameEntity = (JSONObject) jsonObjectIterator.next();
-						final String name = nameEntity.get("name").toString();
-						final String entityUrl = "http://www.freebase.com" + nameEntity.get("mid").toString();
+						final String label = nameEntity.get("name").toString();
+						/*final String entityUrl = "http://www.freebase.com" + nameEntity.get("mid").toString();
 						final JSONObject notable = (JSONObject) nameEntity.get("notable");
-						final String type = notable.get("name").toString();
-						namedEntities.add(new NamedEntity(name, type, entityUrl));
+						final String type = notable.get("name").toString();*/
+						namedEntities.add(new NamedEntity(label/*, type, entityUrl*/));
 					}
 				} catch (final Exception e) {
 					System.err.println("Error characterizing token : " + token);
@@ -118,22 +122,11 @@ public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 		Assertion.checkNotNull(url);
 		//----
 		try {
-			return doCreateConnection(url);
+			final HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
+			connection.setDoOutput(true);
+			return connection;
 		} catch (final IOException e) {
 			throw new RuntimeException("Erreur de connexion au service (HTTP)", e);
 		}
-	}
-
-	private HttpURLConnection doCreateConnection(final URL url) throws IOException {
-		Assertion.checkNotNull(url);
-		//---------------------------------------------------------------------------
-		HttpURLConnection connection;
-		if (proxy.isPresent()) {
-			connection = (HttpURLConnection) url.openConnection(proxy.get());
-		} else {
-			connection = (HttpURLConnection) url.openConnection();
-		}
-		connection.setDoOutput(true);
-		return connection;
 	}
 }

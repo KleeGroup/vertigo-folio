@@ -35,7 +35,7 @@ public final class NamedEntitiesEnhancementPlugin implements EnhancementPlugin {
 		// Concatenation des entités trouvées pour l'indexation
 		final String namedEntitiesAsString = namedEntities
 				.stream()
-				.map(namedEntity -> namedEntity.getName())
+				.map(namedEntity -> namedEntity.getLabel())
 				.collect(Collectors.joining(", "));
 
 		return new MetaDataSetBuilder()

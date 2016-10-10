@@ -1,9 +1,5 @@
 package io.vertigo.folio.plugins.namedentity.tokenizer.stanfordNlp;
 
-import io.vertigo.core.resource.ResourceManager;
-import io.vertigo.folio.impl.namedentity.TokenizerPlugin;
-import io.vertigo.lang.Assertion;
-
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,6 +13,10 @@ import javax.inject.Named;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
+import io.vertigo.core.resource.ResourceManager;
+import io.vertigo.folio.impl.namedentity.TokenizerPlugin;
+import io.vertigo.lang.Assertion;
+import io.vertigo.lang.WrappedException;
 
 public final class StanfordTokenizerPlugin implements TokenizerPlugin {
 	private final MaxentTagger tagger;
@@ -25,12 +25,11 @@ public final class StanfordTokenizerPlugin implements TokenizerPlugin {
 	public StanfordTokenizerPlugin(final ResourceManager resourceManager, final @Named("taggerModel") String modelResource) {
 		Assertion.checkNotNull(resourceManager);
 		//----
-		//        final URL modelURL  = StanfordTokenizerPlugin.class.getClassLoader().getResource("./french.tagger");
 		final URL modelURL = resourceManager.resolve(modelResource);
 		try {
 			tagger = new MaxentTagger(modelURL.getFile());
 		} catch (final Exception e) {
-			throw new RuntimeException("Failed to load stanford NLP model", e);
+			throw new WrappedException("Failed to load stanford NLP model", e);
 		}
 	}
 

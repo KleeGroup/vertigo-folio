@@ -16,7 +16,7 @@ import io.vertigo.folio.plugins.metadata.pdf.PDFMetaDataExtractorPlugin;
 import io.vertigo.folio.plugins.metadata.tika.AutoTikaMetaDataExtractorPlugin;
 import io.vertigo.folio.plugins.metadata.txt.TxtMetaDataExtractorPlugin;
 
-final class MetaDataManagerConfig {
+final class MetaDataConfig {
 
 	static AppConfig build() {
 		//@formatter:off

@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,13 +27,14 @@ import org.json.simple.parser.ParseException;
 import io.vertigo.folio.impl.namedentity.RecognizerPlugin;
 import io.vertigo.folio.namedentity.NamedEntity;
 import io.vertigo.lang.Assertion;
+import io.vertigo.lang.WrappedException;
 
 /**
  * Created by sbernard on 10/12/2014.
  */
 public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 	private static final String DBPEDIA_LOOKUP_PREFIX = "http://lookup.dbpedia.org/api/search/KeywordSearch";
-	private final Optional<Proxy> proxy;
+	private final Proxy proxy;
 
 	@Inject
 	public DbpediaRecognizerPlugin(final @Named("proxyHost") Optional<String> proxyHost, @Named("proxyPort") final Optional<String> proxyPort) {
@@ -40,11 +42,14 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 		Assertion.checkNotNull(proxyPort);
 		Assertion.checkArgument((proxyHost.isPresent() && proxyPort.isPresent()) || (!proxyHost.isPresent() && !proxyPort.isPresent()), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
 		//----
+		proxy = buildProxy(proxyHost, proxyPort);
+	}
+
+	private static Proxy buildProxy(final Optional<String> proxyHost, final Optional<String> proxyPort) {
 		if (proxyHost.isPresent()) {
-			proxy = Optional.of(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get()))));
-		} else {
-			proxy = Optional.empty();
+			return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.get(), Integer.parseInt(proxyPort.get())));
 		}
+		return Proxy.NO_PROXY;
 	}
 
 	@Override
@@ -69,16 +74,14 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 			final HttpURLConnection connection = createConnection(proxy, url);
 			connection.setRequestProperty("Accept", "application/json");
 
-			JSONObject response = null;
+			final JSONObject response;
 			try {
 				connection.connect();
-				final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				final StringBuilder stringBuilder = new StringBuilder();
-				String line;
-				while ((line = bufferedReader.readLine()) != null) {
-					stringBuilder.append(line + '\n');
+				final String jsonString;
+				try (final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+					jsonString = bufferedReader.lines()
+							.collect(Collectors.joining("\n"));
 				}
-				final String jsonString = stringBuilder.toString();
 				response = (JSONObject) parser.parse(jsonString);
 			} catch (final IOException e) {
 				throw new RuntimeException("Erreur de connexion au service", e);
@@ -90,39 +93,29 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 
 			try {
 				final JSONArray results = (JSONArray) response.get("results");
-				final JSONObject nameEntity = (JSONObject) results.get(0);
-				final String name = nameEntity.get("label").toString();
-				final JSONObject typeObject = ((JSONObject) ((JSONArray) nameEntity.get("classes")).get(0));
-				final String type = typeObject.get("label").toString();
-				final String entityUrl = nameEntity.get("url").toString();
-				namedEntities.add(new NamedEntity(name, type, entityUrl));
+				final JSONObject namedEntity = (JSONObject) results.get(0);
+				final String label = namedEntity.get("label").toString();
+				//				final JSONObject typeObject = ((JSONObject) ((JSONArray) namedEntity.get("classes")).get(0));
+				//				final String type = typeObject.get("label").toString();
+				//				final String entityUrl = namedEntity.get("url").toString();
+				namedEntities.add(new NamedEntity(label/*, type, entityUrl*/));
 			} catch (final Exception e) {
-				System.err.println("Error characterizing token : " + token);
+				throw new WrappedException("Error characterizing token : " + token, e);
 			}
 		}
 		return namedEntities;
 	}
 
-	private static HttpURLConnection createConnection(final Optional<Proxy> proxy, final URL url) {
+	private static HttpURLConnection createConnection(final Proxy proxy, final URL url) {
 		Assertion.checkNotNull(url);
 		//----
 		try {
-			return doCreateConnection(proxy, url);
+			final HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
+			connection.setDoOutput(true);
+			return connection;
 		} catch (final IOException e) {
-			throw new RuntimeException("Erreur de connexion au service (HTTP)", e);
+			throw new WrappedException("Error on connection (HTTP)", e);
 		}
 	}
 
-	private static HttpURLConnection doCreateConnection(final Optional<Proxy> proxy, final URL url) throws IOException {
-		Assertion.checkNotNull(url);
-		//---------------------------------------------------------------------------
-		HttpURLConnection connection;
-		if (proxy.isPresent()) {
-			connection = (HttpURLConnection) url.openConnection(proxy.get());
-		} else {
-			connection = (HttpURLConnection) url.openConnection();
-		}
-		connection.setDoOutput(true);
-		return connection;
-	}
 }

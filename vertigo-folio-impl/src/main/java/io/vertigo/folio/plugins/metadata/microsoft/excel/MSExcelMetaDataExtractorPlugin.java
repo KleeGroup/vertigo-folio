@@ -31,8 +31,6 @@ public final class MSExcelMetaDataExtractorPlugin extends AbstractMSMetaDataExtr
 			//throw new java.lang.UnsupportedOperationException("Fichier XLS trop gros pour �tre trait� : " + file.getLength() / 1024 + "Ko");
 		}
 
-		final StringBuilder sb = new StringBuilder();
-
 		final POIFSFileSystem fs;
 		try (final InputStream inputStream = file.createInputStream()) {
 			fs = new POIFSFileSystem(inputStream);
@@ -40,6 +38,7 @@ public final class MSExcelMetaDataExtractorPlugin extends AbstractMSMetaDataExtr
 
 		final HSSFWorkbook wb = new HSSFWorkbook(fs);
 
+		final StringBuilder sb = new StringBuilder();
 		for (int k = 0; k < wb.getNumberOfSheets(); k++) {
 			final HSSFSheet sheet = wb.getSheetAt(k);
 			for (final Iterator<Row> rows = sheet.rowIterator(); rows.hasNext();) {

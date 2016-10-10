@@ -24,6 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import io.vertigo.folio.crawler.CrawlerManagerTest;
 import io.vertigo.folio.metadata.MetaDataManagerTest;
+import io.vertigo.folio.namedentity.NamedEntityManagerTest;
 
 /**
  * Test de l'implementation standard.
@@ -33,7 +34,8 @@ import io.vertigo.folio.metadata.MetaDataManagerTest;
 @RunWith(Suite.class)
 @SuiteClasses({
 		CrawlerManagerTest.class,
-		MetaDataManagerTest.class
+		MetaDataManagerTest.class,
+		NamedEntityManagerTest.class
 })
 public final class FolioTestSuite {
 	//

@@ -55,7 +55,7 @@ public final class MetaDataManagerTest {
 	}
 
 	private AppConfig buildAppConfig() {
-		return MetaDataManagerConfig.build();
+		return MetaDataConfig.build();
 	}
 
 	private MetaDataSet buildMetaDataSet(final String fileName) {
