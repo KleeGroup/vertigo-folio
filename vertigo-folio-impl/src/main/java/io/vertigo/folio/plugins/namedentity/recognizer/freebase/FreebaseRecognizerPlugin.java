@@ -27,7 +27,10 @@ public final class FreebaseRecognizerPlugin implements RecognizerPlugin {
 	private final Proxy proxy;
 
 	@Inject
-	public FreebaseRecognizerPlugin(final @Named("apiKey") String apiKey, final @Named("proxyHost") Optional<String> proxyHost, @Named("proxyPort") final Optional<String> proxyPort) {
+	public FreebaseRecognizerPlugin(
+			final @Named("apiKey") String apiKey,
+			final @Named("proxyHost") Optional<String> proxyHost,
+			@Named("proxyPort") final Optional<String> proxyPort) {
 		Assertion.checkNotNull(apiKey);
 		Assertion.checkNotNull(proxyHost);
 		Assertion.checkNotNull(proxyPort);

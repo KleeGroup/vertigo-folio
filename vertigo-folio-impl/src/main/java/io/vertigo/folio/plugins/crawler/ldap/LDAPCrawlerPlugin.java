@@ -40,7 +40,13 @@ public final class LDAPCrawlerPlugin implements CrawlerPlugin {
 	private final String myDn;
 
 	@Inject
-	public LDAPCrawlerPlugin(@Named("dataSourceId") final String dataSourceId, @Named("host") final String host, @Named("port") final int port, @Named("username") final String username, @Named("password") final String password, @Named("dn") final String dn) {
+	public LDAPCrawlerPlugin(
+			@Named("dataSourceId") final String dataSourceId,
+			@Named("host") final String host,
+			@Named("port") final int port,
+			@Named("username") final String username,
+			@Named("password") final String password,
+			@Named("dn") final String dn) {
 		Assertion.checkArgNotEmpty(dataSourceId);
 		Assertion.checkArgNotEmpty(host);
 		Assertion.checkNotNull(port);

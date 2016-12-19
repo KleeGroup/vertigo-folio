@@ -59,7 +59,8 @@ public final class FSCrawlerPlugin implements CrawlerPlugin {
 	 * @param strExcludePatterns Patterns d'exclusion de fichier
 	 */
 	@Inject
-	public FSCrawlerPlugin(@Named("dataSourceId") final String dataSourceId,
+	public FSCrawlerPlugin(
+			@Named("dataSourceId") final String dataSourceId,
 			@Named("directory") final String strDirectory,
 			@Named("maxFiles") final Integer maxFiles,
 			@Named("excludePatterns") final String strExcludePatterns) {

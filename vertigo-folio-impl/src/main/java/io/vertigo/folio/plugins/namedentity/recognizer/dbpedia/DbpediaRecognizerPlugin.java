@@ -26,7 +26,9 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 	private final Proxy proxy;
 
 	@Inject
-	public DbpediaRecognizerPlugin(final @Named("proxyHost") Optional<String> proxyHost, @Named("proxyPort") final Optional<String> proxyPort) {
+	public DbpediaRecognizerPlugin(
+			final @Named("proxyHost") Optional<String> proxyHost,
+			@Named("proxyPort") final Optional<String> proxyPort) {
 		Assertion.checkNotNull(proxyHost);
 		Assertion.checkNotNull(proxyPort);
 		Assertion.checkArgument((proxyHost.isPresent() && proxyPort.isPresent()) || (!proxyHost.isPresent() && !proxyPort.isPresent()), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
