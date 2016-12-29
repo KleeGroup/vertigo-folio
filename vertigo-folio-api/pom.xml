@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.vertigo</groupId>
-		<artifactId>vertigo-folio-reactor</artifactId>
+		<artifactId>vertigo-folio</artifactId>
 		<version>0.9.4-SNAPSHOT</version>
 	</parent>
 
