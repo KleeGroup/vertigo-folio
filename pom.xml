@@ -22,7 +22,7 @@ limitations under the License. --><project xmlns="http://maven.apache.org/POM/4.
 		<version>0.9.4-SNAPSHOT</version>
 	</parent> 
 	
-	<artifactId>vertigo-folio-reactor</artifactId>
+	<artifactId>vertigo-folio</artifactId>
 	<name>vertigo-folio</name>
 	<packaging>pom</packaging>
 
