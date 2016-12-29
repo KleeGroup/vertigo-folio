@@ -36,24 +36,24 @@ public final class MSExcelMetaDataExtractorPlugin extends AbstractMSMetaDataExtr
 			fs = new POIFSFileSystem(inputStream);
 		}
 
-		final HSSFWorkbook wb = new HSSFWorkbook(fs);
-
-		final StringBuilder sb = new StringBuilder();
-		for (int k = 0; k < wb.getNumberOfSheets(); k++) {
-			final HSSFSheet sheet = wb.getSheetAt(k);
-			for (final Iterator<Row> rows = sheet.rowIterator(); rows.hasNext();) {
-				final HSSFRow row = (HSSFRow) rows.next();
-				final int c1 = row.getFirstCellNum();
-				final int c2 = row.getLastCellNum();
-				for (int c = c1; c < c2; c++) {
-					final HSSFCell cell = row.getCell(c);
-					if (cell != null && cell.getCellType() == Cell.CELL_TYPE_STRING) {
-						sb.append(cell.getRichStringCellValue().getString()).append(' ');
+		try (final HSSFWorkbook wb = new HSSFWorkbook(fs)) {
+			final StringBuilder sb = new StringBuilder();
+			for (int k = 0; k < wb.getNumberOfSheets(); k++) {
+				final HSSFSheet sheet = wb.getSheetAt(k);
+				for (final Iterator<Row> rows = sheet.rowIterator(); rows.hasNext();) {
+					final HSSFRow row = (HSSFRow) rows.next();
+					final int c1 = row.getFirstCellNum();
+					final int c2 = row.getLastCellNum();
+					for (int c = c1; c < c2; c++) {
+						final HSSFCell cell = row.getCell(c);
+						if (cell != null && cell.getCellType() == Cell.CELL_TYPE_STRING) {
+							sb.append(cell.getRichStringCellValue().getString()).append(' ');
+						}
 					}
 				}
 			}
+			return sb.toString();
 		}
-		return sb.toString();
 	}
 
 	/** {@inheritDoc} */
