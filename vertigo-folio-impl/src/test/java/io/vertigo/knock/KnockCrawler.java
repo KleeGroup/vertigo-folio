@@ -6,7 +6,9 @@ import io.vertigo.app.App;
 import io.vertigo.app.AutoCloseableApp;
 import io.vertigo.app.config.AppConfig;
 import io.vertigo.app.config.AppConfigBuilder;
+import io.vertigo.app.config.ModuleConfigBuilder;
 import io.vertigo.core.component.di.injector.Injector;
+import io.vertigo.core.param.Param;
 import io.vertigo.dynamo.file.FileManager;
 import io.vertigo.dynamo.impl.file.FileManagerImpl;
 import io.vertigo.folio.crawler.CrawlerManager;
@@ -68,36 +70,33 @@ public final class KnockCrawler {
 	}
 
 	private static AppConfig config() {
-		// @formatter:off
-			return new AppConfigBuilder()
-				.beginBootModule("fr")
-				.endModule()
-//				.beginBoot()
-//					.withLogConfig(new LogConfig("log4j.xml"))
-//				.endBoot()
-				.beginModule("document")
-					.addComponent(CrawlerManager.class, CrawlerManagerImpl.class)
-					.beginPlugin(FSCrawlerPlugin.class)
-						.addParam("dataSourceId", "myFS")
-						.addParam("directory" , "z:")
-						.addParam ("maxFiles" , "250")
-						.addParam ("excludePatterns" , "")
-					.endPlugin()
-					.addComponent(FileManager.class, FileManagerImpl.class)
-					.addComponent(DocumentManager.class, DocumentManagerImpl.class)
-					.addComponent(MetaDataManager.class, MetaDataManagerImpl.class)
-						 .addPlugin(MSWordMetaDataExtractorPlugin.class)
-						 .addPlugin(MSPowerPointMetaDataExtractorPlugin.class)
-						 .addPlugin(MSExcelMetaDataExtractorPlugin.class)
-						 .addPlugin(PDFMetaDataExtractorPlugin.class)
-						 .beginPlugin(TxtMetaDataExtractorPlugin.class)
-						 	.addParam("extensions", "txt, log")
-						 .endPlugin()
-						 .addPlugin(CommonOOXMLMetaDataExtractorPlugin.class)
-						 .addPlugin(ODFMetaDataExtractorPlugin.class)
-						 .addPlugin(AutoTikaMetaDataExtractorPlugin.class)
-				.endModule()
+		return new AppConfigBuilder()
+				.beginBoot()
+				.withLocales("fr")
+				.endBoot()
+				//				.beginBoot()
+				//					.withLogConfig(new LogConfig("log4j.xml"))
+				//				.endBoot()
+				.addModule(new ModuleConfigBuilder("document")
+						.addComponent(CrawlerManager.class, CrawlerManagerImpl.class)
+						.addPlugin(FSCrawlerPlugin.class,
+								Param.create("dataSourceId", "myFS"),
+								Param.create("directory", "z:"),
+								Param.create("maxFiles", "250"),
+								Param.create("excludePatterns", ""))
+						.addComponent(FileManager.class, FileManagerImpl.class)
+						.addComponent(DocumentManager.class, DocumentManagerImpl.class)
+						.addComponent(MetaDataManager.class, MetaDataManagerImpl.class)
+						.addPlugin(MSWordMetaDataExtractorPlugin.class)
+						.addPlugin(MSPowerPointMetaDataExtractorPlugin.class)
+						.addPlugin(MSExcelMetaDataExtractorPlugin.class)
+						.addPlugin(PDFMetaDataExtractorPlugin.class)
+						.addPlugin(TxtMetaDataExtractorPlugin.class,
+								Param.create("extensions", "txt, log"))
+						.addPlugin(CommonOOXMLMetaDataExtractorPlugin.class)
+						.addPlugin(ODFMetaDataExtractorPlugin.class)
+						.addPlugin(AutoTikaMetaDataExtractorPlugin.class)
+						.build())
 				.build();
-		// @formatter:on
 	}
 }
