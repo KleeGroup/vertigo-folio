@@ -152,11 +152,10 @@ public final class ChannelManagerImpl implements ChannelManager {
 	}
 
 	private void doCrawl(final ChannelDefinition channelDefinition) {
-		for (final DocumentVersion documentVersion : crawlerManager.crawl(channelDefinition.getDataSourceName())) {
-			if (!lifeCyclePlugin.isCrawled(channelDefinition, documentVersion)) {
-				this.doCrawl(channelDefinition, documentVersion);
-			}
-		}
+		crawlerManager
+				.crawl(channelDefinition.getDataSourceName())
+				.filter(documentVersion -> lifeCyclePlugin.isCrawled(channelDefinition, documentVersion))
+				.forEach(documentVersion -> this.doCrawl(channelDefinition, documentVersion));
 	}
 
 	private void doCrawl(final ChannelDefinition channelDefinition, final DocumentVersion documentVersion) {
