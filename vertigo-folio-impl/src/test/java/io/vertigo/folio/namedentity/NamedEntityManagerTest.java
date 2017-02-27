@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import io.vertigo.app.AutoCloseableApp;
 import io.vertigo.app.config.AppConfig;
-import io.vertigo.core.component.di.injector.Injector;
+import io.vertigo.core.component.di.injector.DIInjector;
 
 /**
  * Test de l'impl�mentation standard.
@@ -24,7 +24,7 @@ public final class NamedEntityManagerTest {
 	@Before
 	public final void setUp() throws Exception {
 		app = new AutoCloseableApp(buildAppConfig());
-		Injector.injectMembers(this, app.getComponentSpace());
+		DIInjector.injectMembers(this, app.getComponentSpace());
 	}
 
 	@Before

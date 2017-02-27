@@ -7,7 +7,7 @@ import io.vertigo.app.AutoCloseableApp;
 import io.vertigo.app.config.AppConfig;
 import io.vertigo.app.config.AppConfigBuilder;
 import io.vertigo.app.config.ModuleConfigBuilder;
-import io.vertigo.core.component.di.injector.Injector;
+import io.vertigo.core.component.di.injector.DIInjector;
 import io.vertigo.core.param.Param;
 import io.vertigo.dynamo.file.FileManager;
 import io.vertigo.dynamo.impl.file.FileManagerImpl;
@@ -37,7 +37,7 @@ public final class KnockCrawler {
 	//	private MetaDataManager metaDataManager;
 
 	private KnockCrawler(final App app) {
-		Injector.injectMembers(this, app.getComponentSpace());
+		DIInjector.injectMembers(this, app.getComponentSpace());
 	}
 
 	public static void main(final String[] args) {

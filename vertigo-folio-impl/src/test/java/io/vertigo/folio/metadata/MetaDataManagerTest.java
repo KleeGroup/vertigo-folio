@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import io.vertigo.app.AutoCloseableApp;
 import io.vertigo.app.config.AppConfig;
-import io.vertigo.core.component.di.injector.Injector;
+import io.vertigo.core.component.di.injector.DIInjector;
 import io.vertigo.dynamo.file.FileManager;
 import io.vertigo.dynamo.file.model.VFile;
 import io.vertigo.folio.impl.metadata.FileInfoMetaData;
@@ -44,7 +44,7 @@ public final class MetaDataManagerTest {
 	@Before
 	public final void setUp() throws Exception {
 		app = new AutoCloseableApp(buildAppConfig());
-		Injector.injectMembers(this, app.getComponentSpace());
+		DIInjector.injectMembers(this, app.getComponentSpace());
 	}
 
 	@Before
