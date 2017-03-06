@@ -31,7 +31,8 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 			@Named("proxyPort") final Optional<String> proxyPort) {
 		Assertion.checkNotNull(proxyHost);
 		Assertion.checkNotNull(proxyPort);
-		Assertion.checkArgument((proxyHost.isPresent() && proxyPort.isPresent()) || (!proxyHost.isPresent() && !proxyPort.isPresent()), "les deux paramètres host et port doivent être tous les deux remplis ou vides");
+		Assertion.checkArgument((proxyHost.isPresent() && proxyPort.isPresent()) || (!proxyHost.isPresent() && !proxyPort.isPresent()),
+				"les deux paramètres host et port doivent être tous les deux remplis ou vides");
 		//----
 		proxy = UrlUtil.buildProxy(proxyHost, proxyPort);
 	}
@@ -55,7 +56,7 @@ public final class DbpediaRecognizerPlugin implements RecognizerPlugin {
 				//				final String entityUrl = namedEntity.get("url").toString();
 				namedEntities.add(new NamedEntity(label/*, type, entityUrl*/));
 			} catch (final Exception e) {
-				throw new WrappedException("Error characterizing token : " + token, e);
+				throw WrappedException.wrap(e, "Error characterizing token : " + token);
 			}
 		}
 		return namedEntities;

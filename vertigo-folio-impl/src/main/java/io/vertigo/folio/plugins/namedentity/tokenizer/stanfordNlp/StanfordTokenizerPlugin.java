@@ -29,7 +29,7 @@ public final class StanfordTokenizerPlugin implements TokenizerPlugin {
 		try {
 			tagger = new MaxentTagger(modelURL.getFile());
 		} catch (final Exception e) {
-			throw new WrappedException("Failed to load stanford NLP model", e);
+			throw WrappedException.wrap(e, "Failed to load stanford NLP model");
 		}
 	}
 

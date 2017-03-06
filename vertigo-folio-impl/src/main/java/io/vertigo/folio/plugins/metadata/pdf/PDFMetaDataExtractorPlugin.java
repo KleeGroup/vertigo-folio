@@ -84,7 +84,7 @@ public final class PDFMetaDataExtractorPlugin implements MetaDataExtractorPlugin
 			}
 			return metaDataSetBuilder.build();
 		} catch (final IOException e) {
-			throw new WrappedException(e);
+			throw WrappedException.wrap(e);
 		}
 	}
 

@@ -38,7 +38,7 @@ public final class UrlUtil {
 			connection.setDoOutput(true);
 			return connection;
 		} catch (final IOException e) {
-			throw new WrappedException("Error on connection (HTTP)", e);
+			throw WrappedException.wrap(e, "Error on connection (HTTP)");
 		}
 	}
 
